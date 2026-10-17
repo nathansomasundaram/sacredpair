@@ -1,26 +1,107 @@
 @import "tailwindcss";
 
+/*
+ * Sacred Pair design tokens.
+ * Ink / Paper carry the reading experience; Covenant violet is the action
+ * color; Ring gold appears only on the pair mark and Premium; Leaf belongs
+ * to the Together journeys. Layout uses logical properties (start/end) so
+ * right-to-left languages work without rework.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --ink: #1e2340;
+  --ink-soft: #4f5575;
+  --paper: #fafafc;
+  --mist: #eceaf4;
+  --line: #d9d6e6;
+  --covenant: #4a3d8f;
+  --covenant-strong: #3a2f75;
+  --on-covenant: #ffffff;
+  --ring: #d9a441;
+  --leaf: #3b7558;
+  --focus: #4a3d8f;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --ink: #eceaf4;
+    --ink-soft: #b4b2c8;
+    --paper: #15172b;
+    --mist: #22253f;
+    --line: #34385a;
+    --covenant: #a99cf0;
+    --covenant-strong: #c4bbf7;
+    --on-covenant: #15172b;
+    --ring: #e5bb66;
+    --leaf: #7cc19c;
+    --focus: #c4bbf7;
   }
 }
 
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-mist: var(--mist);
+  --color-line: var(--line);
+  --color-covenant: var(--covenant);
+  --color-covenant-strong: var(--covenant-strong);
+  --color-on-covenant: var(--on-covenant);
+  --color-ring: var(--ring);
+  --color-leaf: var(--leaf);
+
+  --font-display: var(--font-spectral), Georgia, serif;
+  --font-sans: var(--font-atkinson), system-ui, sans-serif;
+
+  /* Type scale, ratio 1.25 from a 17px base for comfortable reading at any age. */
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.328rem;
+  --text-lg--line-height: 1.45;
+  --text-xl: 1.66rem;
+  --text-xl--line-height: 1.3;
+  --text-2xl: 2.075rem;
+  --text-2xl--line-height: 1.2;
+  --text-3xl: 2.594rem;
+  --text-3xl--line-height: 1.12;
+}
+
+html {
+  color-scheme: light dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

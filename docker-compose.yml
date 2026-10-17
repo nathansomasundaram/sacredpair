@@ -1,0 +1,66 @@
+# Local testing with Docker.
+#
+# 1. Start the database, auth, storage and realtime (Supabase runs its own
+#    containers):          npx supabase start
+# 2. Then choose one:
+#    Production-like app:  docker compose up --build web
+#    Hot-reload dev app:   docker compose --profile dev up dev
+#    Browser tests:        docker compose --profile test run --rm e2e
+#
+# The app is at http://localhost:3000. Emails sent locally (verification,
+# password reset) appear in Mailpit at http://localhost:54324.
+
+x-supabase-env: &supabase-env
+  NEXT_PUBLIC_SITE_URL: http://localhost:3000
+  NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-http://127.0.0.1:54321}
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH}
+  SUPABASE_SECRET_KEY: ${SUPABASE_SECRET_KEY:-}
+  # The server inside the container reaches Supabase through your machine.
+  SUPABASE_INTERNAL_URL: http://host.docker.internal:54321
+
+services:
+  web:
+    build:
+      context: .
+      target: runner
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-http://127.0.0.1:54321}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH}
+    image: sacredpair-web
+    ports:
+      - "3000:3000"
+    environment: *supabase-env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  dev:
+    profiles: [dev]
+    build:
+      context: .
+      target: dev
+    ports:
+      - "3000:3000"
+    environment: *supabase-env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/app
+      # Keep the container's own Linux packages and build cache.
+      - /app/node_modules
+      - /app/.next
+
+  e2e:
+    profiles: [test]
+    image: mcr.microsoft.com/playwright:v1.64.1-noble
+    working_dir: /app
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      BASE_URL: http://web:3000
+      CI: "1"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["sh", "-c", "npm ci --no-audit --no-fund && npx playwright test"]

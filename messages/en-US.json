@@ -1,0 +1,62 @@
+{
+  "app": {
+    "name": "Sacred Pair",
+    "tagline": "Bringing people together, one individual at a time.",
+    "skipToContent": "Skip to content"
+  },
+  "landing": {
+    "title": "Find a life partner, then grow together.",
+    "body": "Sacred Pair is for people who are serious about a lasting relationship. Each week you see four thoughtfully chosen profiles. When you both choose each other, you start a journey together.",
+    "createAccount": "Create an account",
+    "logIn": "Log in",
+    "openApp": "Open the app"
+  },
+  "nav": {
+    "label": "Main",
+    "discover": "Discover",
+    "details": "Details",
+    "together": "Together",
+    "chat": "Chat",
+    "profile": "Profile"
+  },
+  "discover": {
+    "title": "Discover",
+    "emptyTitle": "Your four profiles for this week",
+    "emptyBody": "Tap the magic wand to see four people chosen for you. New profiles arrive every week."
+  },
+  "details": {
+    "title": "Details",
+    "emptyTitle": "Nobody selected yet",
+    "emptyBody": "Choose a profile in Discover to see their full story here."
+  },
+  "together": {
+    "title": "Together",
+    "emptyTitle": "Your journey starts with a connection",
+    "emptyBody": "When you and someone else choose each other, you can pick a path together: grow a tree, build a house, or write a book."
+  },
+  "chat": {
+    "title": "Chat",
+    "emptyTitle": "No conversations yet",
+    "emptyBody": "Conversations open when two people choose each other. Nobody can message you before that."
+  },
+  "profile": {
+    "title": "Profile",
+    "emptyTitle": "Tell people who you are",
+    "emptyBody": "Add your name, a photo and a few lines about yourself so others can get to know you.",
+    "settings": "Settings"
+  },
+  "journey": {
+    "paths": {
+      "grow_a_tree": "Grow a tree",
+      "build_a_house": "Build a house",
+      "write_a_book": "Write a book"
+    }
+  },
+  "options": {
+    "gender": {
+      "man": "Man",
+      "woman": "Woman",
+      "non_binary": "Non-binary"
+    }
+  }
+}
