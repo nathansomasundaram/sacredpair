@@ -1,11 +1,18 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { PairMark } from "@/components/brand/PairMark";
+import {
+  primaryButtonClass,
+  quietButtonClass,
+} from "@/components/forms/SubmitButton";
+import { getSessionUser } from "@/lib/auth/session";
 
-// Temporary front door. The public home page (sign up, log in, FAQ,
-// testimonials, dating tips) is built in its own step.
+// Temporary front door. The full public home page (FAQ, testimonials,
+// dating tips) is built in its own step.
 export default async function HomePage() {
   const t = await getTranslations();
+  const user = await getSessionUser();
+
   return (
     <main
       id="main"
@@ -20,14 +27,22 @@ export default async function HomePage() {
           {t("landing.body")}
         </p>
       </div>
-      <div>
-        <Link
-          href="/discover"
-          className="inline-flex min-h-12 items-center rounded-full bg-covenant px-6 font-semibold text-on-covenant transition-colors hover:bg-covenant-strong"
-        >
-          {t("landing.openApp")}
-        </Link>
-      </div>
+      {user ? (
+        <div>
+          <Link href="/discover" className={primaryButtonClass}>
+            {t("landing.openApp")}
+          </Link>
+        </div>
+      ) : (
+        <div className="flex flex-wrap items-center gap-3">
+          <Link href="/signup" className={primaryButtonClass}>
+            {t("landing.createAccount")}
+          </Link>
+          <Link href="/login" className={quietButtonClass}>
+            {t("landing.logIn")}
+          </Link>
+        </div>
+      )}
     </main>
   );
 }

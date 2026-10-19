@@ -37,7 +37,7 @@ npm run dev               # http://localhost:3000
 |---|---|
 | App | http://localhost:3000 |
 | Supabase Studio (browse the database) | http://localhost:54323 |
-| Mailpit (emails sent locally) | http://localhost:54324 |
+| Mailpit (emails sent locally: confirmations, password resets) | http://localhost:54324 |
 
 ### Run the app in Docker instead
 
@@ -48,12 +48,23 @@ docker compose --profile dev up dev           # hot reload, source mounted
 docker compose --profile test run --rm e2e    # browser tests against the container
 ```
 
+## Signing in
+
+- **Sign up** (`/signup`): email, password, mobile number, date of birth (18+), terms, optional dating-tips emails. Supabase sends a confirmation email.
+- **Email links** go to `/auth/confirm`, which asks the person to press a button before using the link. Email security scanners that open links can't use them up.
+- **Sign-up confirmation** (`/welcome`) appears once the email is confirmed.
+- **Log in** (`/login`), **forgot password** (`/forgot-password`), **new password** (`/reset-password`).
+- The proxy (`src/proxy.ts`) sends signed-out visitors from the app tabs to log in and returns them to the page they asked for.
+- Error messages never reveal whether an email has an account.
+
+Email wording lives in `supabase/templates/`. Local Supabase uses it automatically. For the hosted project, set it in the Supabase dashboard (Authentication > Emails) or run `npx supabase config push`, and set the Site URL to the live address (for example https://sacredpair.com).
+
 ## Checks
 
 ```bash
 npm run check        # lint (includes the no-hard-coded-text rule), types, unit tests
 npm run test:db      # database privacy rules (needs npm run db:start)
-npm run test:e2e     # browser tests on phone and desktop sizes
+npm run test:e2e     # browser tests on phone and desktop sizes (needs npm run db:start)
 ```
 
 ## Database
@@ -71,6 +82,7 @@ What the database guarantees on its own, whatever the app does:
 - You can see a profile only if it is yours, in your weekly Discover set, or connected to you.
 - Premium profile fields and extra photos are readable only by their owner or a Premium member.
 - Nobody can make themselves Premium or ID-verified; only payment webhooks and trusted server code can.
+- Nobody under 18 can be saved, and a member's phone number is readable only by them.
 - A choice stays secret until it is mutual; mutual choices open a connection automatically.
 - Only the two people in a live connection can read or send its messages, including over live chat.
 - Blocking ends the connection, closes the chat, and hides both profiles from each other.

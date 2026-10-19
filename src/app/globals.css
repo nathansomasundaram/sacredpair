@@ -18,6 +18,7 @@
   --on-covenant: #ffffff;
   --ring: #d9a441;
   --leaf: #3b7558;
+  --danger: #b3261e;
   --focus: #4a3d8f;
 }
 
@@ -33,6 +34,7 @@
     --on-covenant: #15172b;
     --ring: #e5bb66;
     --leaf: #7cc19c;
+    --danger: #f2b8b5;
     --focus: #c4bbf7;
   }
 }
@@ -48,6 +50,7 @@
   --color-on-covenant: var(--on-covenant);
   --color-ring: var(--ring);
   --color-leaf: var(--leaf);
+  --color-danger: var(--danger);
 
   --font-display: var(--font-spectral), Georgia, serif;
   --font-sans: var(--font-atkinson), system-ui, sans-serif;

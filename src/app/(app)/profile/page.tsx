@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { CircleUserRound } from "lucide-react";
+import { CircleUserRound, LogOut } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { SubmitButton } from "@/components/forms/SubmitButton";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { logOut } from "@/lib/auth/actions";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("profile");
@@ -19,6 +21,12 @@ export default async function ProfilePage() {
         title={t("emptyTitle")}
         body={t("emptyBody")}
       />
+      <form action={logOut} className="mt-10">
+        <SubmitButton variant="quiet">
+          <LogOut aria-hidden size={18} />
+          {t("logOut")}
+        </SubmitButton>
+      </form>
     </>
   );
 }

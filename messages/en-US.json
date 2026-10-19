@@ -22,7 +22,8 @@
   "discover": {
     "title": "Discover",
     "emptyTitle": "Your four profiles for this week",
-    "emptyBody": "Tap the magic wand to see four people chosen for you. New profiles arrive every week."
+    "emptyBody": "Tap the magic wand to see four people chosen for you. New profiles arrive every week.",
+    "passwordUpdated": "Your new password is saved."
   },
   "details": {
     "title": "Details",
@@ -43,7 +44,8 @@
     "title": "Profile",
     "emptyTitle": "Tell people who you are",
     "emptyBody": "Add your name, a photo and a few lines about yourself so others can get to know you.",
-    "settings": "Settings"
+    "settings": "Settings",
+    "logOut": "Log out"
   },
   "journey": {
     "paths": {
@@ -58,5 +60,110 @@
       "woman": "Woman",
       "non_binary": "Non-binary"
     }
+  },
+  "auth": {
+    "aside": {
+      "title": "Four introductions a week. No endless swiping.",
+      "body": "When two people choose each other, they start a journey together: growing a tree, building a house, or writing a book."
+    },
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "newPassword": "New password",
+      "confirmPassword": "Type the new password again",
+      "passwordHint": "At least 10 characters, with uppercase and lowercase letters and a number.",
+      "phone": "Mobile number",
+      "phoneHint": "For account security only. It never appears on your profile.",
+      "birthdate": "Date of birth",
+      "birthdateHint": "You must be 18 or older. Only your age appears on your profile.",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password"
+    },
+    "errors": {
+      "heading": "Check the highlighted fields.",
+      "emailInvalid": "Enter an email address like name@example.com.",
+      "passwordWeak": "Choose a stronger password.",
+      "passwordTooLong": "Use 72 characters or fewer.",
+      "passwordRequired": "Enter your password.",
+      "passwordMismatch": "The two passwords don't match.",
+      "samePassword": "Choose a password you haven't used here before.",
+      "phoneInvalid": "Enter a mobile number with its area code, like (555) 123-4567.",
+      "birthdateInvalid": "Enter your date of birth.",
+      "underage": "You must be 18 or older to join Sacred Pair.",
+      "termsRequired": "Agree to the Terms and Conditions and Privacy Policy to continue.",
+      "invalidCredentials": "That email and password don't match an account.",
+      "emailNotConfirmed": "Confirm your email before logging in. The link is in the email we sent when you signed up.",
+      "rateLimited": "Too many attempts. Wait a few minutes, then try again.",
+      "linkInvalid": "This link has expired or has already been used.",
+      "sessionMissing": "Your reset link has expired. Request a new one to set your password.",
+      "generic": "Something went wrong on our side. Try again in a moment."
+    },
+    "notices": {
+      "linkResent": "We sent a new link. It can take a minute to arrive."
+    },
+    "signup": {
+      "title": "Create your account",
+      "intro": "Sacred Pair is for adults looking for a lasting relationship. Each week we introduce you to four people.",
+      "terms": "I agree to the <terms>Terms and Conditions</terms> and <privacy>Privacy Policy</privacy>.",
+      "marketing": "Email me dating tips and news. You can stop anytime.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "logIn": "Log in"
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "body": "We sent a link to <b>{email}</b>. Open it to confirm your account. The link works for one hour.",
+      "bodyNoEmail": "We sent you a link. Open it to confirm your account. The link works for one hour.",
+      "notArrived": "Nothing yet? Check your spam folder, or send the link again.",
+      "resend": "Send the link again",
+      "wrongEmail": "Used the wrong email?",
+      "startOver": "Start again"
+    },
+    "login": {
+      "title": "Log in",
+      "intro": "Welcome back.",
+      "submit": "Log in",
+      "forgot": "Forgot your password?",
+      "noAccount": "New to Sacred Pair?",
+      "signUp": "Create an account",
+      "resend": "Send the confirmation link again"
+    },
+    "forgot": {
+      "title": "Reset your password",
+      "intro": "Enter the email you signed up with. We'll send a link to set a new password.",
+      "submit": "Send reset link",
+      "sent": "If an account uses <b>{email}</b>, we've sent it a link to reset the password. The link works for one hour.",
+      "back": "Back to log in"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "submit": "Save new password",
+      "needsLink": "To set a new password, open the reset link from your email on this device.",
+      "requestLink": "Send me a reset link"
+    },
+    "confirm": {
+      "emailTitle": "Confirm your email",
+      "emailBody": "One last step to finish creating your account.",
+      "emailSubmit": "Confirm email",
+      "recoveryTitle": "Reset your password",
+      "recoveryBody": "Continue to choose a new password.",
+      "recoverySubmit": "Continue",
+      "incomplete": "This link is incomplete. Open it straight from the email, or ask for a new one.",
+      "expiredSignup": "Log in with your email and password and we'll offer to send a new link.",
+      "expiredRecovery": "Ask for a new reset link.",
+      "goToLogin": "Go to log in",
+      "requestReset": "Send me a new reset link"
+    },
+    "welcome": {
+      "title": "Your email is confirmed",
+      "body": "Welcome to Sacred Pair. Your account is ready.",
+      "continue": "Continue"
+    }
+  },
+  "legal": {
+    "privacyTitle": "Privacy Policy",
+    "termsTitle": "Terms and Conditions",
+    "placeholder": "This page will hold the full policy once it has been reviewed. It is published before Sacred Pair opens to the public.",
+    "backHome": "Back to Sacred Pair"
   }
 }

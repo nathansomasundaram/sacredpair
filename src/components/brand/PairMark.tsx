@@ -9,10 +9,13 @@ export function PairMark({
   size = 32,
   className,
   title,
+  woven = true,
 }: {
   size?: number;
   className?: string;
   title?: string;
+  /** Interlock the rings. Off for large, faint background use. */
+  woven?: boolean;
 }) {
   const clipId = useId();
   return (
@@ -35,16 +38,18 @@ export function PairMark({
       <circle cx="19" cy="14" r="9" stroke="var(--ring)" strokeWidth="3" />
       {/* Where the rings cross at the top, the violet ring passes over the
           gold one: redraw it there with a thin paper-colored gap around it. */}
-      <g clipPath={`url(#${clipId})`}>
-        <circle cx="11" cy="14" r="9" stroke="var(--paper)" strokeWidth="6" />
-        <circle
-          cx="11"
-          cy="14"
-          r="9"
-          stroke="var(--covenant)"
-          strokeWidth="3"
-        />
-      </g>
+      {woven && (
+        <g clipPath={`url(#${clipId})`}>
+          <circle cx="11" cy="14" r="9" stroke="var(--paper)" strokeWidth="6" />
+          <circle
+            cx="11"
+            cy="14"
+            r="9"
+            stroke="var(--covenant)"
+            strokeWidth="3"
+          />
+        </g>
+      )}
     </svg>
   );
 }

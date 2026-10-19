@@ -16,4 +16,6 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Premium gating is enforced by Row Level Security, never only in the UI.
 - Use logical CSS (`ms-`, `pe-`, `start-`, `end-`) so right-to-left languages work.
 - Design tokens are in `src/app/globals.css`: ink, paper, mist, line, covenant (actions), ring (pair mark and Premium only), leaf (Together).
+- Auth: forms use server actions in `src/lib/auth/actions.ts` with rules in `src/lib/auth/schemas.ts`. Protected paths are listed in `src/lib/auth/redirect.ts`; add new app sections there.
+- In e2e tests, scope role queries to `main` (Next.js adds its own hidden alert), and use exact labels.
 - Before finishing: `npm run check`, `npm run test:db`, `npm run build`, `npm run test:e2e`.

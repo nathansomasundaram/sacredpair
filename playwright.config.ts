@@ -1,5 +1,12 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// Use the same local settings as the app (Supabase URL and keys).
+try {
+  process.loadEnvFile(".env.local");
+} catch {
+  // No .env.local: helpers fall back to local Supabase defaults.
+}
+
 const port = Number(process.env.PORT ?? 3000);
 const baseURL = process.env.BASE_URL ?? `http://localhost:${port}`;
 
