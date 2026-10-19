@@ -230,5 +230,13 @@
     "next3Title": "Start a journey together",
     "next3Body": "When you both choose each other, you can chat and begin a journey: grow a tree, build a house, or write a book.",
     "continue": "Set up my profile"
+  },
+  "errorPage": {
+    "title": "This page couldn't load",
+    "body": "Something went wrong on our side. Try again in a moment.",
+    "reference": "If it keeps happening, mention reference {digest}.",
+    "devHint": "Development copy: the full error is in the terminal running the app (or docker compose logs web).",
+    "retry": "Try again",
+    "home": "Go to the home page"
   }
 }

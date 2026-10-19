@@ -27,7 +27,7 @@ You need Node.js 22.12 or newer and Docker Desktop.
 ```bash
 npm install
 cp .env.example .env.local
-npm run db:start          # starts Supabase in Docker and applies migrations
+npm run db:start          # starts Supabase in Docker (applies migrations the first time)
 npm run dev               # http://localhost:3000
 ```
 
@@ -83,7 +83,9 @@ npm run test:e2e     # browser tests on phone and desktop sizes (needs npm run d
 
 ## Database
 
-Migrations live in `supabase/migrations`. To change the schema, add a new migration file, then:
+Migrations live in `supabase/migrations`. **After pulling new code, run `npm run db:migrate`.** Restarting Supabase does not apply new migrations to an existing local database; `db:migrate` applies only the new ones and keeps your test accounts.
+
+To change the schema, add a new migration file, then:
 
 ```bash
 npm run db:reset     # rebuild the local database from all migrations
