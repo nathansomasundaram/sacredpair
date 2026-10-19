@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /$
+Disallow: /api/
+Disallow: /discover
+Disallow: /details
+Disallow: /together
+Disallow: /chat
+Disallow: /profile
