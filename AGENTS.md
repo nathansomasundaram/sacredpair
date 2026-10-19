@@ -18,4 +18,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Design tokens are in `src/app/globals.css`: ink, paper, mist, line, covenant (actions), ring (pair mark and Premium only), leaf (Together).
 - Auth: forms use server actions in `src/lib/auth/actions.ts` with rules in `src/lib/auth/schemas.ts`. Protected paths are listed in `src/lib/auth/redirect.ts`; add new app sections there.
 - In e2e tests, scope role queries to `main` (Next.js adds its own hidden alert), and use exact labels.
+- Never export plain values (class strings, constants) from a "use client" file for server components to use; server code receives a stub. Shared styles live in `src/components/ui/buttonStyles.ts`.
+- Element defaults in `globals.css` stay inside `@layer base` so utility classes can override them.
+- Pages check sign-in and verification themselves (`requireMember`, `requireVerifiedMember`); redirects after form submissions skip the proxy.
 - Before finishing: `npm run check`, `npm run test:db`, `npm run build`, `npm run test:e2e`.

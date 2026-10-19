@@ -3,7 +3,8 @@ import { createServerClient } from "@supabase/ssr";
 import { publicEnv, supabaseCookieOptions, supabaseServerUrl } from "@/lib/env";
 
 // Refreshes the Supabase session cookie on each request so Server Components
-// always see a valid session. Returns the user's id, or null when signed out.
+// always see a valid session. Returns the user's id (null when signed out)
+// and whether their ID is verified, read from the verified login token.
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -35,13 +36,15 @@ export async function updateSession(request: NextRequest) {
   // getClaims() verifies the token signature. Do not put code between
   // creating the client and this call.
   let userId: string | null = null;
+  let idVerified = false;
   try {
     const { data } = await supabase.auth.getClaims();
     userId = data?.claims?.sub ?? null;
+    idVerified = data?.claims?.app_metadata?.id_verified === true;
   } catch {
     // Auth service unreachable (for example Supabase not started locally).
     // Treat as signed out rather than failing every page.
   }
 
-  return { response, userId };
+  return { response, userId, idVerified };
 }

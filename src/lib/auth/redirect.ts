@@ -2,14 +2,22 @@
 
 export const HOME_PATH = "/discover";
 
-/** Paths that need a signed-in member. */
-export const protectedPrefixes = [
+export const VERIFY_PATH = "/verify-identity";
+
+/** Paths that need a signed-in member whose ID is verified. */
+export const verifiedOnlyPrefixes = [
   "/discover",
   "/details",
   "/together",
   "/chat",
   "/profile",
   "/welcome",
+] as const;
+
+/** Paths that need a signed-in member (verified or not). */
+export const protectedPrefixes = [
+  ...verifiedOnlyPrefixes,
+  VERIFY_PATH,
 ] as const;
 
 /** Paths only for signed-out visitors; members are sent to the app instead. */
@@ -27,6 +35,8 @@ export const isProtectedPath = (pathname: string) =>
   matches(pathname, protectedPrefixes);
 export const isGuestOnlyPath = (pathname: string) =>
   matches(pathname, guestOnlyPrefixes);
+export const needsVerifiedId = (pathname: string) =>
+  matches(pathname, verifiedOnlyPrefixes);
 
 /**
  * Accepts only same-site paths, so a crafted link can't send someone to

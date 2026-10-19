@@ -14,9 +14,7 @@ import {
 const CONFIRM = /Confirm your Sacred Pair account/;
 const RESET = /Reset your Sacred Pair password/;
 
-test("sign up, confirm the email, arrive in the app, log out", async ({
-  page,
-}) => {
+test("sign up, confirm the email, then verify identity", async ({ page }) => {
   const email = newEmail("signup");
   await page.goto("/signup");
   await fillSignUp(page, { email });
@@ -35,12 +33,10 @@ test("sign up, confirm the email, arrive in the app, log out", async ({
   ).toBeVisible();
   await page.getByRole("button", { name: "Confirm email" }).click();
 
-  await expect(page).toHaveURL(/\/welcome$/);
+  await expect(page).toHaveURL(/\/verify-identity$/);
   await expect(
-    page.getByRole("heading", { name: "Your email is confirmed" }),
+    page.getByRole("heading", { name: "Verify your identity" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Continue" }).click();
-  await expect(page).toHaveURL(/\/profile$/);
 
   await page.getByRole("button", { name: "Log out" }).click();
   await expect(page).toHaveURL(/\/$/);
@@ -59,7 +55,7 @@ test("an email link works only once", async ({ page }) => {
   const link = await latestEmailLink(email, CONFIRM);
   await page.goto(link);
   await page.getByRole("button", { name: "Confirm email" }).click();
-  await expect(page).toHaveURL(/\/welcome$/);
+  await expect(page).toHaveURL(/\/verify-identity$/);
   await page.context().clearCookies();
 
   await page.goto(link);

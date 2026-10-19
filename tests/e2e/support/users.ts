@@ -20,24 +20,44 @@ export function adultBirthdate(years = 30) {
   return d.toISOString().slice(0, 10);
 }
 
-/** A member whose email is already confirmed, created directly. */
-export async function createMember(email = newEmail()) {
+/**
+ * A member whose email is already confirmed, created directly. By default
+ * their ID is verified too, so they can use the whole app.
+ */
+export async function createMember({
+  email = newEmail(),
+  verified = true,
+}: { email?: string; verified?: boolean } = {}) {
+  const birthdate = adultBirthdate();
   const { data, error } = await admin.auth.admin.createUser({
     email,
     password: PASSWORD,
     email_confirm: true,
-    user_metadata: { birthdate: adultBirthdate(), accepted_terms: true },
+    user_metadata: { birthdate, accepted_terms: true },
+    app_metadata: { id_verified: verified },
   });
   if (error) throw error;
+  if (verified) {
+    const { error: e } = await admin
+      .from("profiles")
+      .update({ id_verified_at: new Date().toISOString() })
+      .eq("id", data.user.id);
+    if (e) throw e;
+  }
   return { id: data.user.id, email, password: PASSWORD };
 }
 
-export async function logIn(page: Page, email: string, password = PASSWORD) {
+export async function logIn(
+  page: Page,
+  email: string,
+  password = PASSWORD,
+  landsOn: RegExp = /\/discover/,
+) {
   await page.goto("/login");
   await page.getByLabel("Email", { exact: true }).fill(email);
   await page.getByLabel("Password", { exact: true }).fill(password);
   await page.getByRole("button", { name: "Log in" }).click();
-  await expect(page).toHaveURL(/\/discover/);
+  await expect(page).toHaveURL(landsOn);
 }
 
 export async function fillSignUp(

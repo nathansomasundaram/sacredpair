@@ -52,10 +52,24 @@ docker compose --profile test run --rm e2e    # browser tests against the contai
 
 - **Sign up** (`/signup`): email, password, mobile number, date of birth (18+), terms, optional dating-tips emails. Supabase sends a confirmation email.
 - **Email links** go to `/auth/confirm`, which asks the person to press a button before using the link. Email security scanners that open links can't use them up.
-- **Sign-up confirmation** (`/welcome`) appears once the email is confirmed.
+- After confirming the email, members go on to **ID verification** (below).
 - **Log in** (`/login`), **forgot password** (`/forgot-password`), **new password** (`/reset-password`).
 - The proxy (`src/proxy.ts`) sends signed-out visitors from the app tabs to log in and returns them to the page they asked for.
 - Error messages never reveal whether an email has an account.
+
+## ID verification
+
+After confirming their email, members verify a driver's license, passport or state ID with [Stripe Identity](https://stripe.com/identity): a photo or upload of the ID plus a selfie matched to it. Stripe charges $1.50 per verification, and the first 50 are free.
+
+- `/verify-identity` explains the check and starts it. Failures are explained, and members can retry (at most 5 attempts a day).
+- An ID showing someone under 18 is rejected for good.
+- On success the date of birth from the ID replaces the one typed at sign-up and can't be edited afterwards. Sacred Pair stores only the result, the document type and that date. Images stay with Stripe.
+- `/welcome` is the sign-up confirmation, shown once email and ID are both verified.
+- Until verified, members can't open the app tabs.
+
+**Locally** `IDENTITY_PROVIDER=simulated` (the default) replaces Stripe's screens with a test page where you pick the outcome. It is refused on the production site.
+
+**With Stripe** set `IDENTITY_PROVIDER=stripe` and `STRIPE_SECRET_KEY`. In the Stripe dashboard (Developers > Webhooks) add `https://<your site>/api/webhooks/stripe-identity` for the `identity.verification_session.*` events, and put its signing secret in `STRIPE_IDENTITY_WEBHOOK_SECRET`. To test locally with Stripe test keys: `stripe listen --forward-to localhost:3000/api/webhooks/stripe-identity`.
 
 Email wording lives in `supabase/templates/`. Local Supabase uses it automatically. For the hosted project, set it in the Supabase dashboard (Authentication > Emails) or run `npx supabase config push`, and set the Site URL to the live address (for example https://sacredpair.com).
 

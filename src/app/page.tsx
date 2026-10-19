@@ -4,7 +4,7 @@ import { PairMark } from "@/components/brand/PairMark";
 import {
   primaryButtonClass,
   quietButtonClass,
-} from "@/components/forms/SubmitButton";
+} from "@/components/ui/buttonStyles";
 import { getSessionUser } from "@/lib/auth/session";
 
 // Temporary front door. The full public home page (FAQ, testimonials,

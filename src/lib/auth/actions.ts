@@ -8,7 +8,7 @@ import {
   readPendingEmail,
   rememberPendingEmail,
 } from "./pending-email";
-import { HOME_PATH, safeNext } from "./redirect";
+import { HOME_PATH, VERIFY_PATH, safeNext } from "./redirect";
 import {
   TERMS_VERSION,
   confirmSchema,
@@ -140,10 +140,12 @@ export async function logIn(_: FormState, form: FormData): Promise<FormState> {
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) {
     return { status: "error", formError: authErrorKey(error), values };
   }
+  // Members who haven't verified their ID finish that first.
+  if (data.user?.app_metadata?.id_verified !== true) redirect(VERIFY_PATH);
   redirect(safeNext(text(form, "next")));
 }
 
@@ -214,7 +216,7 @@ export async function confirmEmailLink(
   }
 
   await clearPendingEmail();
-  const fallback = type === "recovery" ? "/reset-password" : "/welcome";
+  const fallback = type === "recovery" ? "/reset-password" : "/verify-identity";
   redirect(safeNext(next, fallback));
 }
 

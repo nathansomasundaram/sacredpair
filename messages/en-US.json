@@ -153,11 +153,6 @@
       "expiredRecovery": "Ask for a new reset link.",
       "goToLogin": "Go to log in",
       "requestReset": "Send me a new reset link"
-    },
-    "welcome": {
-      "title": "Your email is confirmed",
-      "body": "Welcome to Sacred Pair. Your account is ready.",
-      "continue": "Continue"
     }
   },
   "legal": {
@@ -165,5 +160,75 @@
     "termsTitle": "Terms and Conditions",
     "placeholder": "This page will hold the full policy once it has been reviewed. It is published before Sacred Pair opens to the public.",
     "backHome": "Back to Sacred Pair"
+  },
+  "steps": {
+    "label": "Sign-up progress",
+    "account": "Create account",
+    "email": "Confirm email",
+    "identity": "Verify identity",
+    "done": "Done",
+    "current": "Current step"
+  },
+  "verify": {
+    "title": "Verify your identity",
+    "intro": "Everyone on Sacred Pair verifies a government ID, so you always know you're meeting real people.",
+    "acceptedTitle": "Have one of these ready",
+    "documents": {
+      "driving_license": "Driver's license",
+      "passport": "Passport",
+      "id_card": "State ID"
+    },
+    "how": "Take a photo of your ID or upload one, then take a quick selfie so we can match it to your ID photo. It takes about two minutes.",
+    "privacy": "Our verification partner, Stripe, checks your ID. Sacred Pair keeps only the result and your date of birth, never a copy of your ID.",
+    "start": "Start verification",
+    "tryAgain": "Try again",
+    "logOut": "Log out",
+    "failedTitle": "We couldn't verify your ID",
+    "reasons": {
+      "document_expired": "That ID has expired. Use one that's still valid.",
+      "document_type_not_supported": "That type of ID isn't accepted. Use a driver's license, passport or state ID.",
+      "selfie_face_mismatch": "Your selfie didn't match the photo on your ID. Try again in good light, facing the camera.",
+      "selfie_unusable": "We couldn't use your selfie. Try again in good light with your whole face in view.",
+      "abandoned": "Verification stopped before it was finished.",
+      "birthdate_unreadable": "We couldn't read the date of birth on your ID. Use a clear photo with all four corners in view.",
+      "unreadable": "We couldn't read your ID. Use a clear photo in good light with all four corners in view."
+    },
+    "processingTitle": "Checking your ID",
+    "processingBody": "This usually takes less than a minute. You can stay on this page; it moves on by itself.",
+    "verifiedTitle": "Your identity is verified",
+    "verifiedBody": "Thanks for helping keep Sacred Pair a place for real people.",
+    "continue": "Continue",
+    "blockers": {
+      "underage": "Sacred Pair is only for adults 18 and older. Your ID shows you're under 18, so this account can't be verified.",
+      "too_many_attempts": "You've started verification five times today. Try again tomorrow.",
+      "already_verified": "Your identity is already verified.",
+      "startFailed": "We couldn't start verification. Try again in a moment."
+    },
+    "simulate": {
+      "title": "Test verification",
+      "banner": "Test mode. No ID is checked here. This page only exists on development copies of Sacred Pair, so you can try every outcome without Stripe.",
+      "documentLabel": "ID the member used",
+      "outcomeLabel": "Result",
+      "outcomes": {
+        "verified": "Verified",
+        "expired": "Failed: ID expired",
+        "mismatch": "Failed: selfie didn't match",
+        "underage": "Rejected: ID shows under 18",
+        "cancel": "Member left before finishing"
+      },
+      "submit": "Send result"
+    }
+  },
+  "welcome": {
+    "title": "You're all set",
+    "body": "Your email and identity are confirmed. Welcome to Sacred Pair.",
+    "nextTitle": "What happens next",
+    "next1Title": "Tell people about yourself",
+    "next1Body": "Add your name, a photo and a few lines about who you are.",
+    "next2Title": "Meet four people each week",
+    "next2Body": "Tap the magic wand in Discover to see four people chosen for you.",
+    "next3Title": "Start a journey together",
+    "next3Body": "When you both choose each other, you can chat and begin a journey: grow a tree, build a house, or write a book.",
+    "continue": "Set up my profile"
   }
 }

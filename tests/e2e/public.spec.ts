@@ -12,6 +12,10 @@ test("health check responds", async ({ request }) => {
 test("front door offers sign up and log in", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  // Styled as a button (guards against styles failing to reach server pages).
+  await expect(
+    page.getByRole("link", { name: "Create an account" }),
+  ).toHaveClass(/bg-covenant/);
   await page.getByRole("link", { name: "Create an account" }).click();
   await expect(page).toHaveURL(/\/signup$/);
   await page.goto("/");
@@ -29,6 +33,7 @@ test("app tabs send signed-out visitors to log in, then back", async ({
     "/chat",
     "/profile",
     "/welcome",
+    "/verify-identity",
   ]) {
     await page.goto(path);
     await expect(page).toHaveURL(`/login?next=${encodeURIComponent(path)}`);

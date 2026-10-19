@@ -1,15 +1,18 @@
 import { NextResponse, type NextRequest } from "next/server";
 import {
   HOME_PATH,
+  VERIFY_PATH,
   isGuestOnlyPath,
   isProtectedPath,
+  needsVerifiedId,
 } from "@/lib/auth/redirect";
 import { updateSession } from "@/lib/supabase/proxy";
 
 // Runs before every page request: refreshes the session, keeps signed-out
-// visitors out of the app, and sends members past the log-in pages.
+// visitors out of the app, sends members who haven't verified their ID to
+// do that first, and sends members past the log-in pages.
 export async function proxy(request: NextRequest) {
-  const { response, userId } = await updateSession(request);
+  const { response, userId, idVerified } = await updateSession(request);
   const { pathname, search } = request.nextUrl;
 
   if (!userId && isProtectedPath(pathname)) {
@@ -17,6 +20,13 @@ export async function proxy(request: NextRequest) {
     url.pathname = "/login";
     url.search = "";
     url.searchParams.set("next", `${pathname}${search}`);
+    return redirectKeepingCookies(url, response);
+  }
+
+  if (userId && !idVerified && needsVerifiedId(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = VERIFY_PATH;
+    url.search = "";
     return redirectKeepingCookies(url, response);
   }
 
