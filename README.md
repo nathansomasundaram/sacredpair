@@ -73,6 +73,14 @@ After confirming their email, members verify a driver's license, passport or sta
 
 Email wording lives in `supabase/templates/`. Local Supabase uses it automatically. For the hosted project, set it in the Supabase dashboard (Authentication > Emails) or run `npx supabase config push`, and set the Site URL to the live address (for example https://sacredpair.com).
 
+## Profile
+
+- `/profile` shows the member's Profile Overview exactly as others will see it, with a checklist of anything missing before they can be introduced.
+- `/profile/edit` edits name, city and state, about me (up to 1,000 characters) and up to 5 character traits. Age comes from the verified ID and can't be edited.
+- **Photos:** the browser shrinks large photos before sending them. The server then checks the actual file contents (JPEG, PNG or WebP, at least 400 px), turns the photo upright, removes all metadata including GPS location, resizes it to 1600 px and stores it as WebP in a private bucket. Photos are shown through links that expire after an hour.
+- A profile counts as complete (`profiles.is_complete`) once it has a name, city, state and photo. Only complete profiles will appear in Discover.
+- Traits and states are stored as codes. Their labels live in `messages/en-US.json`, and the allowed codes in `src/lib/profile/options.ts` and the database.
+
 ## Checks
 
 ```bash

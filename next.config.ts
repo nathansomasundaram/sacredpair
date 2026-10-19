@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
   // Docker builds a self-contained server; Vercel ignores this setting's absence.
   output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   poweredByHeader: false,
+  experimental: {
+    serverActions: {
+      // Profile photos. The browser shrinks photos before sending, so real
+      // uploads are well under this; it stays below Vercel's 4.5 MB limit.
+      bodySizeLimit: "4mb",
+    },
+  },
   images: {
     remotePatterns: [
       // Supabase Storage (local and hosted). Tightened per project in later steps.
