@@ -26,12 +26,12 @@ You need Node.js 22.12 or newer and Docker Desktop.
 
 ```bash
 npm install
-cp .env.example .env.local
 npm run db:start          # starts Supabase in Docker (applies migrations the first time)
+npm run env:local         # writes its URLs and keys into .env.local and .env
 npm run dev               # http://localhost:3000
 ```
 
-`npm run db:start` prints the local URLs and keys. If the keys differ from `.env.local`, copy them in.
+Keys are never written into the code. `npm run env:local` reads them from your running Supabase. Neither `.env.local` nor `.env` is committed, and GitHub's secret scanning blocks pushes that contain keys.
 
 | Local service | Address |
 |---|---|

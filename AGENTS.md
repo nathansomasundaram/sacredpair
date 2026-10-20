@@ -21,4 +21,5 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Never export plain values (class strings, constants) from a "use client" file for server components to use; server code receives a stub. Shared styles live in `src/components/ui/buttonStyles.ts`.
 - Element defaults in `globals.css` stay inside `@layer base` so utility classes can override them.
 - Pages check sign-in and verification themselves (`requireMember`, `requireVerifiedMember`); redirects after form submissions skip the proxy.
+- Never put keys or secrets in committed files (GitHub push protection blocks them). Local values come from `npm run env:local`; CI exports them from `supabase status`.
 - Before finishing: `npm run check`, `npm run test:db`, `npm run build`, `npm run test:e2e`.

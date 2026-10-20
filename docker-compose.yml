@@ -2,7 +2,9 @@
 #
 # 1. Start the database, auth, storage and realtime (Supabase runs its own
 #    containers):          npx supabase start
-# 2. Then choose one:
+# 2. Write its URLs and keys into .env (read by this file):
+#                          npm run env:local
+# 3. Then choose one:
 #    Production-like app:  docker compose up --build web
 #    Hot-reload dev app:   docker compose --profile dev up dev
 #    Browser tests:        docker compose --profile test run --rm e2e
@@ -13,8 +15,8 @@
 x-supabase-env: &supabase-env
   NEXT_PUBLIC_SITE_URL: http://localhost:${WEB_PORT:-3000}
   NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-http://127.0.0.1:54321}
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH}
-  SUPABASE_SECRET_KEY: ${SUPABASE_SECRET_KEY:-}
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:?Run "npm run env:local" first (with Supabase running)}
+  SUPABASE_SECRET_KEY: ${SUPABASE_SECRET_KEY:?Run "npm run env:local" first (with Supabase running)}
   # The server inside the container reaches Supabase through your machine.
   SUPABASE_INTERNAL_URL: http://host.docker.internal:54321
 
@@ -25,7 +27,7 @@ services:
       target: runner
       args:
         NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL:-http://127.0.0.1:54321}
-        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:-sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:?Run "npm run env:local" first (with Supabase running)}
     image: sacredpair-web
     ports:
       # Set WEB_PORT to use another port if 3000 is taken.
@@ -61,6 +63,12 @@ services:
     environment:
       BASE_URL: http://web:3000
       CI: "1"
+      # The tests create members and read emails through your machine.
+      NEXT_PUBLIC_SUPABASE_URL: http://host.docker.internal:54321
+      MAILPIT_URL: http://host.docker.internal:54324
+      SUPABASE_SECRET_KEY: ${SUPABASE_SECRET_KEY:?Run "npm run env:local" first (with Supabase running)}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - .:/app
       - /app/node_modules

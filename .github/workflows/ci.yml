@@ -11,12 +11,10 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# Supabase URLs and keys come from the Supabase that CI starts (see the
+# "Export Supabase settings" step); none are written into this file.
 env:
   NEXT_PUBLIC_SITE_URL: http://localhost:3000
-  NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH
-  SUPABASE_SECRET_KEY: 
-  DATABASE_URL: postgresql://postgres:postgres@127.0.0.1:54322/postgres
 
 jobs:
   checks:
@@ -45,6 +43,8 @@ jobs:
       - run: npm ci
       # Database, auth and the local inbox (Mailpit) that tests read emails from.
       - run: npx supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor
+      - name: Export Supabase settings
+        run: node scripts/supabase-env.mjs --github-env
       - run: npm run test:db
       - run: npm run build
       - run: npx playwright install --with-deps chromium
