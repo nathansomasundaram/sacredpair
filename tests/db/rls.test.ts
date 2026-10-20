@@ -60,7 +60,7 @@ beforeAll(async () => {
       [id, name],
     );
     await db.query(
-      "insert into public.profile_premium (profile_id, height_cm, religion) values ($1, 170, 'christian')",
+      "update public.profile_premium set height_cm = 170, religion = 'christian' where profile_id = $1",
       [id],
     );
   }

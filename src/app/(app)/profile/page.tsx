@@ -4,6 +4,10 @@ import { CircleUserRound, LogOut, Pencil } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { FormAlert } from "@/components/forms/FormAlert";
 import { SubmitButton } from "@/components/forms/SubmitButton";
+import {
+  PremiumBadge,
+  PremiumDetails,
+} from "@/components/profile/PremiumDetails";
 import { ProfileCard } from "@/components/profile/ProfileCard";
 import {
   primaryButtonClass,
@@ -14,6 +18,12 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { logOut } from "@/lib/auth/actions";
 import { requireVerifiedMember } from "@/lib/auth/session";
 import { getOwnProfile, signedPhotoUrl } from "@/lib/profile/data";
+import {
+  getExtraPhotos,
+  getPremiumProfile,
+  hasPremiumContent,
+  signedVideoUrl,
+} from "@/lib/profile/premium-data";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("profile");
@@ -24,13 +34,24 @@ export default async function ProfilePage({
   searchParams,
 }: PageProps<"/profile">) {
   const t = await getTranslations("profile");
+  const tPremium = await getTranslations("premium");
   const user = await requireVerifiedMember("/profile");
   const profile = await getOwnProfile(user.id);
-  const photoUrl = await signedPhotoUrl(profile.photoPath);
+  const [photoUrl, premium, extraPhotos] = await Promise.all([
+    signedPhotoUrl(profile.photoPath),
+    getPremiumProfile(user.id),
+    getExtraPhotos(user.id),
+  ]);
+  const videoUrl = await signedVideoUrl(premium?.videoPath ?? null);
+  const hasPremium = hasPremiumContent(premium, extraPhotos);
   const { saved } = await searchParams;
 
   const started =
-    profile.displayName || profile.city || profile.aboutMe || profile.photoPath;
+    profile.displayName ||
+    profile.city ||
+    profile.aboutMe ||
+    profile.photoPath ||
+    hasPremium;
   const missing = [
     !profile.displayName.trim() && "name",
     !(profile.city.trim() && profile.stateCode) && "place",
@@ -76,9 +97,11 @@ export default async function ProfilePage({
         }
       />
 
-      {saved === "1" && (
+      {(saved === "1" || saved === "premium") && (
         <div className="mb-6">
-          <FormAlert tone="success">{t("saved")}</FormAlert>
+          <FormAlert tone="success">
+            {saved === "premium" ? tPremium("saved") : t("saved")}
+          </FormAlert>
         </div>
       )}
 
@@ -106,6 +129,29 @@ export default async function ProfilePage({
       <div className="max-w-[420px]">
         <ProfileCard profile={profile} photoUrl={photoUrl} />
       </div>
+
+      <section aria-labelledby="premium-heading" className="mt-12 max-w-xl">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          <h2 id="premium-heading" className="text-2xl">
+            {tPremium("title")}
+          </h2>
+          <PremiumBadge />
+        </div>
+        {hasPremium && premium ? (
+          <PremiumDetails
+            premium={premium}
+            photos={extraPhotos}
+            videoUrl={videoUrl}
+            name={profile.displayName}
+          />
+        ) : (
+          <p className="text-ink-soft">{tPremium("previewEmpty")}</p>
+        )}
+        <Link href="/profile/premium" className={`${quietButtonClass} mt-6`}>
+          <Pencil aria-hidden size={17} />
+          {hasPremium ? tPremium("editAgain") : tPremium("editLink")}
+        </Link>
+      </section>
       {logOutForm}
     </>
   );

@@ -81,6 +81,18 @@ Email wording lives in `supabase/templates/`. Local Supabase uses it automatical
 - A profile counts as complete (`profiles.is_complete`) once it has a name, city, state and photo. Only complete profiles will appear in Discover.
 - Traits and states are stored as codes. Their labels live in `messages/en-US.json`, and the allowed codes in `src/lib/profile/options.ts` and the database.
 
+## Profile - Premium
+
+`/profile/premium` edits the part of a profile only Premium members can see (any member can fill theirs in):
+
+- **More photos:** up to 6, cleaned the same way as the main photo.
+- **Video:** MP4 or MOV, up to 60 seconds and 50 MB. The browser uploads it straight to private storage with a one-time link (hosting limits app uploads to a few MB). The server then checks it is a real MP4/MOV, reads its length, and blanks the metadata boxes where phones record GPS location and device details, without re-encoding. The uncleaned upload is always deleted.
+- **Prompts:** up to 3 from a fixed list, answers up to 200 characters.
+- **Details:** height (feet and inches in US English, stored in cm), profession, education, marital status, children, family plans, zodiac, languages, religion, ethnicity, smoking, drinking, working out, pets, and interests (hobbies, sports, food and drink, entertainment, travel, music, books).
+- Religion and ethnicity are optional and offer "Prefer not to say", which is never shown.
+
+All choices are stored as codes, listed once in `src/lib/profile/premium-options.ts`. The database accepts only those codes (`supabase/migrations/20261021000000_profile_premium.sql`). Adding a choice means adding it to the options file, `messages/en-US.json` and a new migration.
+
 ## Checks
 
 ```bash

@@ -7,46 +7,10 @@ import { useTranslations } from "next-intl";
 import { FormAlert } from "@/components/forms/FormAlert";
 import { quietButtonClass } from "@/components/ui/buttonStyles";
 import { uploadProfilePhoto, type PhotoState } from "@/lib/profile/actions";
-import {
-  PHOTO_ACCEPT,
-  PHOTO_MIN_SIDE,
-  PHOTO_PICK_MAX_BYTES,
-  PHOTO_UPLOAD_MAX_BYTES,
-} from "@/lib/profile/options";
+import { PHOTO_ACCEPT, PHOTO_PICK_MAX_BYTES } from "@/lib/profile/options";
+import { shrinkPhoto } from "@/lib/profile/shrink-photo";
 
 const initial: PhotoState = { status: "idle" };
-const MAX_SIDE = 2000;
-
-/**
- * Shrinks a large photo in the browser before upload: faster on phones and
- * keeps uploads small. The server checks and re-encodes it again anyway.
- */
-async function shrink(file: File): Promise<Blob | "tooSmall"> {
-  let bitmap: ImageBitmap;
-  try {
-    bitmap = await createImageBitmap(file, { imageOrientation: "from-image" });
-  } catch {
-    return file; // The server decides whether it can read this file.
-  }
-  const { width, height } = bitmap;
-  if (Math.min(width, height) < PHOTO_MIN_SIDE) return "tooSmall";
-  if (
-    Math.max(width, height) <= MAX_SIDE &&
-    file.size <= PHOTO_UPLOAD_MAX_BYTES
-  ) {
-    return file;
-  }
-  const scale = Math.min(1, MAX_SIDE / Math.max(width, height));
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.round(width * scale);
-  canvas.height = Math.round(height * scale);
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  bitmap.close();
-  return new Promise((resolve) =>
-    canvas.toBlob((b) => resolve(b ?? file), "image/jpeg", 0.9),
-  );
-}
-
 export function PhotoUploader({ photoUrl }: { photoUrl: string | null }) {
   const t = useTranslations("profile");
   const [state, action] = useActionState(uploadProfilePhoto, initial);
@@ -71,7 +35,7 @@ export function PhotoUploader({ photoUrl }: { photoUrl: string | null }) {
     if (!PHOTO_ACCEPT.split(",").includes(file.type))
       return setClientError("photoNotImage");
 
-    const blob = await shrink(file);
+    const blob = await shrinkPhoto(file);
     if (blob === "tooSmall") return setClientError("photoTooSmall");
 
     setPreview(URL.createObjectURL(blob));

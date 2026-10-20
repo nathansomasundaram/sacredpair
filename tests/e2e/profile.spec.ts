@@ -19,7 +19,9 @@ async function photo(width = 900, height = 1100) {
 
 /** Taps a trait chip, the way a person would. */
 function chip(page: Page, trait: string) {
-  return page.locator("form label").filter({ hasText: new RegExp(`^${trait}$`) });
+  return page
+    .locator("form label")
+    .filter({ hasText: new RegExp(`^${trait}$`) });
 }
 
 async function startFresh(page: Page) {
