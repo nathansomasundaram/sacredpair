@@ -199,3 +199,63 @@ export async function reportsBy(reporter: string) {
   if (error) throw error;
   return data;
 }
+
+/** Makes a member Premium (test mode), as the upgrade screen would. */
+export async function makePremium(id: string) {
+  const { error } = await admin
+    .from("entitlements")
+    .update({ tier: "premium", source: "simulated", expires_at: null })
+    .eq("user_id", id);
+  if (error) throw error;
+}
+
+/** Notifications the server recorded for a member, newest first. */
+export async function notificationsFor(id: string) {
+  const { data, error } = await admin
+    .from("notification_log")
+    .select("channel, topic, status")
+    .eq("user_id", id)
+    .order("id", { ascending: false });
+  if (error) throw error;
+  return data;
+}
+
+/** A member's private settings, as stored. */
+export async function privateSettings(id: string) {
+  const [{ data: prefs }, { data: priv }, { data: profile }] =
+    await Promise.all([
+      admin.from("preferences").select("*").eq("profile_id", id).single(),
+      admin
+        .from("account_private")
+        .select("zip_code, latitude, longitude, phone, phone_verified_at")
+        .eq("user_id", id)
+        .single(),
+      admin.from("profiles").select("gender, is_visible").eq("id", id).single(),
+    ]);
+  return { prefs: prefs!, priv: priv!, profile: profile! };
+}
+
+/** Sets a verified phone number and turns on text notifications. */
+export async function verifiedPhone(id: string, phone = "+15555550123") {
+  // Two steps: changing the number always clears its verification.
+  const a = await admin
+    .from("account_private")
+    .update({ phone })
+    .eq("user_id", id);
+  if (a.error) throw a.error;
+  const v = await admin
+    .from("account_private")
+    .update({ phone_verified_at: new Date().toISOString() })
+    .eq("user_id", id);
+  if (v.error) throw v.error;
+  const b = await admin
+    .from("preferences")
+    .update({ notify_sms: true })
+    .eq("profile_id", id);
+  if (b.error) throw b.error;
+}
+
+export async function userExists(id: string) {
+  const { data } = await admin.auth.admin.getUserById(id);
+  return !!data?.user;
+}

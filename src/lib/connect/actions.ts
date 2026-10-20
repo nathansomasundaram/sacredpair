@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireVerifiedMember } from "@/lib/auth/session";
+import { onConnected } from "@/lib/notify/events";
 import { createClient } from "@/lib/supabase/server";
 import { getConnectState } from "./data";
 
@@ -40,6 +41,7 @@ export async function setChoice(formData: FormData) {
   revalidatePath("/details");
   revalidatePath("/chat");
   const after = await getConnectState(user.id, profileId);
+  if (after.connection?.active) onConnected(after.connection.id, user.id);
   const notice = after.connection?.active
     ? "connected"
     : decision === "choose"

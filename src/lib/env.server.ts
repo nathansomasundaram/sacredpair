@@ -14,6 +14,27 @@ const serverSchema = z
     // Premium (local and previews only); "none" shows that Premium opens
     // soon. Real payments (Stripe on the web, RevenueCat in the mobile apps)
     // arrive with the payments step.
+    // Text messages: "twilio" sends real texts; "simulated" only logs them
+    // (local and previews); "none" turns texting off. Defaults to simulated,
+    // or none on the production site.
+    SMS_PROVIDER: z
+      .enum(["twilio", "simulated", "none"])
+      .default(process.env.VERCEL_ENV === "production" ? "none" : "simulated"),
+    TWILIO_ACCOUNT_SID: z.string().optional(),
+    TWILIO_AUTH_TOKEN: z.string().optional(),
+    TWILIO_FROM_NUMBER: z.string().optional(),
+    // Email notifications go out over SMTP (Resend, Postmark, SES and others
+    // all offer it). Locally they go to Supabase's Mailpit inbox.
+    SMTP_URL: z
+      .string()
+      .optional()
+      .default(
+        process.env.VERCEL_ENV === "production" ? "" : "smtp://127.0.0.1:54325",
+      ),
+    EMAIL_FROM: z.string().default("Sacred Pair <hello@sacredpair.com>"),
+    // Web push: generate a pair with `npm run push:keys`.
+    VAPID_PRIVATE_KEY: z.string().optional(),
+    VAPID_SUBJECT: z.string().default("mailto:hello@sacredpair.com"),
     PAYMENTS_PROVIDER: z
       .enum(["simulated", "none"])
       .default(process.env.VERCEL_ENV === "production" ? "none" : "simulated"),
@@ -34,6 +55,31 @@ const serverSchema = z
         code: "custom",
         path: ["IDENTITY_PROVIDER"],
         message: "Test verification can't be used on the production site",
+      });
+    }
+    if (
+      env.SMS_PROVIDER === "twilio" &&
+      !(
+        env.TWILIO_ACCOUNT_SID &&
+        env.TWILIO_AUTH_TOKEN &&
+        env.TWILIO_FROM_NUMBER
+      )
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["SMS_PROVIDER"],
+        message:
+          "TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN and TWILIO_FROM_NUMBER are required for SMS_PROVIDER=twilio",
+      });
+    }
+    if (
+      env.SMS_PROVIDER === "simulated" &&
+      process.env.VERCEL_ENV === "production"
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["SMS_PROVIDER"],
+        message: "Simulated texts can't be used on the production site",
       });
     }
     if (
@@ -58,6 +104,14 @@ export function serverEnv() {
     STRIPE_IDENTITY_WEBHOOK_SECRET:
       process.env.STRIPE_IDENTITY_WEBHOOK_SECRET || undefined,
     PAYMENTS_PROVIDER: process.env.PAYMENTS_PROVIDER || undefined,
+    SMS_PROVIDER: process.env.SMS_PROVIDER || undefined,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID || undefined,
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN || undefined,
+    TWILIO_FROM_NUMBER: process.env.TWILIO_FROM_NUMBER || undefined,
+    SMTP_URL: process.env.SMTP_URL ?? undefined,
+    EMAIL_FROM: process.env.EMAIL_FROM || undefined,
+    VAPID_PRIVATE_KEY: process.env.VAPID_PRIVATE_KEY || undefined,
+    VAPID_SUBJECT: process.env.VAPID_SUBJECT || undefined,
   });
   return cached;
 }

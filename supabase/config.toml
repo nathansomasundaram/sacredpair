@@ -248,6 +248,10 @@ otp_expiry = 3600
 subject = "Confirm your Sacred Pair account"
 content_path = "./supabase/templates/confirmation.html"
 
+[auth.email.template.email_change]
+subject = "Confirm your new email for Sacred Pair"
+content_path = "./supabase/templates/email_change.html"
+
 [auth.email.template.recovery]
 subject = "Reset your Sacred Pair password"
 content_path = "./supabase/templates/recovery.html"

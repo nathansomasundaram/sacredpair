@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { getSessionUser } from "@/lib/auth/session";
+import { onNewMessage } from "@/lib/notify/events";
 import { createClient } from "@/lib/supabase/server";
 import { getMessages } from "./data";
 import {
@@ -56,6 +57,7 @@ export async function sendMessage(
     return { ok: false, error: "failed" };
   }
   revalidatePath("/chat");
+  onNewMessage(connectionId, user.id);
   return { ok: true, message: toMessage(data as MessageRow) };
 }
 

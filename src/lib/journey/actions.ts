@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getSessionUser, requireVerifiedMember } from "@/lib/auth/session";
+import { onJourney } from "@/lib/notify/events";
 import { createClient } from "@/lib/supabase/server";
 import { isPath, LEVEL_COUNT } from "./content";
 
@@ -33,17 +34,19 @@ export async function proposePath(formData: FormData) {
   // 23505: one open journey per connection; the other person got there first.
   if (error)
     done(connectionId, error.code === "23505" ? "alreadyOpen" : "failed");
+  onJourney(connectionId, user.id, "proposed");
   done(connectionId, "proposed");
 }
 
 /** Accepts the path the other person suggested; the journey begins. */
 export async function acceptPath(formData: FormData) {
   const { connectionId, journeyId } = ids(formData);
-  await requireVerifiedMember(`/together/${connectionId}`);
+  const user = await requireVerifiedMember(`/together/${connectionId}`);
   if (!journeyId) redirect(`/together/${connectionId}`);
   const supabase = await createClient();
   const { error } = await supabase.rpc("accept_journey", { jid: journeyId });
   if (error) done(connectionId, "failed");
+  onJourney(connectionId, user.id, "accepted");
   done(connectionId, "accepted");
 }
 
@@ -104,5 +107,6 @@ export async function completeLevel(
   }
   revalidatePath("/together");
   revalidatePath(`/together/${connectionId}`);
+  onJourney(connectionId, user.id, "level");
   return { ok: true };
 }

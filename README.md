@@ -177,6 +177,36 @@ Two connected people take one journey together: **Grow a tree**, **Build a house
 
 The demo data puts Morgan and Grace on Grow a tree (Morgan is a level ahead). Naomi has suggested Write a book to Morgan, and Taylor and Daniel are on Build a house, where it's Taylor's turn.
 
+## Settings
+
+Settings opens from the Profile tab and has four pages.
+
+**Dating preferences** (`/settings/preferences`)
+
+- **Who to meet:** I am, Looking for, age range and distance work both ways. Someone is introduced only if each person suits what the other is looking for.
+- **Distance:** a ZIP code becomes the approximate center of that ZIP area, using US Census data through the `us-zips` package. It's stored privately (`account_private`), measured in km and shown in miles. Members without a ZIP code are matched by state instead.
+- **Show me in Discover:** turning it off pauses the member. Nobody new is introduced to them, and their connections and chats continue.
+- **Filters (Premium):** religion, ethnicity, family plans, smoking, drinking and pets.
+  - Each filter means "show only these". Someone who hasn't answered, or chose "prefer not to say", is never filtered out by that question.
+  - Free members see the filters but can't change them. Discover applies them only while the member is Premium; saved choices are kept if Premium lapses.
+
+**Notifications** (`/settings/notifications`): the member picks _how_ (email, push, text) and _what_ (new messages, new connections, Together, plus news emails).
+
+- **What notifications say:** they never include what someone wrote.
+- **How often:** email and text send at most one per conversation per hour. Push sends every message. Sending happens after the response (`src/lib/notify`), so it never slows anyone down, and every send is logged in `notification_log`.
+- **Email:** over SMTP (`SMTP_URL`). Locally it goes to Mailpit with no setup.
+- **Push:** web push, using `public/sw.js` and VAPID keys from `npm run push:keys`. It's turned on per device. On iPhone and iPad it works once Sacred Pair is added to the Home Screen.
+- **Text:** through Twilio (`SMS_PROVIDER=twilio`) and only to a verified phone number. Locally it's `simulated`: texts are logged, and the verification code appears on screen.
+
+**Account** (`/settings/account`)
+
+- **Change email:** Supabase sends confirmation links to both the new and the current address.
+- **Phone number:** change it, then verify it with a 6-digit code. Codes last 10 minutes, allow 5 tries, and can be requested at most once a minute.
+- **Change password:** needs the current password.
+- **Delete account:** needs the password and typing DELETE. It removes everything: photos, video, messages, journeys and settings.
+
+**Membership & payment** (`/settings/membership`): shows the plan and test-mode Premium. Payment management (Stripe customer portal, or the App Store and Google Play for in-app subscriptions) is added in the payments step.
+
 ## Checks
 
 ```bash

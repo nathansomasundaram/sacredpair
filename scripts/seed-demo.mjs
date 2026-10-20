@@ -23,6 +23,7 @@
 import fs from "node:fs";
 import { createClient } from "@supabase/supabase-js";
 import sharp from "sharp";
+import usZips from "us-zips";
 import {
   CONVERSATIONS,
   DEMO_DOMAIN,
@@ -57,6 +58,18 @@ if (
 const admin = createClient(url, key, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
+
+// A downtown ZIP code for each demo city.
+const CITY_ZIPS = {
+  Raleigh: "27601",
+  Durham: "27701",
+  Charlotte: "28202",
+  Atlanta: "30303",
+  Richmond: "23219",
+  Columbia: "29201",
+  Greenville: "29601",
+  Nashville: "37203",
+};
 
 const VIDEO = fs.readFileSync(new URL("./demo/intro.mp4", import.meta.url));
 const emailFor = (name) => `${name.toLowerCase()}@${DEMO_DOMAIN}`;
@@ -189,6 +202,21 @@ async function upsertMember(m, index) {
         upsert: true,
       }),
     `upload ${m.name}'s photo`,
+  );
+
+  // A ZIP code in their city, so distance works in Discover.
+  const zip = CITY_ZIPS[m.city];
+  const point = zip ? usZips[zip] : null;
+  check(
+    await admin
+      .from("account_private")
+      .update({
+        zip_code: zip ?? null,
+        latitude: point ? Math.round(point.latitude * 100) / 100 : null,
+        longitude: point ? Math.round(point.longitude * 100) / 100 : null,
+      })
+      .eq("user_id", id),
+    `set ${m.name}'s location`,
   );
 
   check(

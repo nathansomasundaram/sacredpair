@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { PairMark } from "@/components/brand/PairMark";
+import { FormAlert } from "@/components/forms/FormAlert";
 import {
   primaryButtonClass,
   quietButtonClass,
@@ -9,15 +10,19 @@ import { getSessionUser } from "@/lib/auth/session";
 
 // Temporary front door. The full public home page (FAQ, testimonials,
 // dating tips) is built in its own step.
-export default async function HomePage() {
+export default async function HomePage({ searchParams }: PageProps<"/">) {
   const t = await getTranslations();
   const user = await getSessionUser();
+  const { notice } = await searchParams;
 
   return (
     <main
       id="main"
       className="mx-auto flex min-h-dvh max-w-2xl flex-col justify-center gap-8 px-6 py-16"
     >
+      {notice === "accountDeleted" && (
+        <FormAlert tone="success">{t("landing.accountDeleted")}</FormAlert>
+      )}
       <PairMark size={88} title={t("app.name")} />
       <div className="flex flex-col gap-5">
         <h1 className="text-3xl md:text-[3.25rem] md:leading-[1.08]">

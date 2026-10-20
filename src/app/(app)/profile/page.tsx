@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CircleUserRound, LogOut, Pencil } from "lucide-react";
+import { CircleUserRound, LogOut, Pencil, Settings } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { FormAlert } from "@/components/forms/FormAlert";
 import { SubmitButton } from "@/components/forms/SubmitButton";
@@ -70,7 +70,15 @@ export default async function ProfilePage({
   if (!started) {
     return (
       <>
-        <PageHeader title={t("title")} />
+        <PageHeader
+          title={t("title")}
+          action={
+            <Link href="/settings" className={quietButtonClass}>
+              <Settings aria-hidden size={17} />
+              {t("settings")}
+            </Link>
+          }
+        />
         <EmptyState
           icon={CircleUserRound}
           title={t("emptyTitle")}
@@ -90,10 +98,16 @@ export default async function ProfilePage({
       <PageHeader
         title={t("title")}
         action={
-          <Link href="/profile/edit" className={quietButtonClass}>
-            <Pencil aria-hidden size={17} />
-            {t("edit")}
-          </Link>
+          <div className="flex flex-wrap justify-end gap-2">
+            <Link href="/settings" className={quietButtonClass}>
+              <Settings aria-hidden size={17} />
+              {t("settings")}
+            </Link>
+            <Link href="/profile/edit" className={quietButtonClass}>
+              <Pencil aria-hidden size={17} />
+              {t("edit")}
+            </Link>
+          </div>
         }
       />
 

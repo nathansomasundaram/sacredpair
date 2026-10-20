@@ -18,6 +18,7 @@ export function ChoiceChips({
   max,
   countLabel,
   error,
+  locked = false,
 }: {
   name: string;
   legend: string;
@@ -27,6 +28,8 @@ export function ChoiceChips({
   max?: number;
   countLabel?: (count: number) => string;
   error?: string;
+  /** Shown but not changeable (for example, Premium-only filters). */
+  locked?: boolean;
 }) {
   const id = useId();
   const [chosen, setChosen] = useState<string[]>(defaultValue);
@@ -34,7 +37,8 @@ export function ChoiceChips({
 
   return (
     <fieldset
-      className="flex flex-col gap-3"
+      disabled={locked}
+      className={`flex flex-col gap-3 ${locked ? "opacity-70" : ""}`}
       aria-describedby={
         [hint && `${id}-hint`, countLabel && `${id}-count`]
           .filter(Boolean)
@@ -61,6 +65,7 @@ export function ChoiceChips({
                     ? "border-covenant bg-covenant text-on-covenant"
                     : "border-line hover:border-ink-soft/60",
                   disabled ? "cursor-not-allowed opacity-45" : "",
+                  locked ? "cursor-not-allowed" : "",
                 ].join(" ")}
               >
                 <input
