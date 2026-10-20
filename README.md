@@ -107,7 +107,25 @@ Who can be introduced (`supabase/migrations/20261022000000_discover.sql`):
 
 The database does the choosing (`reveal_introductions()`), so the four-a-week limit can't be bypassed from the browser. Each card opens `/details/{id}`, which only works for people introduced to the member or connected with them; the Premium part shows only to Premium members.
 
-`npm run seed:demo` adds 12 fictional, verified members to your **local** Supabase (it refuses to run against anything else). Log in as any of them with `<first name>@demo.sacredpair.test` and password `DemoMember2026`. `npm run seed:demo -- --remove` takes them out again.
+### Sample data
+
+`npm run seed:demo` fills your **local** Supabase with fictional, verified members (it refuses to run against anything else). Their data lives in `scripts/demo/members.mjs`.
+
+- **12 members to meet**, with complete overviews and abstract pictures (no real people). Daniel, Grace, Marcus, Naomi, Elijah, Samuel, Jordan and Hannah have full Premium profiles: extra photos, prompts, details and interests, and most have a short demo video. Ruth and Leah have partial ones; Isaac and Caleb have none, which shows the "hasn't added more yet" state.
+- **Two logins for testing**, kept out of everyone's introductions:
+
+| Log in as                     | Membership          | What you see on Details                                              |
+| ----------------------------- | ------------------- | -------------------------------------------------------------------- |
+| `taylor@demo.sacredpair.test` | Free                | Counts of what each person shared, **Know more**, the upgrade screen |
+| `morgan@demo.sacredpair.test` | Premium (test mode) | Full Premium profiles                                                |
+
+The password for every demo member is `DemoMember2026`; you can log in as any of them (`grace@demo.sacredpair.test` and so on).
+
+| Command                         | Does                                                                                                                                             |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run seed:demo`             | Adds the demo members, or resets their profiles to the sample data                                                                               |
+| `npm run seed:demo -- --fresh`  | Also clears Taylor's and Morgan's introductions, so the magic wand works again (introductions never repeat, so 12 members last 3 taps otherwise) |
+| `npm run seed:demo -- --remove` | Removes every demo member                                                                                                                        |
 
 ## Details and Premium
 
