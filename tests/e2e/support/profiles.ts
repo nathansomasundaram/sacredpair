@@ -133,3 +133,69 @@ export async function addPremiumContent(id: string) {
     if (row.error) throw row.error;
   }
 }
+
+/** Introduces `target` to `viewer` this week, as the magic wand would. */
+export async function introduce(viewer: string, target: string) {
+  const { data: week, error: weekError } = await admin.rpc("discovery_week");
+  if (weekError) throw weekError;
+  const weekStart = String(week).slice(0, 10);
+  let { data: batch } = await admin
+    .from("discovery_batches")
+    .select("id")
+    .eq("user_id", viewer)
+    .eq("week_start", weekStart)
+    .maybeSingle();
+  if (!batch) {
+    const made = await admin
+      .from("discovery_batches")
+      .insert({ user_id: viewer, week_start: weekStart })
+      .select("id")
+      .single();
+    if (made.error) throw made.error;
+    batch = made.data;
+  }
+  const { data: items } = await admin
+    .from("discovery_batch_items")
+    .select("profile_id")
+    .eq("batch_id", batch!.id);
+  const { error } = await admin.from("discovery_batch_items").insert({
+    batch_id: batch!.id,
+    profile_id: target,
+    position: (items?.length ?? 0) + 1,
+  });
+  if (error) throw error;
+}
+
+/** Two members who were introduced and chose each other: connected. */
+export async function connect(a: string, b: string) {
+  await introduce(a, b);
+  await introduce(b, a);
+  for (const [from, to] of [
+    [a, b],
+    [b, a],
+  ]) {
+    const { error } = await admin
+      .from("choices")
+      .insert({ from_id: from, to_id: to, chosen: true });
+    if (error) throw error;
+  }
+  const { data, error } = await admin
+    .from("connections")
+    .select("id")
+    .eq("user_a", a < b ? a : b)
+    .eq("user_b", a < b ? b : a)
+    .is("ended_at", null)
+    .single();
+  if (error) throw error;
+  return data.id as string;
+}
+
+/** Reports filed by a member (for checking what the moderation team gets). */
+export async function reportsBy(reporter: string) {
+  const { data, error } = await admin
+    .from("reports")
+    .select("reported_id, reason, details, connection_id")
+    .eq("reporter_id", reporter);
+  if (error) throw error;
+  return data;
+}

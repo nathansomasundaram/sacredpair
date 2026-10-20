@@ -9,7 +9,13 @@ import { tabs } from "./tabs";
  * The five main tabs. A bottom bar on phones, a side rail from tablet width
  * up. The active tab is marked with a small gold ring, echoing the logo.
  */
-export function TabNav({ variant }: { variant: "bar" | "rail" }) {
+export function TabNav({
+  variant,
+  unread = 0,
+}: {
+  variant: "bar" | "rail";
+  unread?: number;
+}) {
   const t = useTranslations("nav");
   const pathname = usePathname();
 
@@ -43,14 +49,28 @@ export function TabNav({ variant }: { variant: "bar" | "rail" }) {
                     size={24}
                     strokeWidth={active ? 2.25 : 1.75}
                   />
-                  {active && (
+                  {key === "chat" && unread > 0 ? (
                     <span
                       aria-hidden
-                      className="absolute -end-1.5 -top-1 size-2.5 rounded-full border-2 border-ring bg-paper"
-                    />
+                      className="absolute -end-2.5 -top-1.5 grid h-[1.125rem] min-w-[1.125rem] place-items-center rounded-full bg-covenant px-1 text-[0.6875rem] font-semibold leading-none text-on-covenant"
+                    >
+                      {unread > 99 ? "99+" : unread}
+                    </span>
+                  ) : (
+                    active && (
+                      <span
+                        aria-hidden
+                        className="absolute -end-1.5 -top-1 size-2.5 rounded-full border-2 border-ring bg-paper"
+                      />
+                    )
                   )}
                 </span>
                 <span>{t(key)}</span>
+                {key === "chat" && unread > 0 && (
+                  <span className="sr-only">
+                    {t("unread", { count: unread })}
+                  </span>
+                )}
               </Link>
             </li>
           );

@@ -433,3 +433,77 @@ export const MEMBERS = [
     premium: "none",
   },
 ];
+
+/**
+ * Demo conversations, so Chat has something in it. Each is a connection
+ * between a viewer and a member, with messages ["them" | "me", text, minutes
+ * ago]. Messages from "them" in the last `unread` stay unread.
+ */
+export const CONVERSATIONS = [
+  {
+    viewer: "Morgan",
+    with: "Grace",
+    unread: 2,
+    messages: [
+      [
+        "me",
+        "Hi Grace! Your perfect Sunday sounds a lot like mine.",
+        2 * 24 * 60,
+      ],
+      [
+        "them",
+        "Ha, it really does. Do you sing too, or just listen?",
+        2 * 24 * 60 - 30,
+      ],
+      ["me", "Mostly listen. I'm a loyal back-row clapper.", 2 * 24 * 60 - 35],
+      [
+        "them",
+        "Every choir needs those! What do you do when you're not at church?",
+        24 * 60,
+      ],
+      ["me", "Woodworking, and too many cookbooks. You?", 24 * 60 - 10],
+      [
+        "them",
+        "Baking, mostly. Saturday pancakes are a whole tradition at my place.",
+        45,
+      ],
+      ["them", "Would you like to get coffee this week?", 40],
+    ],
+  },
+  {
+    viewer: "Morgan",
+    with: "Naomi",
+    unread: 0,
+    messages: [
+      [
+        "them",
+        "Hello Morgan. I liked what you wrote about patience.",
+        3 * 24 * 60,
+      ],
+      [
+        "me",
+        "Thank you! I've been learning it the hard way, with a sourdough starter.",
+        3 * 24 * 60 - 60,
+      ],
+      ["them", "That's the best teacher there is.", 3 * 24 * 60 - 65],
+    ],
+  },
+  {
+    viewer: "Taylor",
+    with: "Daniel",
+    unread: 1,
+    messages: [
+      [
+        "them",
+        "Hi Taylor, thanks for choosing me too. How's your week going?",
+        90,
+      ],
+    ],
+  },
+  {
+    viewer: "Taylor",
+    with: "Jordan",
+    unread: 0,
+    messages: [],
+  },
+];

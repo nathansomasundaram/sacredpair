@@ -7,14 +7,20 @@ import { TabNav } from "./TabNav";
  * Frame for the signed-in app. Phones: brand header on top, tab bar fixed at
  * the bottom (clear of the home indicator). Tablet and up: a side rail.
  */
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({
+  children,
+  unread = 0,
+}: {
+  children: ReactNode;
+  unread?: number;
+}) {
   return (
     <div className="min-h-dvh md:grid md:grid-cols-[15rem_1fr]">
       <aside className="sticky top-0 hidden h-dvh flex-col gap-8 border-e border-line px-4 py-6 md:flex">
         <Link href="/discover" className="px-3">
           <Wordmark />
         </Link>
-        <TabNav variant="rail" />
+        <TabNav variant="rail" unread={unread} />
       </aside>
 
       <header className="sticky top-0 z-10 flex h-14 items-center border-b border-line bg-paper/95 px-4 backdrop-blur md:hidden">
@@ -31,7 +37,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </main>
 
       <div className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-paper/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
-        <TabNav variant="bar" />
+        <TabNav variant="bar" unread={unread} />
       </div>
     </div>
   );

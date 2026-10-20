@@ -17,7 +17,8 @@
     "details": "Details",
     "together": "Together",
     "chat": "Chat",
-    "profile": "Profile"
+    "profile": "Profile",
+    "unread": "{count, plural, one {# unread message} other {# unread messages}}"
   },
   "discover": {
     "title": "Discover",
@@ -65,7 +66,8 @@
       "knowMore": "Know more",
       "nothingYet": "{name} hasn't added more to their profile yet.",
       "aboutPremium": "About Premium"
-    }
+    },
+    "connected": "Your connections"
   },
   "together": {
     "title": "Together",
@@ -75,7 +77,39 @@
   "chat": {
     "title": "Chat",
     "emptyTitle": "No conversations yet",
-    "emptyBody": "Conversations open when two people choose each other. Nobody can message you before that."
+    "emptyBody": "Conversations open when two people choose each other. Nobody can message you before that.",
+    "seeProfiles": "See this week's profiles",
+    "listLabel": "Conversations",
+    "youPrefix": "You: {body}",
+    "newConnection": "New connection. Say hello!",
+    "unread": "{count, plural, one {# unread message} other {# unread messages}}",
+    "back": "Back to conversations",
+    "menu": "More options for {name}",
+    "viewProfile": "View profile",
+    "safety": "Report or block",
+    "messagesLabel": "Messages with {name}",
+    "showEarlier": "Show earlier messages",
+    "sayHello": "You and {name} chose each other. Say hello!",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "youSaid": "You:",
+    "theySaid": "They said:",
+    "read": "Read",
+    "sent": "Sent",
+    "sending": "Sending…",
+    "retry": "Try again",
+    "sendError": {
+      "empty": "Write a message first.",
+      "tooLong": "That message is too long.",
+      "rateLimited": "You're sending messages very quickly. Wait a moment, then try again.",
+      "closed": "This conversation has ended, so the message wasn't sent.",
+      "failed": "Not sent. Check your connection."
+    },
+    "ended": "This conversation has ended. Neither of you can send messages.",
+    "messageLabel": "Message to {name}",
+    "placeholder": "Write a message",
+    "send": "Send",
+    "count": "{count} of {max} characters"
   },
   "profile": {
     "title": "Profile",
@@ -763,5 +797,73 @@
     "ended": "Test Premium has ended. You're back to a free membership.",
     "soonTitle": "Premium opens soon",
     "soonBody": "Payments aren't open yet. Everything in your free membership keeps working in the meantime."
+  },
+  "connect": {
+    "askTitle": "Would you like to meet {name}?",
+    "askBody": "Your choice is private. {name} only finds out if they choose you too, and then you can talk in Chat.",
+    "choose": "Choose {name}",
+    "pass": "Pass",
+    "chosenTitle": "You chose {name}",
+    "chosenBody": "If {name} chooses you too, you'll be connected and can talk in Chat. They won't know unless they do.",
+    "changeMind": "Change my mind",
+    "passedTitle": "You passed on {name}",
+    "passedBody": "{name} isn't told. You can still change your mind.",
+    "chooseInstead": "Choose {name} instead",
+    "connectedTitle": "You and {name} are connected",
+    "connectedBody": "You chose each other. Say hello in Chat.",
+    "openChat": "Open chat",
+    "chatWith": "Chat with {name}",
+    "endedTitle": "This connection has ended",
+    "endedBody": "You and {name} can't message each other anymore.",
+    "safetyLink": "Report or block {name}",
+    "notice": {
+      "chosen": "You chose {name}. We'll connect you if they choose you too.",
+      "passed": "You passed on {name}.",
+      "connected": "You and {name} chose each other! You can talk in Chat now.",
+      "choiceFailed": "That didn't go through. Please try again."
+    },
+    "chip": {
+      "chosen": "You chose",
+      "passed": "Passed",
+      "connected": "Connected",
+      "ended": "Ended"
+    }
+  },
+  "safety": {
+    "title": "Report or block",
+    "back": "Back",
+    "heading": "Report or block {name}",
+    "intro": "{name} is never told who reported or blocked them.",
+    "reportHeading": "Report",
+    "reportBody": "Tell our team what happened. We review every report, and we can read your conversation to understand it.",
+    "reasonLabel": "What's wrong?",
+    "reasons": {
+      "harassment": "Harassment or threats",
+      "inappropriate_content": "Sexual or inappropriate content",
+      "scam": "Asking for money, or a scam",
+      "fake_profile": "Fake profile or pretending to be someone else",
+      "underage": "May be under 18",
+      "other": "Something else"
+    },
+    "reasonRequired": "Choose what's wrong.",
+    "detailsLabel": "What happened? (optional)",
+    "detailsHint": "Anything that helps us understand. Required if you chose “Something else”.",
+    "detailsCount": "{count} of {max} characters",
+    "detailsRequired": "Tell us what happened.",
+    "alsoBlock": "Also block {name}",
+    "sendReport": "Send report",
+    "reportFailed": "Your report didn't go through. Please try again.",
+    "blockHeading": "Block {name}",
+    "blockBody": "Your connection ends and your conversation closes. Neither of you will see the other's profile or be introduced again.",
+    "block": "Block {name}",
+    "endHeading": "End connection",
+    "endBody": "Your conversation with {name} closes for both of you and can't be reopened. Nobody is blocked or reported.",
+    "end": "End connection with {name}",
+    "notice": {
+      "reported": "Thank you for telling us. Our team will review your report.",
+      "reportedBlocked": "Thank you for telling us. Our team will review your report, and you won't see each other again.",
+      "blocked": "Blocked. You won't see each other again.",
+      "ended": "Connection ended. Your conversation is closed."
+    }
   }
 }

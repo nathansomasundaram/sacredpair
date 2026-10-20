@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, MessageCircle, ShieldAlert } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { ConnectPanel } from "@/components/connect/ConnectPanel";
 import { FormAlert } from "@/components/forms/FormAlert";
 import { PremiumTeaser } from "@/components/premium/PremiumTeaser";
 import {
@@ -11,6 +12,7 @@ import {
 } from "@/components/profile/PremiumDetails";
 import { ProfileCard } from "@/components/profile/ProfileCard";
 import { requireVerifiedMember } from "@/lib/auth/session";
+import { getConnectState } from "@/lib/connect/data";
 import { getMembership, getPremiumTeaser } from "@/lib/premium/data";
 import { getProfileOverview, signedPhotoUrl } from "@/lib/profile/data";
 import {
@@ -48,11 +50,14 @@ export default async function ProfileDetailsPage({
   if (profileId === user.id) redirect("/profile");
 
   const t = await getTranslations("details");
-  const [profile, membership, { upgraded }] = await Promise.all([
-    getProfileOverview(profileId),
-    getMembership(user.id),
-    searchParams,
-  ]);
+  const tConnect = await getTranslations("connect");
+  const [profile, membership, connect, { upgraded, notice }] =
+    await Promise.all([
+      getProfileOverview(profileId),
+      getMembership(user.id),
+      getConnectState(user.id, profileId),
+      searchParams,
+    ]);
   if (!profile) notFound();
 
   const photoUrl = await signedPhotoUrl(profile.photoPath);
@@ -97,6 +102,25 @@ export default async function ProfileDetailsPage({
         {t("backToList")}
       </Link>
 
+      {typeof notice === "string" &&
+        ["chosen", "passed", "connected", "choiceFailed"].includes(notice) && (
+          <div className="mb-6">
+            <FormAlert tone={notice === "choiceFailed" ? "error" : "success"}>
+              {tConnect(`notice.${notice}`, { name: profile.displayName })}
+            </FormAlert>
+          </div>
+        )}
+
+      {connect.connection?.active && (
+        <Link
+          href={`/chat/${connect.connection.id}`}
+          className="mb-6 flex items-center gap-3 rounded-2xl border border-leaf/40 bg-leaf/[0.08] px-4 py-3 font-semibold"
+        >
+          <MessageCircle aria-hidden size={20} className="text-leaf" />
+          {tConnect("chatWith", { name: profile.displayName })}
+        </Link>
+      )}
+
       {upgraded === "1" && membership.premium && (
         <div className="mb-6">
           <FormAlert tone="success">{t("upgraded")}</FormAlert>
@@ -116,6 +140,22 @@ export default async function ProfileDetailsPage({
         </div>
         {premiumPart}
       </section>
+
+      <div className="mt-12 max-w-xl">
+        <ConnectPanel
+          profileId={profileId}
+          name={profile.displayName}
+          state={connect}
+        />
+      </div>
+
+      <Link
+        href={`/safety/${profileId}`}
+        className="mt-8 inline-flex min-h-11 items-center gap-2 text-[0.9375rem] text-ink-soft underline-offset-4 hover:text-ink hover:underline"
+      >
+        <ShieldAlert aria-hidden size={17} />
+        {tConnect("safetyLink", { name: profile.displayName })}
+      </Link>
     </>
   );
 }

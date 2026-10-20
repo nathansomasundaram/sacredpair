@@ -13,6 +13,7 @@ export const verifiedOnlyPrefixes = [
   "/profile",
   "/welcome",
   "/upgrade",
+  "/safety",
 ] as const;
 
 /** Paths that need a signed-in member (verified or not). */

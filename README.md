@@ -141,6 +141,22 @@ Premium status is one record per member (`entitlements`); expiry takes effect au
 | `simulated` (default locally and on previews) | **Start test Premium (30 days)**, no payment. Recorded as source `simulated`, and can be ended again from `/upgrade`. |
 | `none` (default on the production site)       | "Premium opens soon". Test Premium is refused on production.                                                          |
 
+## Connect and Chat
+
+**Connect.** At the bottom of every profile a member can **Choose** or **Pass**. Choices are private: the other person learns of one only if they choose back, and then the database opens a connection (`handle_choice` in `supabase/migrations/20261017000000_init.sql`). Until then either choice can be changed. Connections show in the Details tab under "Your connections".
+
+**Chat.** Only the two members of a live connection can read or send its messages; nobody can message a stranger. These rules are in the database (Row Level Security), and Supabase Realtime applies the same rules to live updates, so nobody else can listen in.
+
+- **Live:** new messages and read receipts arrive instantly through Supabase Realtime. If a network blocks Realtime, the conversation checks every few seconds instead, so it still works.
+- **Read receipts and unread counts:** your last message shows "Sent" or "Read". The Chat list shows unread counts, and the Chat tab shows a badge.
+- **Limits:** messages are 1–2000 characters, and each member can send at most 30 a minute.
+- **Ending:** **End connection** (unmatch) or **Block** closes the conversation for both people for good; choosing again doesn't reopen it. Blocking also hides both profiles from each other.
+- **Reports** (`/safety/{id}`, from the conversation menu or the bottom of a profile): a reason, optional details, and optionally a block too. A report can only be about someone the member has met, and it is linked to the conversation so moderators can read it. The person reported is never told.
+- **Not end-to-end encrypted**, as recommended in the requirements: messages are encrypted in transit and at rest, and moderators can read a reported conversation.
+- **Not yet:** push, email and SMS notifications for new messages arrive with notification settings in the Settings step.
+
+The demo data (`npm run seed:demo`) connects Morgan with Grace (2 unread messages) and Naomi, and Taylor with Daniel (1 unread) and Jordan (no messages yet).
+
 ## Checks
 
 ```bash

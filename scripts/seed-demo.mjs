@@ -14,6 +14,8 @@
  *     ones and two have none, so every Details state can be seen.
  *   - Two members to log in as: taylor@ (free) and morgan@ (Premium, in test
  *     mode), both @demo.sacredpair.test, so you can compare what each sees.
+ *     Each is already connected with two members, with conversations
+ *     (some messages unread) to try Chat.
  *
  * Safe to run again: it updates existing demo members instead of duplicating
  * them. Only runs against a local Supabase (localhost / 127.0.0.1).
@@ -22,6 +24,7 @@ import fs from "node:fs";
 import { createClient } from "@supabase/supabase-js";
 import sharp from "sharp";
 import {
+  CONVERSATIONS,
   DEMO_DOMAIN,
   DEMO_PASSWORD,
   MEMBERS,
@@ -331,6 +334,78 @@ if (process.argv.includes("--fresh")) {
   );
 }
 
+// Demo conversations: recreated from scratch each run, so they always
+// look the same (ending a connection is otherwise final).
+const idByName = new Map();
+for (const m of [...MEMBERS, ...VIEWERS]) {
+  idByName.set(m.name, existing.get(emailFor(m.name)) ?? null);
+}
+for (const u of await listDemoUsers()) {
+  const m = [...MEMBERS, ...VIEWERS].find((x) => emailFor(x.name) === u.email);
+  if (m) idByName.set(m.name, u.id);
+}
+for (const convo of CONVERSATIONS) {
+  const a = idByName.get(convo.viewer);
+  const b = idByName.get(convo.with);
+  const [low, high] = a < b ? [a, b] : [b, a];
+  check(
+    await admin
+      .from("connections")
+      .delete()
+      .eq("user_a", low)
+      .eq("user_b", high),
+    "clear a demo conversation",
+  );
+  check(
+    await admin
+      .from("choices")
+      .delete()
+      .in("from_id", [a, b])
+      .in("to_id", [a, b]),
+    "clear demo choices",
+  );
+  for (const [from, to] of [
+    [a, b],
+    [b, a],
+  ]) {
+    check(
+      await admin
+        .from("choices")
+        .insert({ from_id: from, to_id: to, chosen: true }),
+      "add demo choices",
+    );
+  }
+  const connection = check(
+    await admin
+      .from("connections")
+      .select("id")
+      .eq("user_a", low)
+      .eq("user_b", high)
+      .is("ended_at", null)
+      .single(),
+    "find a demo connection",
+  );
+  const theirs = convo.messages.filter(([who]) => who === "them");
+  const unreadFrom = theirs.length - convo.unread;
+  let seenOfTheirs = 0;
+  const rows = convo.messages.map(([who, body, minutesAgo]) => {
+    const at = new Date(Date.now() - minutesAgo * 60_000).toISOString();
+    const fromThem = who === "them";
+    const unread = fromThem && seenOfTheirs++ >= unreadFrom;
+    return {
+      connection_id: connection.id,
+      sender_id: fromThem ? b : a,
+      body,
+      created_at: at,
+      // Messages the viewer sent are read; theirs are read except the last few.
+      read_at: unread ? null : at,
+    };
+  });
+  if (rows.length > 0) {
+    check(await admin.from("messages").insert(rows), "add demo messages");
+  }
+}
+
 const total = MEMBERS.length + VIEWERS.length;
 console.log(`Demo members ready: ${added} added, ${total - added} refreshed.
 
@@ -347,4 +422,5 @@ ${MEMBERS.filter((m) => m.premium === "partial")
   .join(", ")} (partial); ${MEMBERS.filter((m) => m.premium === "none")
   .map((m) => m.name)
   .join(", ")} (none).
+Conversations: ${CONVERSATIONS.map((c) => `${c.viewer} & ${c.with}`).join(", ")}.
 ${process.argv.includes("--fresh") ? "Cleared Taylor's and Morgan's introductions: the magic wand works again.\n" : ""}`);
