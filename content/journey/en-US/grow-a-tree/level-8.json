@@ -1,0 +1,55 @@
+{
+  "path": "grow_a_tree",
+  "level": 8,
+  "title": "Mature Tree",
+  "stage": {
+    "name": "Mature tree",
+    "description": "Wide roots, thick bark and a full canopy. Still growing, ring by ring."
+  },
+  "intro": "Strong trees don't stand alone.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Where do most tree roots grow?",
+      "options": [
+        "In the upper soil, spreading wide",
+        "Straight down like a spike",
+        "Only under the trunk",
+        "Above the ground"
+      ],
+      "answer": 0,
+      "why": "Most roots sit in the top few feet of soil and often spread wider than the canopy."
+    },
+    {
+      "type": "choice",
+      "prompt": "What do mycorrhizal fungi do for tree roots?",
+      "options": [
+        "Help them take in nutrients in return for sugar",
+        "Eat the whole tree",
+        "Make the bark thicker",
+        "Carry pollen"
+      ],
+      "answer": 0,
+      "why": "The fungus reaches nutrients the roots can't, and the tree pays with sugar."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "A full-size tree has stopped growing.",
+      "answer": false,
+      "why": "Trees keep adding wood and new shoots for as long as they live."
+    },
+    {
+      "type": "choice",
+      "prompt": "What's the relationship version of a tree's underground network?",
+      "options": [
+        "Family, friends and community who support you both",
+        "Depending only on each other for everything",
+        "Keeping your relationship away from everyone",
+        "Letting others make your decisions"
+      ],
+      "answer": 0,
+      "why": "Couples do better with people around them who want them to succeed."
+    }
+  ],
+  "talk": "Who could be part of the network that supports you as a couple?"
+}

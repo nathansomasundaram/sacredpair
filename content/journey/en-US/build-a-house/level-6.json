@@ -1,0 +1,55 @@
+{
+  "path": "build_a_house",
+  "level": 6,
+  "title": "Insulation & Drywall",
+  "stage": {
+    "name": "Walls",
+    "description": "Walls are insulated and closed in. The house starts to feel like rooms."
+  },
+  "intro": "Comfort, and a little privacy.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What does insulation do?",
+      "options": [
+        "Slows heat moving in and out, so the house stays comfortable",
+        "Holds up the roof",
+        "Makes walls waterproof",
+        "Carries electricity"
+      ],
+      "answer": 0,
+      "why": "Insulation keeps warmth in during winter and out during summer."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Drywall goes up after the pipes and wires have been inspected.",
+      "answer": true,
+      "why": "Closing the walls too early would hide anything that needs fixing."
+    },
+    {
+      "type": "choice",
+      "prompt": "What is a vapor barrier for?",
+      "options": [
+        "Keeping moisture out of walls, where it could cause mold",
+        "Keeping bugs out",
+        "Making walls fireproof",
+        "Decoration"
+      ],
+      "answer": 0,
+      "why": "Moisture trapped inside a wall can rot wood and grow mold, unseen."
+    },
+    {
+      "type": "choice",
+      "prompt": "Insulation keeps comfort in. In a relationship, healthy boundaries…",
+      "options": [
+        "Protect what's private and help both people feel safe",
+        "Mean never sharing feelings",
+        "Keep the other person out of your life",
+        "Are rules one person sets for the other"
+      ],
+      "answer": 0,
+      "why": "Boundaries agreed together protect the relationship, not just one person."
+    }
+  ],
+  "talk": "What's something you'd like to keep just between the two of you?"
+}

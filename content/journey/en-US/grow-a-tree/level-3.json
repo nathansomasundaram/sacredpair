@@ -1,0 +1,48 @@
+{
+  "path": "grow_a_tree",
+  "level": 3,
+  "title": "Germination",
+  "stage": {
+    "name": "Germination",
+    "description": "The coat splits and the first root pushes down into the soil."
+  },
+  "intro": "Before anything shows above ground, the roots go down.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Which part comes out of the seed first?",
+      "options": ["The root", "The first leaf", "A flower", "The trunk"],
+      "answer": 0,
+      "why": "The first root, called the radicle, comes out first so the seedling can anchor itself and drink."
+    },
+    {
+      "type": "match",
+      "prompt": "Match the parts of a baby plant.",
+      "pairs": [
+        ["Radicle", "First root"],
+        ["Plumule", "First shoot"],
+        ["Cotyledon", "Seed leaf"]
+      ],
+      "why": "The radicle becomes the root and the plumule becomes the shoot. Cotyledons are the seed leaves."
+    },
+    {
+      "type": "choice",
+      "prompt": "Why does the root come before the shoot?",
+      "options": [
+        "So the plant can anchor and drink before it grows up",
+        "Because leaves are too heavy",
+        "Because roots grow faster in light",
+        "It doesn't matter which comes first"
+      ],
+      "answer": 0,
+      "why": "A seedling needs water and a firm hold before it can support growth above ground."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "In a relationship, putting down roots means sharing what really matters to you, even before much shows on the outside.",
+      "answer": true,
+      "why": "Values and honesty are the roots. They hold a relationship steady when the weather changes."
+    }
+  ],
+  "talk": "What are two values you'd want your relationship to be rooted in?"
+}

@@ -1,0 +1,49 @@
+{
+  "path": "grow_a_tree",
+  "level": 7,
+  "title": "Young Tree",
+  "stage": {
+    "name": "Young tree",
+    "description": "Branches spread out so more leaves can catch the light."
+  },
+  "intro": "Growing up and growing out.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Where does a tree grow taller?",
+      "options": [
+        "At the tips of its shoots",
+        "At the base of the trunk",
+        "Evenly along the whole trunk",
+        "Inside the roots"
+      ],
+      "answer": 0,
+      "why": "Height growth happens at the tips. A nail in a trunk stays at the same height for decades."
+    },
+    {
+      "type": "choice",
+      "prompt": "A slice of trunk shows 12 rings. About how old was the tree?",
+      "options": ["12 years", "12 months", "12 centuries", "12 days"],
+      "answer": 0,
+      "why": "A tree usually adds one ring a year: pale wood in spring and darker wood in late summer."
+    },
+    {
+      "type": "order",
+      "prompt": "Put a new branch's growth in order.",
+      "items": [
+        "A bud forms at the tip",
+        "The bud swells in spring",
+        "A new shoot stretches out",
+        "Leaves unfold"
+      ],
+      "why": "Every new branch starts as a bud."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Healthy couples keep their own friendships and interests as their relationship grows.",
+      "answer": true,
+      "why": "Like branches, each person's own growth adds to the whole tree."
+    }
+  ],
+  "talk": "What's one interest of yours you'd love the other to understand better?"
+}

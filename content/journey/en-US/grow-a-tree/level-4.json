@@ -1,0 +1,54 @@
+{
+  "path": "grow_a_tree",
+  "level": 4,
+  "title": "Sprout",
+  "stage": {
+    "name": "Sprout",
+    "description": "A shoot rises toward the light and the first leaves open."
+  },
+  "intro": "Now the growth starts to show.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Which way does the shoot grow?",
+      "options": [
+        "Up, toward light",
+        "Down into the soil",
+        "Sideways along the ground",
+        "It doesn't grow"
+      ],
+      "answer": 0,
+      "why": "Shoots grow away from gravity and toward light."
+    },
+    {
+      "type": "order",
+      "prompt": "Put a sprout's first days in order.",
+      "items": [
+        "The root anchors in the soil",
+        "The shoot pushes up through the soil",
+        "The stem straightens toward the light",
+        "The first leaves open"
+      ],
+      "why": "The root anchors first, then the shoot climbs and opens its leaves in the light."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Many seedlings push up bent like a hook to protect their tender tip.",
+      "answer": true,
+      "why": "The hook pulls the delicate tip up through the soil instead of pushing it."
+    },
+    {
+      "type": "choice",
+      "prompt": "Your relationship is starting to show, and a friend asks about it. What's a healthy approach?",
+      "options": [
+        "Share what you're both comfortable sharing",
+        "Post every detail right away",
+        "Keep it secret from everyone indefinitely",
+        "Ask your friends to decide whether it's right"
+      ],
+      "answer": 0,
+      "why": "Agreeing together on what to share respects you both, and lets the people who care about you be part of it."
+    }
+  ],
+  "talk": "Who would you most like each other to meet, and why?"
+}

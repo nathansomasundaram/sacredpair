@@ -444,6 +444,13 @@ export const CONVERSATIONS = [
     viewer: "Morgan",
     with: "Grace",
     unread: 2,
+    // Together: on Grow a tree. Morgan has finished 3 levels, Grace 2.
+    journey: {
+      path: "grow_a_tree",
+      proposedBy: "them",
+      accepted: true,
+      levels: { me: 3, them: 2 },
+    },
     messages: [
       [
         "me",
@@ -474,6 +481,8 @@ export const CONVERSATIONS = [
     viewer: "Morgan",
     with: "Naomi",
     unread: 0,
+    // Together: Naomi suggested Write a book; Morgan hasn't answered yet.
+    journey: { path: "write_a_book", proposedBy: "them", accepted: false },
     messages: [
       [
         "them",
@@ -492,6 +501,13 @@ export const CONVERSATIONS = [
     viewer: "Taylor",
     with: "Daniel",
     unread: 1,
+    // Together: on Build a house. Daniel has finished level 1; Taylor's turn.
+    journey: {
+      path: "build_a_house",
+      proposedBy: "me",
+      accepted: true,
+      levels: { me: 0, them: 1 },
+    },
     messages: [
       [
         "them",

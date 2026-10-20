@@ -1,0 +1,53 @@
+{
+  "path": "write_a_book",
+  "level": 2,
+  "title": "Choose your genre, reader, and length",
+  "stage": {
+    "name": "Genre and reader",
+    "description": "You know what kind of story it is, and who it's for."
+  },
+  "intro": "Knowing what you're writing, and for whom.",
+  "questions": [
+    {
+      "type": "match",
+      "prompt": "Match each choice to what it means.",
+      "pairs": [
+        ["Genre", "The kind of story, like mystery or memoir"],
+        ["Reader", "Who the book is written for"],
+        ["Length", "How long the book will be"]
+      ],
+      "why": "These three choices shape everything that follows."
+    },
+    {
+      "type": "choice",
+      "prompt": "Why does knowing your reader matter?",
+      "options": [
+        "It shapes the tone, words and details you choose",
+        "It doesn't matter",
+        "Only for nonfiction",
+        "Only to sell more copies"
+      ],
+      "answer": 0,
+      "why": "A book for young children and one for historians tell stories very differently."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Novels and children's picture books are usually about the same length.",
+      "answer": false,
+      "why": "Picture books often have fewer than a thousand words. Many novels have tens of thousands."
+    },
+    {
+      "type": "choice",
+      "prompt": "What helps two people agree on what kind of relationship they're building?",
+      "options": [
+        "Saying clearly what you're looking for, like marriage or a long-term partnership",
+        "Hoping the other person guesses",
+        "Changing your answer to match theirs",
+        "Avoiding the topic to keep things light"
+      ],
+      "answer": 0,
+      "why": "Clear, kind honesty early saves heartache later."
+    }
+  ],
+  "talk": "What kind of relationship is each of you hoping for, in your own words?"
+}

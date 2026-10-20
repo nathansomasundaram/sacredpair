@@ -1,0 +1,55 @@
+{
+  "path": "write_a_book",
+  "level": 1,
+  "title": "Define your book in one sentence",
+  "stage": {
+    "name": "One sentence",
+    "description": "A single sentence that holds the whole story."
+  },
+  "intro": "Big stories start with a small, clear idea.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Why do writers sum up a book in one sentence before they start?",
+      "options": [
+        "It keeps the whole book focused on what it's really about",
+        "Publishers require exactly one sentence",
+        "So the book stays short",
+        "It replaces the outline"
+      ],
+      "answer": 0,
+      "why": "A clear core idea helps every chapter pull in the same direction."
+    },
+    {
+      "type": "choice",
+      "prompt": "Which is the strongest one-sentence summary?",
+      "options": [
+        "A widowed baker reopens her shop and learns to love again.",
+        "A book about things that happen.",
+        "It's a really good story.",
+        "Chapter one, chapter two, chapter three."
+      ],
+      "answer": 0,
+      "why": "A strong summary names who, what they want, and what changes."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "A one-sentence summary can change as the book develops.",
+      "answer": true,
+      "why": "Writers often refine it as they learn what the story is really about."
+    },
+    {
+      "type": "choice",
+      "prompt": "If your relationship were a book, its one-sentence summary would describe…",
+      "options": [
+        "What you hope to build together",
+        "Every detail of your past",
+        "Who wins arguments",
+        "What other couples have"
+      ],
+      "answer": 0,
+      "why": "Your sentence is about where you're going together."
+    }
+  ],
+  "talk": "Try writing one sentence together about the story you'd like to tell."
+}

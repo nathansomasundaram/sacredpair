@@ -1,0 +1,48 @@
+{
+  "path": "grow_a_tree",
+  "level": 6,
+  "title": "Sapling",
+  "stage": {
+    "name": "Sapling",
+    "description": "A thin woody trunk forms and carries water up to the crown."
+  },
+  "intro": "The young tree gets stronger, inside and out.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Which tissue carries water up from the roots?",
+      "options": ["Xylem", "Phloem", "Pollen", "Bark"],
+      "answer": 0,
+      "why": "Xylem moves water upward. Phloem moves sugar from the leaves to where it's needed."
+    },
+    {
+      "type": "match",
+      "prompt": "Match each part of the trunk to its job.",
+      "pairs": [
+        ["Xylem", "Moves water up"],
+        ["Phloem", "Moves sugar around"],
+        ["Bark", "Protects the trunk"]
+      ],
+      "why": "Xylem and phloem are the tree's plumbing, and bark is its protective skin."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "A trunk gets thicker because a thin layer called the cambium adds new wood each year.",
+      "answer": true,
+      "why": "The cambium adds new wood on the inside and new bark on the outside."
+    },
+    {
+      "type": "choice",
+      "prompt": "Bark protects a young tree. What protects a relationship during disagreements?",
+      "options": [
+        "Starting gently and avoiding contempt",
+        "Winning every argument",
+        "Bringing up every past mistake",
+        "Going silent for days"
+      ],
+      "answer": 0,
+      "why": "Contempt and shutting down are among the clearest warning signs for couples. A gentle start keeps a disagreement about the problem, not the person."
+    }
+  ],
+  "talk": "When you disagree, what helps you feel heard?"
+}

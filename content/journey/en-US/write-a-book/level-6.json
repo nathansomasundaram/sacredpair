@@ -1,0 +1,54 @@
+{
+  "path": "write_a_book",
+  "level": 6,
+  "title": "Draft the entire first manuscript",
+  "stage": {
+    "name": "First draft",
+    "description": "The whole story is written down, rough edges and all."
+  },
+  "intro": "Done is better than perfect, for now.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What is the goal of a first draft?",
+      "options": [
+        "Getting the whole story down; imperfect is fine",
+        "Making every sentence perfect",
+        "Publishing it right away",
+        "Editing as you go"
+      ],
+      "answer": 0,
+      "why": "You can't fix a page you haven't written."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Many writers avoid heavy editing while drafting so they can keep moving forward.",
+      "answer": true,
+      "why": "Drafting and editing use different mindsets. Mixing them often stalls both."
+    },
+    {
+      "type": "order",
+      "prompt": "Put drafting in order.",
+      "items": [
+        "Start writing from the outline",
+        "Keep going through the hard chapters",
+        "Reach the end of the story",
+        "Set it aside before revising"
+      ],
+      "why": "A little distance helps you see the draft with fresh eyes."
+    },
+    {
+      "type": "choice",
+      "prompt": "Living your story together will include messy chapters. What helps?",
+      "options": [
+        "Accepting that mistakes happen and keeping going together",
+        "Expecting everything to be perfect",
+        "Giving up at the first hard chapter",
+        "Blaming one person for every problem"
+      ],
+      "answer": 0,
+      "why": "Every good story has hard chapters. What matters is turning the page together."
+    }
+  ],
+  "talk": "What's a hard chapter you're glad you came through?"
+}

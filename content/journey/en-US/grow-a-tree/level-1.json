@@ -1,0 +1,53 @@
+{
+  "path": "grow_a_tree",
+  "level": 1,
+  "title": "The Seed",
+  "stage": {
+    "name": "Seed",
+    "description": "A seed rests in the soil: small, but holding everything it needs to begin."
+  },
+  "intro": "Every relationship starts small. Here is what a seed already holds.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What is packed inside a seed?",
+      "options": [
+        "A tiny baby plant and a store of food",
+        "Only dry dust",
+        "A small, finished tree",
+        "Soil and water"
+      ],
+      "answer": 0,
+      "why": "Every seed holds an embryo, which is a baby plant, plus stored food for its first growth."
+    },
+    {
+      "type": "match",
+      "prompt": "Match each part of a seed to its job.",
+      "pairs": [
+        ["Seed coat", "Protects the inside"],
+        ["Embryo", "Becomes the new plant"],
+        ["Stored food", "Fuels early growth"]
+      ],
+      "why": "The coat guards the seed, the embryo grows, and the stored food feeds it until it has leaves."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "A seed that looks dry and still is dead.",
+      "answer": false,
+      "why": "Seeds are alive but dormant. Some wait for years until conditions are right."
+    },
+    {
+      "type": "choice",
+      "prompt": "A new relationship is like a seed. What helps it most at the start?",
+      "options": [
+        "Steady, honest attention",
+        "Grand gestures right away",
+        "Deciding the whole future now",
+        "Leaving it to grow on its own"
+      ],
+      "answer": 0,
+      "why": "Small, reliable signs of interest build trust. Big gestures can't replace everyday attention."
+    }
+  ],
+  "talk": "What small hopes did each of you bring when you chose each other?"
+}

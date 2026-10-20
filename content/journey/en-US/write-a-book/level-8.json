@@ -1,0 +1,55 @@
+{
+  "path": "write_a_book",
+  "level": 8,
+  "title": "Get feedback from readers",
+  "stage": {
+    "name": "Feedback",
+    "description": "Trusted readers share what works and what doesn't."
+  },
+  "intro": "Other eyes see what you can't.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What are beta readers?",
+      "options": [
+        "People who read a draft before publication and share their reactions",
+        "Professional printers",
+        "The first people to buy the book",
+        "The author's editor"
+      ],
+      "answer": 0,
+      "why": "Beta readers show you how the book lands with real readers."
+    },
+    {
+      "type": "choice",
+      "prompt": "What's the most useful way to receive feedback?",
+      "options": [
+        "Listen, ask questions, then decide what to change",
+        "Argue with every comment",
+        "Ignore all feedback",
+        "Change everything everyone suggests"
+      ],
+      "answer": 0,
+      "why": "Feedback is information. You still decide what the story needs."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "If several readers are confused by the same part, it's worth a close look.",
+      "answer": true,
+      "why": "One reader's opinion is a data point. Several pointing to the same place is a pattern."
+    },
+    {
+      "type": "choice",
+      "prompt": "Who is best to ask for advice about your relationship?",
+      "options": [
+        "Trusted people who want good things for both of you",
+        "Anyone with an opinion online",
+        "Only people who always agree with you",
+        "Someone who dislikes your partner"
+      ],
+      "answer": 0,
+      "why": "Good advice comes from people who are on the side of your relationship."
+    }
+  ],
+  "talk": "Whose advice about relationships do you each trust, and why?"
+}

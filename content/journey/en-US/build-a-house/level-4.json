@@ -1,0 +1,53 @@
+{
+  "path": "build_a_house",
+  "level": 4,
+  "title": "Framing",
+  "stage": {
+    "name": "Framing",
+    "description": "The wooden skeleton rises. Walls, floors and roof take shape."
+  },
+  "intro": "Now you can see the shape of things.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What does a house's frame do?",
+      "options": [
+        "Gives it structure and holds up walls, floors and roof",
+        "Keeps it warm",
+        "Carries water",
+        "Decorates it"
+      ],
+      "answer": 0,
+      "why": "The frame is the skeleton everything else attaches to."
+    },
+    {
+      "type": "match",
+      "prompt": "Match each part of the frame.",
+      "pairs": [
+        ["Studs", "Upright boards inside a wall"],
+        ["Joists", "Hold up the floors"],
+        ["Rafters", "Hold up the roof"]
+      ],
+      "why": "Studs, joists and rafters share the load from the roof to the ground."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Once the frame is up, you can see the rooms of the house.",
+      "answer": true,
+      "why": "Framing is when a plan on paper becomes a shape you can walk through."
+    },
+    {
+      "type": "choice",
+      "prompt": "What gives a shared life its shape?",
+      "options": [
+        "Agreeing how you'll share time, money and responsibilities",
+        "Leaving everything to chance",
+        "One person doing all the work",
+        "Copying another couple exactly"
+      ],
+      "answer": 0,
+      "why": "Every couple's frame is different. What matters is that you build it together."
+    }
+  ],
+  "talk": "How would you like to share everyday responsibilities?"
+}

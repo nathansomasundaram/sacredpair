@@ -404,6 +404,44 @@ for (const convo of CONVERSATIONS) {
   if (rows.length > 0) {
     check(await admin.from("messages").insert(rows), "add demo messages");
   }
+
+  // Their Together journey, if any.
+  const j = convo.journey;
+  if (j) {
+    const journey = check(
+      await admin
+        .from("journeys")
+        .insert({
+          connection_id: connection.id,
+          path: j.path,
+          proposed_by: j.proposedBy === "me" ? a : b,
+          accepted_at: j.accepted ? new Date().toISOString() : null,
+        })
+        .select("id")
+        .single(),
+      "add a demo journey",
+    );
+    const progress = [];
+    for (const [who, uid] of [
+      ["me", a],
+      ["them", b],
+    ]) {
+      for (let level = 1; level <= (j.levels?.[who] ?? 0); level++) {
+        progress.push({
+          journey_id: journey.id,
+          user_id: uid,
+          level,
+          score: 75 + ((level * 7) % 26),
+        });
+      }
+    }
+    if (progress.length > 0) {
+      check(
+        await admin.from("journey_progress").insert(progress),
+        "add demo journey progress",
+      );
+    }
+  }
 }
 
 const total = MEMBERS.length + VIEWERS.length;
@@ -423,4 +461,6 @@ ${MEMBERS.filter((m) => m.premium === "partial")
   .map((m) => m.name)
   .join(", ")} (none).
 Conversations: ${CONVERSATIONS.map((c) => `${c.viewer} & ${c.with}`).join(", ")}.
+Together: Morgan & Grace on Grow a tree (Morgan one level ahead); Naomi suggested
+Write a book to Morgan; Taylor & Daniel on Build a house (Taylor's turn).
 ${process.argv.includes("--fresh") ? "Cleared Taylor's and Morgan's introductions: the magic wand works again.\n" : ""}`);

@@ -1,0 +1,54 @@
+{
+  "path": "build_a_house",
+  "level": 1,
+  "title": "Planning, Design & Permits",
+  "stage": {
+    "name": "Plans and permits",
+    "description": "A plan on paper and permission to build. Nothing stands yet, but the big decisions are made."
+  },
+  "intro": "Every house starts as a conversation about what you need.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What does a building permit confirm?",
+      "options": [
+        "The plans meet local safety and building codes",
+        "The house will be finished on time",
+        "The builder is the cheapest",
+        "The paint colors are chosen"
+      ],
+      "answer": 0,
+      "why": "Permits make sure a house is designed to be safe before anyone builds it."
+    },
+    {
+      "type": "order",
+      "prompt": "Put the first steps of building in order.",
+      "items": [
+        "Decide what you need from the house",
+        "Draw up the plans",
+        "Get the plans approved",
+        "Start building"
+      ],
+      "why": "Changes are easiest on paper, so the thinking comes first."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Changing the plan is cheapest before construction starts.",
+      "answer": true,
+      "why": "Moving a wall on paper costs an eraser. Moving it later costs a crew."
+    },
+    {
+      "type": "choice",
+      "prompt": "Planning a life together starts with…",
+      "options": [
+        "Talking honestly about what each of you wants",
+        "Assuming you want the same things",
+        "Avoiding big topics until later",
+        "Letting one person decide"
+      ],
+      "answer": 0,
+      "why": "Big hopes about family, faith, money and place are easier to talk about early."
+    }
+  ],
+  "talk": "Where do you each picture yourselves in five years?"
+}

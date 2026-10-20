@@ -1,0 +1,61 @@
+{
+  "path": "grow_a_tree",
+  "level": 9,
+  "title": "Flowers and Fruit",
+  "stage": {
+    "name": "Fruit tree",
+    "description": "Flowers became fruit. The seeds inside begin the cycle again."
+  },
+  "intro": "What you've grown starts to give back.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What is the main job of a flower?",
+      "options": [
+        "To help make seeds",
+        "To drink water",
+        "To hold the tree upright",
+        "To make bark"
+      ],
+      "answer": 0,
+      "why": "Flowers are where seeds begin."
+    },
+    {
+      "type": "choice",
+      "prompt": "What is pollination?",
+      "options": [
+        "Moving pollen so seeds can form",
+        "Watering a flower",
+        "Cutting off petals",
+        "Planting a seed"
+      ],
+      "answer": 0,
+      "why": "Bees, birds, bats or the wind carry pollen from flower to flower."
+    },
+    {
+      "type": "order",
+      "prompt": "Close the circle. Put the life cycle in order.",
+      "items": [
+        "A flower opens",
+        "A pollinator visits",
+        "Seeds form inside the fruit",
+        "The fruit ripens and drops",
+        "A seed lands in soil"
+      ],
+      "why": "And a seed in soil is where you began."
+    },
+    {
+      "type": "choice",
+      "prompt": "What keeps a relationship fruitful for years?",
+      "options": [
+        "Keep tending it: curiosity, gratitude and time together",
+        "Stop putting in effort once it's established",
+        "Expect it to stay the same forever",
+        "Focus only on what's wrong"
+      ],
+      "answer": 0,
+      "why": "Even a mature tree needs water. Lasting couples keep choosing each other."
+    }
+  ],
+  "talk": "What fruit do you hope your relationship brings, to you and to the people around you?"
+}

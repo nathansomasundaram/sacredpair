@@ -1,0 +1,54 @@
+{
+  "path": "build_a_house",
+  "level": 7,
+  "title": "Exterior Finishes",
+  "stage": {
+    "name": "Weather-tight",
+    "description": "Roof, windows, doors and siding: the house is sealed against the weather."
+  },
+  "intro": "What the world sees.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What is the main job of the roof and siding?",
+      "options": [
+        "Keeping weather out of the house",
+        "Holding up the floors",
+        "Heating the rooms",
+        "Carrying water to the taps"
+      ],
+      "answer": 0,
+      "why": "A house's outer skin keeps rain, wind and sun from damaging what's inside."
+    },
+    {
+      "type": "order",
+      "prompt": "Put the usual order of exterior work.",
+      "items": [
+        "The roof goes on",
+        "Windows and doors are installed",
+        "Siding is added",
+        "Gutters are hung to carry rain away"
+      ],
+      "why": "Builders work from the top down so water always runs over finished work, not under it."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Flashing is thin material that steers water away from joints, like around windows and chimneys.",
+      "answer": true,
+      "why": "Most leaks happen where two surfaces meet. Flashing covers those seams."
+    },
+    {
+      "type": "choice",
+      "prompt": "How do strong couples treat each other in front of others?",
+      "options": [
+        "With respect, even when they disagree",
+        "With jokes at the other's expense",
+        "By airing private arguments",
+        "By competing for attention"
+      ],
+      "answer": 0,
+      "why": "Being on the same side in public builds trust in private."
+    }
+  ],
+  "talk": "How would you like to show up together with family and friends?"
+}

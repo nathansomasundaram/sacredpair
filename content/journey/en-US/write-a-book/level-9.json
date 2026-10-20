@@ -1,0 +1,53 @@
+{
+  "path": "write_a_book",
+  "level": 9,
+  "title": "Choose your publishing path",
+  "stage": {
+    "name": "Published",
+    "description": "The story is finished, bound and ready to share."
+  },
+  "intro": "Sharing the story you wrote together.",
+  "questions": [
+    {
+      "type": "match",
+      "prompt": "Match each term to what it means.",
+      "pairs": [
+        ["Traditional publishing", "A publisher handles printing and selling"],
+        ["Self-publishing", "The author handles and pays for publishing"],
+        ["Literary agent", "Represents an author to publishers"]
+      ],
+      "why": "Both paths can lead to a book in readers' hands. They differ in who does what."
+    },
+    {
+      "type": "choice",
+      "prompt": "In traditional publishing, what usually comes first?",
+      "options": [
+        "Finding an agent or publisher",
+        "Printing the books",
+        "Booking a book tour",
+        "Designing merchandise"
+      ],
+      "answer": 0,
+      "why": "Most authors send a query letter to agents, who then pitch the book to publishers."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Self-published authors are responsible for editing, cover design and marketing.",
+      "answer": true,
+      "why": "They can hire help, but the choices and costs are theirs."
+    },
+    {
+      "type": "choice",
+      "prompt": "For a couple, publishing is choosing to share your story. What should that next step be?",
+      "options": [
+        "A commitment you choose together, when you're both ready",
+        "Whatever others pressure you into",
+        "Rushing so you don't lose momentum",
+        "Keeping your relationship hidden forever"
+      ],
+      "answer": 0,
+      "why": "The right next step is the one you both choose, freely."
+    }
+  ],
+  "talk": "What would a meaningful next step look like for the two of you?"
+}

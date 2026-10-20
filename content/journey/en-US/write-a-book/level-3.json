@@ -1,0 +1,55 @@
+{
+  "path": "write_a_book",
+  "level": 3,
+  "title": "Build a chapter outline",
+  "stage": {
+    "name": "Outline",
+    "description": "The chapters are planned, from the first page to the last."
+  },
+  "intro": "A map of the story before you write it.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What is an outline for?",
+      "options": [
+        "Planning the order of events or ideas before drafting",
+        "Choosing the font",
+        "Writing the final version",
+        "Listing characters' names only"
+      ],
+      "answer": 0,
+      "why": "An outline shows the shape of the book so the writing has a direction."
+    },
+    {
+      "type": "order",
+      "prompt": "Put a classic story shape in order.",
+      "items": [
+        "The situation is set up",
+        "A problem or change appears",
+        "Challenges build",
+        "A turning point",
+        "Resolution"
+      ],
+      "why": "Most stories, from fairy tales to films, follow some version of this arc."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "An outline can change as you write.",
+      "answer": true,
+      "why": "Outlines are guides, not cages. Writers adjust them as the story grows."
+    },
+    {
+      "type": "choice",
+      "prompt": "What's a healthy way for a couple to talk about milestones?",
+      "options": [
+        "Share hopes and timelines openly and stay flexible",
+        "Set strict deadlines for the other person",
+        "Never talk about the future",
+        "Follow the timeline other people expect"
+      ],
+      "answer": 0,
+      "why": "Plans work best when both people help make them and both can adjust them."
+    }
+  ],
+  "talk": "What milestones would you like to reach together, and roughly when?"
+}

@@ -1,0 +1,53 @@
+{
+  "path": "build_a_house",
+  "level": 8,
+  "title": "Interior Finishes",
+  "stage": {
+    "name": "Finishing touches",
+    "description": "Floors, cabinets, paint and light: rooms that feel like home."
+  },
+  "intro": "Where a house becomes yours.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Why is painting usually done before the final flooring goes in?",
+      "options": [
+        "So drips and spills don't damage the new floors",
+        "Paint dries faster that way",
+        "Floors make walls dusty",
+        "There's no reason"
+      ],
+      "answer": 0,
+      "why": "Finishes go in an order that protects the work already done."
+    },
+    {
+      "type": "match",
+      "prompt": "Match each finish to what it is.",
+      "pairs": [
+        ["Trim", "Edges around doors, windows and floors"],
+        ["Cabinets", "Storage in kitchens and baths"],
+        ["Fixtures", "Lights, faucets and sinks"]
+      ],
+      "why": "Small details, done well, make a room feel finished."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Finish work happens after the walls are closed.",
+      "answer": true,
+      "why": "Paint, trim and cabinets need finished walls to go on."
+    },
+    {
+      "type": "choice",
+      "prompt": "What turns a house into a home for a couple?",
+      "options": [
+        "Rituals and traditions that are yours",
+        "Expensive furniture",
+        "Never changing anything",
+        "Living separate lives in the same house"
+      ],
+      "answer": 0,
+      "why": "Shared rituals, big or small, give a home its feeling."
+    }
+  ],
+  "talk": "What's a small ritual you'd love to share, like Sunday breakfast or an evening walk?"
+}

@@ -20,6 +20,16 @@
   --leaf: #3b7558;
   --danger: #b3261e;
   --focus: #4a3d8f;
+  /* Together scenes */
+  --sky: #e6eef7;
+  --soil: #8a5a36;
+  --soil-deep: #6b4428;
+  --grass: #5e9a5b;
+  --wood: #9a6a3f;
+  --concrete: #b9b6c2;
+  --water: #3b82c4;
+  --fruit: #c8463d;
+  --page: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,6 +46,15 @@
     --leaf: #7cc19c;
     --danger: #f2b8b5;
     --focus: #c4bbf7;
+    --sky: #1d2140;
+    --soil: #5c3b24;
+    --soil-deep: #46291a;
+    --grass: #3f7d4f;
+    --wood: #a87648;
+    --concrete: #565a72;
+    --water: #6aa8e0;
+    --fruit: #e2655c;
+    --page: #ece9f5;
   }
 }
 
@@ -127,4 +146,22 @@
 .intro-arrive {
   animation: intro-arrive 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
   animation-delay: calc(var(--i, 0) * 110ms);
+}
+
+/* Together: a new stage of the scene grows in. */
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.stage-in {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: stage-in 900ms cubic-bezier(0.2, 1.2, 0.35, 1) both;
 }

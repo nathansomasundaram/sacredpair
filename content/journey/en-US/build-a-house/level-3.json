@@ -1,0 +1,55 @@
+{
+  "path": "build_a_house",
+  "level": 3,
+  "title": "Foundation Construction",
+  "stage": {
+    "name": "Foundation",
+    "description": "Concrete footings and a foundation that everything else will rest on."
+  },
+  "intro": "What everything else stands on.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What is a footing?",
+      "options": [
+        "A wide concrete base that spreads the house's weight into the ground",
+        "A doormat",
+        "A type of roof",
+        "The front steps"
+      ],
+      "answer": 0,
+      "why": "Footings spread the load so the house doesn't sink or settle unevenly."
+    },
+    {
+      "type": "choice",
+      "prompt": "Why is steel rebar placed inside concrete?",
+      "options": [
+        "It helps the concrete resist cracking when it's pulled or bent",
+        "It makes concrete dry faster",
+        "It's for decoration",
+        "It keeps water out"
+      ],
+      "answer": 0,
+      "why": "Concrete is strong when squeezed but weak when stretched. Steel takes the stretching."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Concrete needs time to cure before heavy loads go on it.",
+      "answer": true,
+      "why": "Concrete keeps gaining strength for weeks. Rushing it weakens the whole house."
+    },
+    {
+      "type": "choice",
+      "prompt": "What is the foundation of a lasting relationship?",
+      "options": [
+        "Trust, respect and shared core values",
+        "The same taste in movies",
+        "Never disagreeing",
+        "Attraction alone"
+      ],
+      "answer": 0,
+      "why": "Shared tastes are nice, but trust and respect carry the weight."
+    }
+  ],
+  "talk": "What does trust look like to you in everyday life?"
+}

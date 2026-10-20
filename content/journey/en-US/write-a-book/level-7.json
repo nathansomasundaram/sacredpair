@@ -1,0 +1,54 @@
+{
+  "path": "write_a_book",
+  "level": 7,
+  "title": "Revise in structured passes",
+  "stage": {
+    "name": "Revision",
+    "description": "The draft is reworked, pass by pass, into something stronger."
+  },
+  "intro": "Making it better, one pass at a time.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What does “revising in passes” mean?",
+      "options": [
+        "Reading the draft several times, focusing on one thing each time",
+        "Rewriting everything at once",
+        "Only fixing spelling",
+        "Asking someone else to rewrite it"
+      ],
+      "answer": 0,
+      "why": "Focusing on one thing at a time makes a big job manageable."
+    },
+    {
+      "type": "order",
+      "prompt": "Put the passes in their usual order.",
+      "items": [
+        "Big-picture story and structure",
+        "Scenes and chapters",
+        "Sentences and words",
+        "Spelling and punctuation"
+      ],
+      "why": "Start big. There's no point polishing a sentence in a chapter you might cut."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "It's usually best to fix spelling before checking whether the story works.",
+      "answer": false,
+      "why": "Fix the structure first. Spelling comes last."
+    },
+    {
+      "type": "choice",
+      "prompt": "Couples revise too, after disagreements. What helps repair?",
+      "options": [
+        "Taking a break when emotions run high, then coming back to talk calmly",
+        "Pretending nothing happened",
+        "Bringing up every past argument",
+        "Insisting on finishing the fight right away"
+      ],
+      "answer": 0,
+      "why": "When feelings flood in, a short pause helps both people come back able to listen."
+    }
+  ],
+  "talk": "What helps you make up after a disagreement?"
+}

@@ -1,0 +1,54 @@
+{
+  "path": "grow_a_tree",
+  "level": 5,
+  "title": "Seedling",
+  "stage": {
+    "name": "Seedling",
+    "description": "True leaves begin making food from sunlight, water and air."
+  },
+  "intro": "A seedling starts feeding itself.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What do leaves use to make food?",
+      "options": [
+        "Sunlight, water and carbon dioxide",
+        "Soil, wind and oxygen",
+        "Sugar, salt and heat",
+        "Moonlight, rain and nitrogen"
+      ],
+      "answer": 0,
+      "why": "Photosynthesis turns light, water and carbon dioxide into sugar."
+    },
+    {
+      "type": "choice",
+      "prompt": "Which gas do plants release while making food?",
+      "options": ["Oxygen", "Methane", "Helium", "Nitrogen"],
+      "answer": 0,
+      "why": "Oxygen is released as a by-product of making sugar."
+    },
+    {
+      "type": "match",
+      "prompt": "Match each part of the plant to its job.",
+      "pairs": [
+        ["Roots", "Take in water and minerals"],
+        ["Stem", "Carries water and sugars"],
+        ["Leaves", "Make food from light"]
+      ],
+      "why": "Roots drink, the stem carries, and leaves make sugar from light."
+    },
+    {
+      "type": "choice",
+      "prompt": "What keeps a relationship nourished from day to day?",
+      "options": [
+        "Noticing and answering each other's small bids for attention",
+        "One big date a year",
+        "Avoiding every disagreement",
+        "Only talking about plans"
+      ],
+      "answer": 0,
+      "why": "A “bid” can be as small as “look at this.” Researchers who study couples find that turning toward these small moments builds lasting connection."
+    }
+  ],
+  "talk": "What's a small way the other could turn toward you this week?"
+}

@@ -1,0 +1,55 @@
+{
+  "path": "write_a_book",
+  "level": 5,
+  "title": "Set a writing schedule you can keep",
+  "stage": {
+    "name": "Schedule",
+    "description": "Time is set aside, week after week."
+  },
+  "intro": "Books get finished by showing up.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Which schedule helps most writers finish a book?",
+      "options": [
+        "Regular, realistic sessions they can keep up",
+        "Writing only when inspired",
+        "One huge session a year",
+        "Waiting until life is calm"
+      ],
+      "answer": 0,
+      "why": "Small, steady progress adds up faster than waiting for the perfect moment."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Writing 300 words a day adds up to more than 100,000 words in a year.",
+      "answer": true,
+      "why": "300 × 365 = 109,500. That's a full-length novel."
+    },
+    {
+      "type": "choice",
+      "prompt": "What's a good way to protect writing time?",
+      "options": [
+        "Put it on the calendar like an appointment",
+        "Hope there's time left over",
+        "Write while doing other things",
+        "Skip it whenever you're tired"
+      ],
+      "answer": 0,
+      "why": "Time that's planned is time that happens."
+    },
+    {
+      "type": "choice",
+      "prompt": "Relationships need scheduled time too. Which habit is healthiest?",
+      "options": [
+        "A regular time that's just for the two of you",
+        "Seeing each other only when nothing else is on",
+        "Spending every minute together",
+        "Canceling whenever something comes up"
+      ],
+      "answer": 0,
+      "why": "Protected time together says “you matter” without a word."
+    }
+  ],
+  "talk": "When could you have a regular time that's just for the two of you?"
+}

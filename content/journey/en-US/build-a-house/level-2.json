@@ -1,0 +1,53 @@
+{
+  "path": "build_a_house",
+  "level": 2,
+  "title": "Site Preparation",
+  "stage": {
+    "name": "Site ready",
+    "description": "The ground is cleared, leveled and marked out."
+  },
+  "intro": "Good building needs good ground.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "Why is a building site leveled and graded?",
+      "options": [
+        "So the foundation sits evenly and water drains away from the house",
+        "To make it look nice",
+        "So grass grows faster",
+        "It isn't necessary"
+      ],
+      "answer": 0,
+      "why": "Water that pools against a house causes damage, so the ground is shaped to carry it away."
+    },
+    {
+      "type": "match",
+      "prompt": "Match each job to what it does.",
+      "pairs": [
+        ["Clearing", "Removes trees, rocks and debris"],
+        ["Grading", "Shapes the ground so water drains"],
+        ["Surveying", "Marks exactly where the house goes"]
+      ],
+      "why": "Clear it, shape it, mark it: then the foundation can go in."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Testing the soil helps decide what kind of foundation a house needs.",
+      "answer": true,
+      "why": "Soft, wet or shifting soil needs a different foundation than firm, dry ground."
+    },
+    {
+      "type": "choice",
+      "prompt": "What does clearing space for a relationship look like?",
+      "options": [
+        "Making room in your week for each other",
+        "Ending all your other friendships",
+        "Pretending your past didn't happen",
+        "Waiting until life is less busy"
+      ],
+      "answer": 0,
+      "why": "Life rarely gets less busy. Making room is a choice."
+    }
+  ],
+  "talk": "What would each of you need to clear from your week to make room for this?"
+}

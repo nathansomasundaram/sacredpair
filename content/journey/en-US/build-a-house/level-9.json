@@ -1,0 +1,54 @@
+{
+  "path": "build_a_house",
+  "level": 9,
+  "title": "Final Inspections, Walkthrough & Move-In",
+  "stage": {
+    "name": "Home",
+    "description": "Inspected, approved and ready. Keys in hand, you move in."
+  },
+  "intro": "A finish line that's really a beginning.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What does a certificate of occupancy mean?",
+      "options": [
+        "The house passed inspection and is approved to live in",
+        "The utilities are paid",
+        "The mortgage is paid off",
+        "The builder's warranty has ended"
+      ],
+      "answer": 0,
+      "why": "It's the official “ready”: safe to move in."
+    },
+    {
+      "type": "order",
+      "prompt": "Put the last steps in order.",
+      "items": [
+        "Final inspection",
+        "Walkthrough and a list of small fixes",
+        "Certificate of occupancy",
+        "Move in"
+      ],
+      "why": "Inspect, fix, approve, celebrate."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "A punch list is a list of small fixes to finish before the job is called done.",
+      "answer": true,
+      "why": "Even well-built houses have a few touch-ups at the end."
+    },
+    {
+      "type": "choice",
+      "prompt": "What keeps a home in good shape for years?",
+      "options": [
+        "Regular care and repairs, done together",
+        "Ignoring problems until they're big",
+        "Expecting it never to need work",
+        "One person doing all the upkeep"
+      ],
+      "answer": 0,
+      "why": "Homes, like relationships, last when both people look after them."
+    }
+  ],
+  "talk": "What would “home” mean to the two of you?"
+}

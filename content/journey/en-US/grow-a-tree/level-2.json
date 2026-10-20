@@ -1,0 +1,54 @@
+{
+  "path": "grow_a_tree",
+  "level": 2,
+  "title": "Water and Warmth",
+  "stage": {
+    "name": "Water and warmth",
+    "description": "Water softens the seed coat. The seed swells and begins to wake up."
+  },
+  "intro": "A seed only wakes when the conditions are right.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What does a seed need to start waking up?",
+      "options": [
+        "Water, the right warmth and air",
+        "Bright light only",
+        "Fertilizer only",
+        "Cold and dryness"
+      ],
+      "answer": 0,
+      "why": "Water, a suitable temperature and oxygen start germination."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Most seeds need sunlight to begin germinating underground.",
+      "answer": false,
+      "why": "It's dark underground. The seed runs on its stored food until its leaves reach the light."
+    },
+    {
+      "type": "order",
+      "prompt": "Put the waking-up steps in order.",
+      "items": [
+        "The seed soaks up water",
+        "It swells and the coat softens",
+        "The embryo starts to grow",
+        "The seed coat splits open"
+      ],
+      "why": "Water comes first. Everything else follows from the seed swelling."
+    },
+    {
+      "type": "choice",
+      "prompt": "What are the “water and warmth” of a new relationship?",
+      "options": [
+        "Kindness and regular, reliable contact",
+        "Testing whether the other person gets jealous",
+        "Keeping score of who texted last",
+        "Saving warmth for special occasions"
+      ],
+      "answer": 0,
+      "why": "Warmth and reliability make people feel safe, and feeling safe lets them open up."
+    }
+  ],
+  "talk": "What makes you feel cared for on an ordinary day?"
+}

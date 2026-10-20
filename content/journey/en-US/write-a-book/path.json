@@ -1,0 +1,10 @@
+{
+  "path": "write_a_book",
+  "name": "Write a book",
+  "tagline": "Your story, chapter by chapter.",
+  "description": "Go from one sentence to a published book, and see what each stage of writing teaches about telling your story together.",
+  "start": {
+    "name": "Blank page",
+    "description": "A blank page. Finish level 1 together to write the first sentence."
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "path": "build_a_house",
+  "level": 5,
+  "title": "Mechanical, Electrical & Plumbing (MEP)",
+  "stage": {
+    "name": "Systems",
+    "description": "Pipes, wires and ducts run through the walls: the systems that keep a home alive."
+  },
+  "intro": "The things you don't see, until they stop working.",
+  "questions": [
+    {
+      "type": "match",
+      "prompt": "Match each system to what it does.",
+      "pairs": [
+        ["Mechanical", "Heating, cooling and fresh air"],
+        ["Electrical", "Power, lights and outlets"],
+        ["Plumbing", "Clean water in, used water out"]
+      ],
+      "why": "MEP is the heart, nerves and veins of a house."
+    },
+    {
+      "type": "choice",
+      "prompt": "Why is the “rough-in” inspected before the walls are closed?",
+      "options": [
+        "So inspectors can check the pipes and wires while they're still visible",
+        "To choose paint colors",
+        "It's only a formality",
+        "To test the roof"
+      ],
+      "answer": 0,
+      "why": "Once the walls are closed, problems are hidden and much harder to fix."
+    },
+    {
+      "type": "order",
+      "prompt": "Put these steps in order.",
+      "items": [
+        "Run pipes and wires through the frame",
+        "Inspect the rough-in",
+        "Close up the walls",
+        "Connect fixtures and switches"
+      ],
+      "why": "Install, check, close, connect."
+    },
+    {
+      "type": "choice",
+      "prompt": "Communication runs behind the walls of a relationship. Which habit keeps it working?",
+      "options": [
+        "Checking in regularly, not just when something breaks",
+        "Only talking when there's a problem",
+        "Guessing what the other person feels",
+        "Never talking in person"
+      ],
+      "answer": 0,
+      "why": "Regular check-ins catch small leaks before they become floods."
+    }
+  ],
+  "talk": "How would you like to check in with each other: a walk, a call, a set time each week?"
+}

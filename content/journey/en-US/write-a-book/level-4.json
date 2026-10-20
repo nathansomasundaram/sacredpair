@@ -1,0 +1,53 @@
+{
+  "path": "write_a_book",
+  "level": 4,
+  "title": "Develop characters, world, or research",
+  "stage": {
+    "name": "Characters",
+    "description": "The people and the world of the story come to life."
+  },
+  "intro": "Every character has a history.",
+  "questions": [
+    {
+      "type": "choice",
+      "prompt": "What makes a character feel real?",
+      "options": [
+        "Clear wants, fears and a history that shapes them",
+        "Being perfect in every way",
+        "Lots of physical description",
+        "Never changing"
+      ],
+      "answer": 0,
+      "why": "Readers connect with characters whose choices make sense because of who they are."
+    },
+    {
+      "type": "match",
+      "prompt": "Match each word to its meaning.",
+      "pairs": [
+        ["Backstory", "What happened before the story begins"],
+        ["Motivation", "What a character wants, and why"],
+        ["Setting", "Where and when the story happens"]
+      ],
+      "why": "Backstory and motivation explain choices. Setting gives them a place."
+    },
+    {
+      "type": "truefalse",
+      "prompt": "Nonfiction writers research to make sure their facts are accurate.",
+      "answer": true,
+      "why": "Readers trust a book that gets its facts right."
+    },
+    {
+      "type": "choice",
+      "prompt": "How can two people understand each other's backstories better?",
+      "options": [
+        "Ask about families, traditions and past experiences with curiosity",
+        "Assume your backgrounds are the same",
+        "Judge the other's past",
+        "Avoid the topic entirely"
+      ],
+      "answer": 0,
+      "why": "Curiosity says “I want to know you.” Judgment closes the door."
+    }
+  ],
+  "talk": "What's a family tradition that shaped who you are?"
+}

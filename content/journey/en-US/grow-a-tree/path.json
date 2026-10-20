@@ -1,0 +1,10 @@
+{
+  "path": "grow_a_tree",
+  "name": "Grow a tree",
+  "tagline": "Patience, care and a little sunlight.",
+  "description": "Follow a seed all the way to a tree heavy with fruit, and see what each stage teaches about growing love.",
+  "start": {
+    "name": "Bare soil",
+    "description": "Nothing is planted yet. Finish level 1 together to plant your seed."
+  }
+}

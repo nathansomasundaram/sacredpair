@@ -157,6 +157,26 @@ Premium status is one record per member (`entitlements`); expiry takes effect au
 
 The demo data (`npm run seed:demo`) connects Morgan with Grace (2 unread messages) and Naomi, and Taylor with Daniel (1 unread) and Jordan (no messages yet).
 
+## Together
+
+Two connected people take one journey together: **Grow a tree**, **Build a house** or **Write a book**.
+
+- **Choosing a path:** one person suggests a path and the other accepts it, or suggests a different one. A couple has one path at a time. Either person can leave it, and then they can choose again from level 1. Ending the connection ends the journey too.
+- **Levels:** each path has the nine levels from the requirements workbook. A level is four questions, mixing the craft itself (botany, construction, writing) with what it teaches about relationships:
+  - choose the answer
+  - true or false
+  - put steps in order
+  - match the pairs
+- **Explanations and scoring:** every answer is explained. Anything missed comes back once at the end, so nobody fails. The score counts first-try answers, and replaying a level keeps the best score.
+- **Talk about it:** each level ends with a question for the couple, with a link straight to their Chat.
+- **Moving forward together:** levels go in order, and each person can be at most one level ahead of the other. The shared picture (a tree, a house or a book, in 10 stages) grows only when both have finished a level. The database enforces these rules (`complete_level()` in `supabase/migrations/20261025000000_together.sql`), and progress is saved there, not in the browser.
+- **Lessons are content files**, one per level per language: `content/journey/en-US/grow-a-tree/level-1.json` and so on, plus a `path.json` describing each path.
+  - To add a language, copy the `en-US` folder and translate it. Until a level is translated it falls back to US English.
+  - Question types: `choice` (options, `answer` = the right option's index), `truefalse`, `order` (`items` in the right order) and `match` (`pairs`). Answers are shuffled on screen.
+  - `npm test` checks that every lesson file is complete and answerable.
+
+The demo data puts Morgan and Grace on Grow a tree (Morgan is a level ahead). Naomi has suggested Write a book to Morgan, and Taylor and Daniel are on Build a house, where it's Taylor's turn.
+
 ## Checks
 
 ```bash

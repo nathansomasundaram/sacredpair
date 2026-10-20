@@ -1,0 +1,10 @@
+{
+  "path": "build_a_house",
+  "name": "Build a house",
+  "tagline": "Plan it, build it, make it home.",
+  "description": "Go from plans and permits to the day you move in, and see what each stage of building teaches about building a life together.",
+  "start": {
+    "name": "Empty lot",
+    "description": "An empty lot, waiting for a plan. Finish level 1 together to draw it up."
+  }
+}
