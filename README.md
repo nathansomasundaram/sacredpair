@@ -10,15 +10,15 @@ A web app for people who are serious about finding a life partner and building a
 
 ## Stack
 
-| Part | Choice |
-|---|---|
-| App | Next.js 16 (App Router, TypeScript), deployed on Vercel |
-| Styling | Tailwind CSS 4 with design tokens in `src/app/globals.css` |
-| Text and languages | next-intl. US English now; every word lives in `messages/<locale>.json` |
-| Database, sign-in, files, live chat | Supabase (Postgres with Row Level Security, Auth, Storage, Realtime) |
-| Tests | Vitest (unit and database rules), Playwright (pages in a browser) |
-| Local testing | Docker: Supabase containers plus the app container |
-| CI | GitHub Actions; Vercel creates a preview for every pull request |
+| Part                                | Choice                                                                  |
+| ----------------------------------- | ----------------------------------------------------------------------- |
+| App                                 | Next.js 16 (App Router, TypeScript), deployed on Vercel                 |
+| Styling                             | Tailwind CSS 4 with design tokens in `src/app/globals.css`              |
+| Text and languages                  | next-intl. US English now; every word lives in `messages/<locale>.json` |
+| Database, sign-in, files, live chat | Supabase (Postgres with Row Level Security, Auth, Storage, Realtime)    |
+| Tests                               | Vitest (unit and database rules), Playwright (pages in a browser)       |
+| Local testing                       | Docker: Supabase containers plus the app container                      |
+| CI                                  | GitHub Actions; Vercel creates a preview for every pull request         |
 
 ## Run it locally
 
@@ -29,14 +29,15 @@ npm install
 npm run db:start          # starts Supabase in Docker (applies migrations the first time)
 npm run env:local         # writes its URLs and keys into .env.local and .env
 npm run dev               # http://localhost:3000
+npm run seed:demo         # optional: 12 fictional members so Discover has people to show
 ```
 
 Keys are never written into the code. `npm run env:local` reads them from your running Supabase. Neither `.env.local` nor `.env` is committed, and GitHub's secret scanning blocks pushes that contain keys.
 
-| Local service | Address |
-|---|---|
-| App | http://localhost:3000 |
-| Supabase Studio (browse the database) | http://localhost:54323 |
+| Local service                                                 | Address                |
+| ------------------------------------------------------------- | ---------------------- |
+| App                                                           | http://localhost:3000  |
+| Supabase Studio (browse the database)                         | http://localhost:54323 |
 | Mailpit (emails sent locally: confirmations, password resets) | http://localhost:54324 |
 
 ### Run the app in Docker instead
@@ -92,6 +93,21 @@ Email wording lives in `supabase/templates/`. Local Supabase uses it automatical
 - Religion and ethnicity are optional and offer "Prefer not to say", which is never shown.
 
 All choices are stored as codes, listed once in `src/lib/profile/premium-options.ts`. The database accepts only those codes (`supabase/migrations/20261021000000_profile_premium.sql`). Adding a choice means adding it to the options file, `messages/en-US.json` and a new migration.
+
+## Discover
+
+Each week a member taps the magic wand to meet **four** people. Those four stay the same all week (tapping again never swaps anyone), and four new people arrive every Monday at midnight US Eastern time. If fewer than four people suit a member, the wand stays available that week to fill the empty places as new members join; if nobody suits yet, the week isn't used up.
+
+Who can be introduced (`supabase/migrations/20261022000000_discover.sql`):
+
+- Verified ID, a complete profile (name, city, state, photo), not banned, visible.
+- Never someone either person blocked, already connected, already chosen or passed, or introduced before.
+- "Looking for" and age range must suit **both** people once they set them in Settings (until then they don't narrow anything).
+- Nearest first: same city, then same state, then anyone, in random order. Distance-based matching replaces this once members' locations are stored.
+
+The database does the choosing (`reveal_introductions()`), so the four-a-week limit can't be bypassed from the browser. Each card opens `/details/{id}`, which only works for people introduced to the member or connected with them; the Premium part shows only to Premium members.
+
+`npm run seed:demo` adds 12 fictional, verified members to your **local** Supabase (it refuses to run against anything else). Log in as any of them with `<first name>@demo.sacredpair.test` and password `DemoMember2026`. `npm run seed:demo -- --remove` takes them out again.
 
 ## Checks
 

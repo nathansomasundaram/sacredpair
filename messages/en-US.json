@@ -21,14 +21,37 @@
   },
   "discover": {
     "title": "Discover",
-    "emptyTitle": "Your four profiles for this week",
-    "emptyBody": "Tap the magic wand to see four people chosen for you. New profiles arrive every week.",
-    "passwordUpdated": "Your new password is saved."
+    "emptyTitle": "Your four for this week",
+    "emptyBody": "Tap the magic wand to meet {count} people chosen for you. They stay with you all week, and {count} new people arrive every Monday.",
+    "passwordUpdated": "Your new password is saved.",
+    "wand": "Show this week's four",
+    "lookAgain": "Look again",
+    "weekIntro": "{count, plural, one {Here is the person chosen for you this week.} other {Here are the # people chosen for you this week.}} Open a profile to read more.",
+    "listLabel": "This week's introductions",
+    "nextLabel": "Next introductions",
+    "nextWeek": "{count} new people arrive on {date}.",
+    "shortWeek": "We're still looking for more people who suit you. Look again later this week, or wait for new people on {date}.",
+    "noneYetTitle": "Nobody suits you just yet",
+    "noneYetBody": "New members join every day. Tap the wand again later this week.",
+    "incompleteTitle": "Finish your profile first",
+    "incompleteBody": "Add your name, city, state and a photo so the people you meet can see who you are.",
+    "profileIncompleteBody": "Your profile needs a name, city, state and photo before we can introduce you.",
+    "finishProfile": "Finish my profile",
+    "failed": "Something went wrong. Please try again.",
+    "viewProfile": "View profile",
+    "openDetails": "View {name}'s profile"
   },
   "details": {
     "title": "Details",
     "emptyTitle": "Nobody selected yet",
-    "emptyBody": "Choose a profile in Discover to see their full story here."
+    "emptyBody": "Choose a profile in Discover to see their full story here.",
+    "back": "Back to Discover",
+    "premiumEmpty": "{name} hasn't added Premium details yet.",
+    "premiumLockedTitle": "Premium details",
+    "premiumLockedBody": "Premium members can see {name}'s extra pictures, video, prompts and more.",
+    "notFoundTitle": "This profile isn't available",
+    "notFoundBody": "You can see the people introduced to you in Discover and the people you're connected with.",
+    "premiumHeading": "More about {name}"
   },
   "together": {
     "title": "Together",
