@@ -109,6 +109,20 @@ The database does the choosing (`reveal_introductions()`), so the four-a-week li
 
 `npm run seed:demo` adds 12 fictional, verified members to your **local** Supabase (it refuses to run against anything else). Log in as any of them with `<first name>@demo.sacredpair.test` and password `DemoMember2026`. `npm run seed:demo -- --remove` takes them out again.
 
+## Details and Premium
+
+The Details tab lists everyone whose full profile a member can open (this week's introductions; connections join with Chat). `/details/{id}` shows the Profile Overview to everyone allowed to see that person, then:
+
+- **Premium members** see the Premium part: more photos, video, prompts, details and interests.
+- **Free members** see how much the person shared ("2 more photos", "An introduction video", "1 prompt answered", "5 more details"), never the content, and a **Know more** button that opens the upgrade screen (`/upgrade`). The counts come from `premium_teaser()` (`supabase/migrations/20261023000000_details.sql`), which answers only for people the member may see. Premium content itself is still guarded by Row Level Security, so it never reaches a free member's browser.
+
+Premium status is one record per member (`entitlements`); expiry takes effect automatically. Real payments arrive in the payments step (Stripe on the web, RevenueCat for the app stores). Until then `PAYMENTS_PROVIDER` decides what the upgrade screen offers:
+
+| `PAYMENTS_PROVIDER`                           | Upgrade screen                                                                                                        |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `simulated` (default locally and on previews) | **Start test Premium (30 days)**, no payment. Recorded as source `simulated`, and can be ended again from `/upgrade`. |
+| `none` (default on the production site)       | "Premium opens soon". Test Premium is refused on production.                                                          |
+
 ## Checks
 
 ```bash

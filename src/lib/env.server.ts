@@ -10,6 +10,13 @@ const serverSchema = z
     IDENTITY_PROVIDER: z.enum(["stripe", "simulated"]).default("simulated"),
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_IDENTITY_WEBHOOK_SECRET: z.string().optional(),
+    // How members upgrade to Premium. "simulated" gives a free 30-day test
+    // Premium (local and previews only); "none" shows that Premium opens
+    // soon. Real payments (Stripe on the web, RevenueCat in the mobile apps)
+    // arrive with the payments step.
+    PAYMENTS_PROVIDER: z
+      .enum(["simulated", "none"])
+      .default(process.env.VERCEL_ENV === "production" ? "none" : "simulated"),
   })
   .superRefine((env, ctx) => {
     if (env.IDENTITY_PROVIDER === "stripe" && !env.STRIPE_SECRET_KEY) {
@@ -29,6 +36,16 @@ const serverSchema = z
         message: "Test verification can't be used on the production site",
       });
     }
+    if (
+      env.PAYMENTS_PROVIDER === "simulated" &&
+      process.env.VERCEL_ENV === "production"
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["PAYMENTS_PROVIDER"],
+        message: "Test Premium can't be used on the production site",
+      });
+    }
   });
 
 let cached: z.infer<typeof serverSchema> | undefined;
@@ -40,6 +57,7 @@ export function serverEnv() {
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || undefined,
     STRIPE_IDENTITY_WEBHOOK_SECRET:
       process.env.STRIPE_IDENTITY_WEBHOOK_SECRET || undefined,
+    PAYMENTS_PROVIDER: process.env.PAYMENTS_PROVIDER || undefined,
   });
   return cached;
 }

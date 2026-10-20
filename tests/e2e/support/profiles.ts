@@ -90,3 +90,46 @@ export async function deleteMembers(ids: string[]) {
 export function uniqueCity() {
   return `Testville ${randomUUID().slice(0, 6)}`;
 }
+
+/** Fills in someone's Premium profile: 2 more photos, a video, a prompt and details. */
+export async function addPremiumContent(id: string) {
+  const fs = await import("node:fs");
+  const videoPath = `${id}/${randomUUID()}.mp4`;
+  const video = await admin.storage
+    .from("videos")
+    .upload(videoPath, fs.readFileSync("tests/fixtures/location.mp4"), {
+      contentType: "video/mp4",
+    });
+  if (video.error) throw video.error;
+
+  const { error } = await admin
+    .from("profile_premium")
+    .update({
+      height_cm: 178,
+      profession: "Choir director",
+      religion: "christian",
+      family_plan: "want_children",
+      hobbies: ["cooking", "hiking"],
+      prompts: [
+        {
+          prompt: "perfect_sunday",
+          answer: "Morning service, then a long lunch with friends.",
+        },
+      ],
+      video_path: videoPath,
+    })
+    .eq("profile_id", id);
+  if (error) throw error;
+
+  for (const position of [1, 2]) {
+    const path = `${id}/${randomUUID()}.webp`;
+    const up = await admin.storage
+      .from("photos")
+      .upload(path, await photo(position * 90), { contentType: "image/webp" });
+    if (up.error) throw up.error;
+    const row = await admin
+      .from("profile_photos")
+      .insert({ profile_id: id, storage_path: path, position });
+    if (row.error) throw row.error;
+  }
+}

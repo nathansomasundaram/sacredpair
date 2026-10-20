@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { ChevronLeft, Lock } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { FormAlert } from "@/components/forms/FormAlert";
+import { PremiumTeaser } from "@/components/premium/PremiumTeaser";
 import {
   PremiumBadge,
   PremiumDetails,
 } from "@/components/profile/PremiumDetails";
 import { ProfileCard } from "@/components/profile/ProfileCard";
 import { requireVerifiedMember } from "@/lib/auth/session";
+import { getMembership, getPremiumTeaser } from "@/lib/premium/data";
 import { getProfileOverview, signedPhotoUrl } from "@/lib/profile/data";
 import {
   getExtraPhotos,
@@ -32,11 +35,12 @@ export async function generateMetadata({
 
 /**
  * Someone's full profile. Members only see people introduced to them or
- * already connected (Row Level Security decides); the Premium part shows
- * only to Premium members.
+ * already connected (Row Level Security decides). Premium members see the
+ * Premium part; free members see how much there is and how to upgrade.
  */
 export default async function ProfileDetailsPage({
   params,
+  searchParams,
 }: PageProps<"/details/[profileId]">) {
   const { profileId } = await params;
   const user = await requireVerifiedMember(`/details/${profileId}`);
@@ -44,25 +48,61 @@ export default async function ProfileDetailsPage({
   if (profileId === user.id) redirect("/profile");
 
   const t = await getTranslations("details");
-  const profile = await getProfileOverview(profileId);
+  const [profile, membership, { upgraded }] = await Promise.all([
+    getProfileOverview(profileId),
+    getMembership(user.id),
+    searchParams,
+  ]);
   if (!profile) notFound();
 
-  const [photoUrl, premium, extraPhotos] = await Promise.all([
-    signedPhotoUrl(profile.photoPath),
-    getPremiumProfile(profileId),
-    getExtraPhotos(profileId),
-  ]);
-  const videoUrl = await signedVideoUrl(premium?.videoPath ?? null);
+  const photoUrl = await signedPhotoUrl(profile.photoPath);
+
+  let premiumPart;
+  if (membership.premium) {
+    const [premium, extraPhotos] = await Promise.all([
+      getPremiumProfile(profileId),
+      getExtraPhotos(profileId),
+    ]);
+    const videoUrl = await signedVideoUrl(premium?.videoPath ?? null);
+    premiumPart =
+      premium && hasPremiumContent(premium, extraPhotos) ? (
+        <PremiumDetails
+          premium={premium}
+          photos={extraPhotos}
+          videoUrl={videoUrl}
+          name={profile.displayName}
+        />
+      ) : (
+        <p className="text-ink-soft">
+          {t("premiumEmpty", { name: profile.displayName })}
+        </p>
+      );
+  } else {
+    premiumPart = (
+      <PremiumTeaser
+        name={profile.displayName}
+        teaser={await getPremiumTeaser(profileId)}
+        upgradeHref={`/upgrade?next=${encodeURIComponent(`/details/${profileId}`)}`}
+      />
+    );
+  }
 
   return (
     <>
       <Link
-        href="/discover"
+        href="/details"
         className="mb-4 inline-flex min-h-11 items-center gap-1 font-semibold text-covenant"
       >
         <ChevronLeft aria-hidden size={19} className="rtl:-scale-x-100" />
-        {t("back")}
+        {t("backToList")}
       </Link>
+
+      {upgraded === "1" && membership.premium && (
+        <div className="mb-6">
+          <FormAlert tone="success">{t("upgraded")}</FormAlert>
+        </div>
+      )}
+
       <div className="max-w-[420px]">
         <ProfileCard profile={profile} photoUrl={photoUrl} />
       </div>
@@ -74,34 +114,7 @@ export default async function ProfileDetailsPage({
           </h2>
           <PremiumBadge />
         </div>
-        {premium ? (
-          hasPremiumContent(premium, extraPhotos) ? (
-            <PremiumDetails
-              premium={premium}
-              photos={extraPhotos}
-              videoUrl={videoUrl}
-              name={profile.displayName}
-            />
-          ) : (
-            <p className="text-ink-soft">
-              {t("premiumEmpty", { name: profile.displayName })}
-            </p>
-          )
-        ) : (
-          <div className="flex items-start gap-3 rounded-2xl border border-ring/60 bg-ring/10 px-5 py-4">
-            <Lock
-              aria-hidden
-              size={20}
-              className="mt-0.5 shrink-0 text-ink-soft"
-            />
-            <div className="flex flex-col gap-1">
-              <p className="font-semibold">{t("premiumLockedTitle")}</p>
-              <p className="text-ink-soft">
-                {t("premiumLockedBody", { name: profile.displayName })}
-              </p>
-            </div>
-          </div>
-        )}
+        {premiumPart}
       </section>
     </>
   );

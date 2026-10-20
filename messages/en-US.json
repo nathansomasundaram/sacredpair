@@ -43,15 +43,29 @@
   },
   "details": {
     "title": "Details",
-    "emptyTitle": "Nobody selected yet",
-    "emptyBody": "Choose a profile in Discover to see their full story here.",
-    "back": "Back to Discover",
+    "emptyTitle": "Nobody to look at yet",
+    "emptyBody": "Tap the magic wand in Discover to meet this week's four. Their full profiles appear here.",
     "premiumEmpty": "{name} hasn't added Premium details yet.",
-    "premiumLockedTitle": "Premium details",
-    "premiumLockedBody": "Premium members can see {name}'s extra pictures, video, prompts and more.",
     "notFoundTitle": "This profile isn't available",
     "notFoundBody": "You can see the people introduced to you in Discover and the people you're connected with.",
-    "premiumHeading": "More about {name}"
+    "premiumHeading": "More about {name}",
+    "goDiscover": "Go to Discover",
+    "listIntro": "Open a profile to see everything someone has shared.",
+    "thisWeek": "This week's introductions",
+    "knowMore": "Know more",
+    "backToList": "All profiles",
+    "upgraded": "Welcome to Premium. You can now see everything people share on their profiles.",
+    "teaser": {
+      "title": "Know more about {name}",
+      "photos": "{count, plural, one {# more photo} other {# more photos}}",
+      "video": "An introduction video",
+      "prompts": "{count, plural, one {# prompt answered} other {# prompts answered}}",
+      "details": "{count, plural, one {# more detail} other {# more details}}, like faith, family plans and lifestyle",
+      "body": "Premium members see all of it, so you can tell whether {name} is right for you before you choose.",
+      "knowMore": "Know more",
+      "nothingYet": "{name} hasn't added more to their profile yet.",
+      "aboutPremium": "About Premium"
+    }
   },
   "together": {
     "title": "Together",
@@ -712,5 +726,42 @@
       "videoFailed": "We couldn't save your video. Try again in a moment.",
       "checkFields": "Some details need another look. They're marked below."
     }
+  },
+  "upgrade": {
+    "title": "Premium",
+    "back": "Back",
+    "eyebrow": "Sacred Pair Premium",
+    "headline": "See the whole person before you choose",
+    "lead": "Premium opens every profile fully, so you can tell who shares your values, faith and plans for a family.",
+    "benefits": {
+      "photos": {
+        "title": "More photos and a video",
+        "body": "Up to six more photos and a short video introduction from each person."
+      },
+      "prompts": {
+        "title": "Their own words",
+        "body": "Answers to prompts like what they value most and what a perfect Sunday looks like."
+      },
+      "details": {
+        "title": "The details that matter",
+        "body": "Faith, family plans, children, education, lifestyle and interests."
+      },
+      "filters": {
+        "title": "Introductions that fit",
+        "body": "Choose who you meet by religion, family plans, smoking, drinking, pets and more."
+      }
+    },
+    "soon": "Coming soon",
+    "planHeading": "Your membership",
+    "active": "You're a Premium member.",
+    "activeUntil": "You're a Premium member until {date}.",
+    "activeTestUntil": "Test Premium is on until {date}.",
+    "continue": "Continue",
+    "startTest": "Start test Premium ({days} days)",
+    "testNote": "Test mode: no payment is taken. This is only available while Sacred Pair is being built and tested.",
+    "endTest": "End test Premium",
+    "ended": "Test Premium has ended. You're back to a free membership.",
+    "soonTitle": "Premium opens soon",
+    "soonBody": "Payments aren't open yet. Everything in your free membership keeps working in the meantime."
   }
 }

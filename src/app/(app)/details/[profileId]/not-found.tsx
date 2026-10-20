@@ -13,8 +13,8 @@ export default async function ProfileNotFound() {
       title={t("notFoundTitle")}
       body={t("notFoundBody")}
     >
-      <Link href="/discover" className={quietButtonClass}>
-        {t("back")}
+      <Link href="/details" className={quietButtonClass}>
+        {t("backToList")}
       </Link>
     </EmptyState>
   );

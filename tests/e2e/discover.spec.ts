@@ -78,9 +78,10 @@ test("the wand reveals four people, the same all week", async ({ page }) => {
   await expect(
     main.getByRole("heading", { level: 2, name: new RegExp(`^${shown[0]}`) }),
   ).toBeVisible();
-  await expect(main.getByText("Premium members can see")).toBeVisible();
-  await main.getByRole("link", { name: "Back to Discover" }).click();
-  await expect(page).toHaveURL(/\/discover$/);
+  await expect(
+    main.getByText(`${shown[0]} hasn't added more to their profile yet.`),
+  ).toBeVisible();
+  await page.goto("/discover");
 });
 
 test("says so when nobody suits yet", async ({ page }, info) => {
