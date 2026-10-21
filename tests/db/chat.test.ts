@@ -81,10 +81,20 @@ const liveConnection = (a: string, b: string) =>
     )
     .then((r) => (r.rows[0]?.id as string | undefined) ?? null);
 
-/** Two members introduced to each other who both chose each other. */
-async function connectedPair() {
+const makePremium = (...ids: string[]) =>
+  db.query(
+    "update public.entitlements set tier = 'premium', source = 'simulated', expires_at = now() + interval '30 days' where user_id = any($1)",
+    [ids],
+  );
+
+/**
+ * Two members introduced to each other who both chose each other. Both
+ * have Premium unless `premium` is false (Chat needs both on Premium).
+ */
+async function connectedPair({ premium = true } = {}) {
   const a = await newMember();
   const b = await newMember();
+  if (premium) await makePremium(a, b);
   await introduce(a, b);
   await introduce(b, a);
   await choose(a, b);
@@ -253,6 +263,55 @@ describe("messages", () => {
       id,
     ]);
     expect(r.rows[0].body).toBe("Original");
+  });
+});
+
+describe("Premium", () => {
+  it("is needed by both people to read or send", async () => {
+    const { a, b, cid } = await connectedPair({ premium: false });
+    await expect(send(a, cid, "Hello")).rejects.toThrow(/row-level security/);
+
+    await makePremium(a);
+    await expect(send(a, cid, "Hello")).rejects.toThrow(/row-level security/);
+    await expect(
+      as(a, "select public.mark_messages_read($1)", [cid]),
+    ).rejects.toThrow(/premium_required/);
+
+    await makePremium(b);
+    await send(a, cid, "Hello");
+    expect(
+      await as(b, "select body from public.messages where connection_id = $1", [
+        cid,
+      ]),
+    ).toEqual([{ body: "Hello" }]);
+  });
+
+  it("closes the conversation, without deleting it, when Premium ends", async () => {
+    const { a, b, cid } = await connectedPair();
+    await send(a, cid, "Kept safe");
+    await db.query(
+      "update public.entitlements set expires_at = now() - interval '1 minute' where user_id = $1",
+      [b],
+    );
+    expect(
+      await as(a, "select 1 from public.messages where connection_id = $1", [
+        cid,
+      ]),
+    ).toHaveLength(0);
+    // The Chat list still shows the connection, without the message.
+    expect(
+      await as(a, "select last_body, unread from public.my_conversations()"),
+    ).toEqual([{ last_body: null, unread: 0 }]);
+    expect(
+      await as(a, "select access from public.my_connection_access()"),
+    ).toEqual([{ access: "waiting" }]);
+
+    await makePremium(b);
+    expect(
+      await as(a, "select body from public.messages where connection_id = $1", [
+        cid,
+      ]),
+    ).toEqual([{ body: "Kept safe" }]);
   });
 });
 

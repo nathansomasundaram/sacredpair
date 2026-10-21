@@ -45,7 +45,11 @@ export async function acceptPath(formData: FormData) {
   if (!journeyId) redirect(`/together/${connectionId}`);
   const supabase = await createClient();
   const { error } = await supabase.rpc("accept_journey", { jid: journeyId });
-  if (error) done(connectionId, "failed");
+  if (error)
+    done(
+      connectionId,
+      error.message.includes("premium_required") ? "premium" : "failed",
+    );
   onJourney(connectionId, user.id, "accepted");
   done(connectionId, "accepted");
 }
@@ -100,7 +104,10 @@ export async function completeLevel(
       return { ok: false, error: "waitForPartner" };
     if (error.message.includes("level_locked"))
       return { ok: false, error: "locked" };
-    if (error.message.includes("journey_not_active"))
+    if (
+      error.message.includes("journey_not_active") ||
+      error.message.includes("premium_required")
+    )
       return { ok: false, error: "notActive" };
     console.error("completeLevel failed", error);
     return { ok: false, error: "failed" };

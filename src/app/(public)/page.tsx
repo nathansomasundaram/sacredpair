@@ -184,10 +184,11 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
               {t("premium.title")}
             </h3>
             <ul className="flex list-disc flex-col gap-1.5 ps-5 text-ink-soft">
-              {["a", "b", "c"].map((k) => (
+              {["a", "b", "c", "d"].map((k) => (
                 <li key={k}>{t(`premium.${k}`)}</li>
               ))}
             </ul>
+            <p className="mt-auto text-[0.9375rem] text-ink-soft">{t("premium.note")}</p>
           </div>
         </div>
       </section>

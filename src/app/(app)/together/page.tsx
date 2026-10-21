@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, Sprout, UserRound } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
+import { PremiumBanner } from "@/components/premium/PremiumGate";
 import { Scene } from "@/components/together/Scene";
 import { quietButtonClass } from "@/components/ui/buttonStyles";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -11,6 +12,7 @@ import { requireVerifiedMember } from "@/lib/auth/session";
 import { LEVEL_COUNT, loadPath } from "@/lib/journey/content";
 import { getCouples } from "@/lib/journey/data";
 import { sharedStage } from "@/lib/journey/progress";
+import { getConnectionAccess } from "@/lib/premium/access";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("together");
@@ -20,9 +22,13 @@ export async function generateMetadata(): Promise<Metadata> {
 /** The Together tab: a journey for each connection. */
 export default async function TogetherPage() {
   const t = await getTranslations("together");
+  const tGate = await getTranslations("premiumGate");
   const locale = await getLocale();
   const user = await requireVerifiedMember("/together");
-  const couples = await getCouples(user.id);
+  const [couples, access] = await Promise.all([
+    getCouples(user.id),
+    getConnectionAccess(),
+  ]);
 
   if (couples.length === 0) {
     return (
@@ -49,25 +55,34 @@ export default async function TogetherPage() {
     <>
       <PageHeader title={t("title")} />
       <p className="mb-5 max-w-prose text-ink-soft">{t("listIntro")}</p>
+      {[...access.values()].includes("upgrade") && (
+        <PremiumBanner feature="together" next="/together" />
+      )}
       <ul className="flex flex-col gap-3">
         {couples.map((c) => {
           const name = c.other.displayName;
           const j = c.journey;
           const pathName = j ? paths.get(j.path)!.name : "";
           const together = sharedStage(c.mine, c.theirs);
-          const status = !j
-            ? t("status.choose")
-            : !j.accepted
-              ? j.proposedByMe
-                ? t("status.waiting", { name, path: pathName })
-                : t("status.suggested", { name, path: pathName })
-              : together === LEVEL_COUNT
-                ? t("status.complete", { path: pathName })
-                : t("status.progress", {
-                    path: pathName,
-                    done: together,
-                    total: LEVEL_COUNT,
-                  });
+          const gate = access.get(c.connectionId) ?? "open";
+          const status =
+            gate === "upgrade"
+              ? tGate("lockedPreview")
+              : gate === "waiting"
+                ? tGate("waitingPreview", { name })
+                : !j
+                  ? t("status.choose")
+                  : !j.accepted
+                    ? j.proposedByMe
+                      ? t("status.waiting", { name, path: pathName })
+                      : t("status.suggested", { name, path: pathName })
+                    : together === LEVEL_COUNT
+                      ? t("status.complete", { path: pathName })
+                      : t("status.progress", {
+                          path: pathName,
+                          done: together,
+                          total: LEVEL_COUNT,
+                        });
           return (
             <li key={c.connectionId}>
               <Link

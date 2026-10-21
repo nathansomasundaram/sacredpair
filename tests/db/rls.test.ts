@@ -259,6 +259,35 @@ describe("chat", () => {
     connectionId = r[0].id;
   });
 
+  it("stays closed until both people have Premium", async () => {
+    // Alice is Premium, Ben isn't yet.
+    await expect(
+      as(alice, (q) =>
+        q(
+          "insert into public.messages (connection_id, sender_id, body) values ($1, $2, 'Hello Ben')",
+          [connectionId, alice],
+        ),
+      ),
+    ).rejects.toThrow(/row-level security/);
+    expect(
+      await rows(
+        alice,
+        "select connection_id, access from public.my_connection_access()",
+      ),
+    ).toEqual([{ connection_id: connectionId, access: "waiting" }]);
+    expect(
+      await rows(ben, "select access from public.my_connection_access()"),
+    ).toEqual([{ access: "upgrade" }]);
+
+    await db.query(
+      "update public.entitlements set tier = 'premium', source = 'manual' where user_id = $1",
+      [ben],
+    );
+    expect(
+      await rows(ben, "select access from public.my_connection_access()"),
+    ).toEqual([{ access: "open" }]);
+  });
+
   it("lets connected members send and read messages", async () => {
     await as(
       alice,

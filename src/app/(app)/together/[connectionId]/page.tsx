@@ -11,6 +11,7 @@ import {
 import { getLocale, getTranslations } from "next-intl/server";
 import { FormAlert } from "@/components/forms/FormAlert";
 import { SubmitButton } from "@/components/forms/SubmitButton";
+import { PremiumGate } from "@/components/premium/PremiumGate";
 import { JourneyMap } from "@/components/together/JourneyMap";
 import { PathChooser } from "@/components/together/PathChooser";
 import { Scene } from "@/components/together/Scene";
@@ -25,6 +26,7 @@ import {
 } from "@/lib/journey/content";
 import { getCouple } from "@/lib/journey/data";
 import { levelStates, sharedStage } from "@/lib/journey/progress";
+import { accessFor } from "@/lib/premium/access";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const NOTICES = [
@@ -52,8 +54,9 @@ export default async function JourneyPage({
   if (!UUID.test(connectionId)) notFound();
   const t = await getTranslations("together");
   const locale = await getLocale();
-  const [couple, { notice }] = await Promise.all([
+  const [couple, access, { notice }] = await Promise.all([
     getCouple(user.id, connectionId),
+    accessFor(connectionId),
     searchParams,
   ]);
   if (!couple) notFound();
@@ -99,6 +102,21 @@ export default async function JourneyPage({
       )}
     </>
   );
+
+  // Together needs Premium for both; any progress is kept meanwhile.
+  if (access !== "open") {
+    return (
+      <>
+        {header}
+        <PremiumGate
+          feature="together"
+          access={access}
+          name={name}
+          next={`/together/${connectionId}`}
+        />
+      </>
+    );
+  }
 
   // No path yet: choose one.
   if (!j) {

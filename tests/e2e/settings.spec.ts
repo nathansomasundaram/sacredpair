@@ -185,6 +185,8 @@ test("new messages notify by email and text, without flooding", async ({
 }) => {
   const ann = await profile("Ann");
   const ben = await profile("Ben");
+  await makePremium(ann.id);
+  await makePremium(ben.id);
   const cid = await connect(ann.id, ben.id);
   await verifiedPhone(ann.id);
 

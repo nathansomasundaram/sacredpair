@@ -206,6 +206,7 @@
       "tooLong": "That message is too long.",
       "rateLimited": "You're sending messages very quickly. Wait a moment, then try again.",
       "closed": "This conversation has ended, so the message wasn't sent.",
+      "premium": "Not sent: Chat needs Premium for both of you. Reload the page to see what's changed.",
       "failed": "Not sent. Check your connection."
     },
     "ended": "This conversation has ended. Neither of you can send messages.",
@@ -747,7 +748,7 @@
     "next2Title": "Meet four people each week",
     "next2Body": "Tap the magic wand in Discover to see four people chosen for you.",
     "next3Title": "Start a journey together",
-    "next3Body": "When you both choose each other, you can chat and begin a journey: grow a tree, build a house, or write a book.",
+    "next3Body": "When you both choose each other, you're connected. With Premium, you can chat and begin a journey together: grow a tree, build a house, or write a book.",
     "continue": "Set up my profile"
   },
   "errorPage": {
@@ -863,9 +864,17 @@
     "title": "Premium",
     "back": "Back",
     "eyebrow": "Sacred Pair Premium",
-    "headline": "See the whole person before you choose",
-    "lead": "Premium opens every profile fully, so you can tell who shares your values, faith and plans for a family.",
+    "headline": "Talk, grow together, and see the whole person",
+    "lead": "Premium opens Chat and Together journeys with your connections, and shows every profile in full. Both people in a connection need Premium to talk.",
     "benefits": {
+      "chat": {
+        "title": "Chat with your connections",
+        "body": "Private conversations with the people you've chosen, and who chose you. They need Premium too."
+      },
+      "together": {
+        "title": "Together journeys",
+        "body": "Grow a tree, build a house or write a book, level by level, side by side."
+      },
       "photos": {
         "title": "More photos and a video",
         "body": "Up to six more photos and a short video introduction from each person."
@@ -898,11 +907,11 @@
   },
   "connect": {
     "askTitle": "Would you like to meet {name}?",
-    "askBody": "Your choice is private. {name} only finds out if they choose you too, and then you can talk in Chat.",
+    "askBody": "Your choice is private. {name} only finds out if they choose you too, and then you're connected.",
     "choose": "Choose {name}",
     "pass": "Pass",
     "chosenTitle": "You chose {name}",
-    "chosenBody": "If {name} chooses you too, you'll be connected and can talk in Chat. They won't know unless they do.",
+    "chosenBody": "If {name} chooses you too, you'll be connected. They won't know unless they do.",
     "changeMind": "Change my mind",
     "passedTitle": "You passed on {name}",
     "passedBody": "{name} isn't told. You can still change your mind.",
@@ -917,7 +926,7 @@
     "notice": {
       "chosen": "You chose {name}. We'll connect you if they choose you too.",
       "passed": "You passed on {name}.",
-      "connected": "You and {name} chose each other! You can talk in Chat now.",
+      "connected": "You and {name} chose each other!",
       "choiceFailed": "That didn't go through. Please try again."
     },
     "chip": {
@@ -1293,15 +1302,15 @@
         },
         "choose": {
           "title": "Choose each other",
-          "body": "Choices are private. When you both choose each other, you can talk. Nobody can message you out of the blue."
+          "body": "Choices are private. When you both choose each other, you're connected. Nobody can message you out of the blue."
         },
         "together": {
           "title": "Grow together",
-          "body": "Take a Together journey side by side: nine short levels that turn first conversations into a shared story."
+          "body": "With Premium, talk in Chat and take a Together journey side by side: nine short levels that turn first conversations into a shared story."
         }
       },
       "togetherTitle": "A journey, not just a match",
-      "togetherBody": "Once you're connected, choose a path together. Each level teaches something and ends with a question to talk about. Your picture grows only when you both finish.",
+      "togetherBody": "Once you're connected and you both have Premium, choose a path together. Each level teaches something and ends with a question to talk about. Your picture grows only when you both finish.",
       "safetyTitle": "Safety and privacy, built in",
       "safety": {
         "verified": {
@@ -1314,7 +1323,7 @@
         },
         "noStrangers": {
           "title": "No messages from strangers",
-          "body": "Conversations open only when two people have chosen each other."
+          "body": "Conversations open only when two people have chosen each other and both have Premium."
         },
         "report": {
           "title": "Report and block, anytime",
@@ -1328,15 +1337,17 @@
       "free": {
         "title": "Free",
         "a": "Your profile and four introductions every week",
-        "b": "Choose and connect",
-        "c": "Private chat with your connections",
-        "d": "Together journeys"
+        "b": "Choose each other and connect",
+        "c": "ID-verified members only",
+        "d": "Report and block, anytime"
       },
       "premium": {
         "title": "Premium",
-        "a": "See full profiles: more photos, video, prompts and details",
-        "b": "Filters for faith, family plans, lifestyle and more",
-        "c": "Coming soon"
+        "a": "Private chat with your connections",
+        "b": "Together journeys",
+        "c": "Full profiles: more photos, video, prompts and details",
+        "d": "Filters for faith, family plans, lifestyle and more",
+        "note": "Chat and Together need Premium for both people in a connection."
       },
       "finalTitle": "Ready when you are",
       "finalBody": "Questions first?",
@@ -1540,5 +1551,18 @@
       "staff_added": "Added to staff",
       "staff_removed": "Removed from staff"
     }
+  },
+  "premiumGate": {
+    "upgradeChatTitle": "Talk with {name} on Premium",
+    "upgradeTogetherTitle": "Take a journey with {name} on Premium",
+    "upgradeBody": "You chose each other. Chat and Together journeys are part of Premium, and you both need it. Your connection is saved.",
+    "waitingChatTitle": "Chat opens when {name} has Premium too",
+    "waitingTogetherTitle": "Your journey opens when {name} has Premium too",
+    "waitingBody": "You have Premium. Chat and Together need it for both of you, so this opens as soon as {name} joins. Your connection and anything you've shared are saved.",
+    "seePremium": "See Premium",
+    "bannerChat": "Chat is part of Premium. You can see your connections; talking needs Premium for both of you.",
+    "bannerTogether": "Together journeys are part of Premium, for both people in a connection.",
+    "lockedPreview": "Part of Premium",
+    "waitingPreview": "Opens when {name} has Premium"
   }
 }

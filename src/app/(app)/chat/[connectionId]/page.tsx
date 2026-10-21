@@ -11,8 +11,10 @@ import {
 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Conversation } from "@/components/chat/Conversation";
+import { PremiumGate } from "@/components/premium/PremiumGate";
 import { requireVerifiedMember } from "@/lib/auth/session";
 import { getConversation } from "@/lib/chat/data";
+import { accessFor } from "@/lib/premium/access";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -29,7 +31,10 @@ export default async function ConversationPage({
   const user = await requireVerifiedMember(`/chat/${connectionId}`);
   if (!UUID.test(connectionId)) notFound();
   const t = await getTranslations("chat");
-  const conversation = await getConversation(user.id, connectionId);
+  const [conversation, access] = await Promise.all([
+    getConversation(user.id, connectionId),
+    accessFor(connectionId),
+  ]);
   if (!conversation) notFound();
   const { other } = conversation;
 
@@ -96,14 +101,25 @@ export default async function ConversationPage({
         </details>
       </header>
 
-      <Conversation
-        connectionId={connectionId}
-        me={user.id}
-        otherName={other.displayName}
-        initialMessages={conversation.messages}
-        initialHasEarlier={conversation.hasEarlier}
-        initialActive={conversation.active}
-      />
+      {conversation.active && access !== "open" ? (
+        <div className="overflow-y-auto">
+          <PremiumGate
+            feature="chat"
+            access={access}
+            name={other.displayName}
+            next={`/chat/${connectionId}`}
+          />
+        </div>
+      ) : (
+        <Conversation
+          connectionId={connectionId}
+          me={user.id}
+          otherName={other.displayName}
+          initialMessages={conversation.messages}
+          initialHasEarlier={conversation.hasEarlier}
+          initialActive={conversation.active}
+        />
+      )}
     </div>
   );
 }

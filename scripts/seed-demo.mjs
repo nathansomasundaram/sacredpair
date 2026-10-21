@@ -16,6 +16,8 @@
  *     mode), both @demo.sacredpair.test, so you can compare what each sees.
  *     Each is already connected with two members, with conversations
  *     (some messages unread) to try Chat.
+ *   - Chat and Together need Premium for both people: demo members have it
+ *     (test mode) except Naomi, and Taylor is free, so every state shows.
  *   - avery@ is an admin, for /admin: one open report (Ruth about Caleb),
  *     one story waiting for review (Hannah) and one published (Grace), all
  *     clearly fictional and local only.
@@ -324,10 +326,26 @@ async function setPremium(id, m, index) {
 }
 
 let added = 0;
+// Chat and Together need Premium for both people, so the demo members have
+// it (test mode), except Naomi: Morgan's conversation with her shows Chat
+// waiting for the other person to upgrade.
+const FREE_MEMBERS = new Set(["Naomi"]);
+
 for (const [i, m] of MEMBERS.entries()) {
   if (!existing.has(emailFor(m.name))) added++;
   const id = await upsertMember(m, i);
   await setPremium(id, m, i);
+  check(
+    await admin
+      .from("entitlements")
+      .update(
+        FREE_MEMBERS.has(m.name)
+          ? { tier: "free", source: null, expires_at: null }
+          : { tier: "premium", source: "simulated", expires_at: null },
+      )
+      .eq("user_id", id),
+    `set ${m.name}'s membership`,
+  );
 }
 
 const viewerIds = [];
@@ -556,6 +574,8 @@ ${MEMBERS.filter((m) => m.premium === "partial")
   .map((m) => m.name)
   .join(", ")} (none).
 Conversations: ${CONVERSATIONS.map((c) => `${c.viewer} & ${c.with}`).join(", ")}.
-Together: Morgan & Grace on Grow a tree (Morgan one level ahead); Naomi suggested
-Write a book to Morgan; Taylor & Daniel on Build a house (Taylor's turn).
+Chat and Together need Premium for both people. Demo members have it (test
+mode) except Naomi; Taylor is free. So: Morgan & Grace can talk and are on
+Grow a tree (Morgan one level ahead); Morgan & Naomi wait for Naomi to
+upgrade; Taylor sees the upgrade screen until she starts test Premium.
 ${process.argv.includes("--fresh") ? "Cleared Taylor's and Morgan's introductions: the magic wand works again.\n" : ""}`);

@@ -51,4 +51,4 @@ export function mergeMessages(
 }
 
 export type SendError =
-  "empty" | "tooLong" | "rateLimited" | "closed" | "failed";
+  "empty" | "tooLong" | "rateLimited" | "closed" | "premium" | "failed";

@@ -43,9 +43,17 @@ async function as<T = Record<string, unknown>>(
   }
 }
 
-async function couple() {
+const makePremium = (...ids: string[]) =>
+  db.query(
+    "update public.entitlements set tier = 'premium', source = 'simulated', expires_at = now() + interval '30 days' where user_id = any($1)",
+    [ids],
+  );
+
+/** A connected couple, both on Premium unless `premium` is false. */
+async function couple({ premium = true } = {}) {
   const a = await newMember();
   const b = await newMember();
+  if (premium) await makePremium(a, b);
   const r = await db.query(
     "insert into public.connections (user_a, user_b) values (least($1::uuid, $2::uuid), greatest($1::uuid, $2::uuid)) returning id",
     [a, b],
@@ -141,6 +149,31 @@ describe("choosing a path", () => {
       [jid],
     );
     expect(r.rows[0].ended_at).not.toBeNull();
+  });
+});
+
+describe("Premium", () => {
+  it("is needed by both people to suggest, accept or play", async () => {
+    const c = await couple({ premium: false });
+    await expect(propose(c.a, c.cid)).rejects.toThrow(/row-level security/);
+    await makePremium(c.a);
+    await expect(propose(c.a, c.cid)).rejects.toThrow(/row-level security/);
+    await makePremium(c.b);
+    const jid = await propose(c.a, c.cid);
+
+    await db.query(
+      "update public.entitlements set expires_at = now() - interval '1 minute' where user_id = $1",
+      [c.a],
+    );
+    await expect(accept(c.b, jid)).rejects.toThrow(/premium_required/);
+    await makePremium(c.a);
+    await accept(c.b, jid);
+
+    await db.query(
+      "update public.entitlements set expires_at = now() - interval '1 minute' where user_id = $1",
+      [c.b],
+    );
+    await expect(complete(c.a, jid, 1)).rejects.toThrow(/premium_required/);
   });
 });
 

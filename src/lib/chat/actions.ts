@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getSessionUser } from "@/lib/auth/session";
 import { onNewMessage } from "@/lib/notify/events";
+import { accessFor } from "@/lib/premium/access";
 import { createClient } from "@/lib/supabase/server";
 import { getMessages } from "./data";
 import {
@@ -46,12 +47,14 @@ export async function sendMessage(
   if (error) {
     if (error.message.includes("rate_limited"))
       return { ok: false, error: "rateLimited" };
-    // Row Level Security: the connection ended or isn't theirs.
+    // Row Level Security: the connection ended or isn't theirs, or one of
+    // them no longer has Premium.
     if (
       error.code === "42501" ||
       error.message.includes("row-level security")
     ) {
-      return { ok: false, error: "closed" };
+      const access = await accessFor(connectionId);
+      return { ok: false, error: access === "open" ? "closed" : "premium" };
     }
     console.error("sendMessage failed", error);
     return { ok: false, error: "failed" };
@@ -69,7 +72,11 @@ export async function markRead(connectionId: string): Promise<void> {
   const { error } = await supabase.rpc("mark_messages_read", {
     cid: connectionId,
   });
-  if (error && !error.message.includes("not a member")) {
+  if (
+    error &&
+    !error.message.includes("not a member") &&
+    !error.message.includes("premium_required")
+  ) {
     console.error("markRead failed", error);
   }
 }

@@ -1,29 +1,50 @@
 import { expect, test, type Page } from "@playwright/test";
-import { createProfile, deleteMembers, makeStaff, uniqueCity } from "./support/profiles";
+import {
+  createProfile,
+  deleteMembers,
+  makeStaff,
+  uniqueCity,
+} from "./support/profiles";
 import { logIn } from "./support/users";
 
 const main = (page: Page) => page.getByRole("main");
 const created: string[] = [];
 test.afterAll(() => deleteMembers(created));
 
-test("the home page explains Sacred Pair and links everywhere", async ({ page }) => {
+test("the home page explains Sacred Pair and links everywhere", async ({
+  page,
+}) => {
   await page.goto("/");
   const m = main(page);
-  for (const heading of ["How it works", "A journey, not just a match", "Safety and privacy, built in", "Free to start"]) {
+  for (const heading of [
+    "How it works",
+    "A journey, not just a match",
+    "Safety and privacy, built in",
+    "Free to start",
+  ]) {
     await expect(m.getByRole("heading", { name: heading })).toBeVisible();
   }
   const footer = page.getByRole("contentinfo");
   await footer.getByRole("link", { name: "Privacy Policy" }).click();
-  await expect(main(page).getByRole("heading", { level: 1, name: "Privacy Policy" })).toBeVisible();
+  await expect(
+    main(page).getByRole("heading", { level: 1, name: "Privacy Policy" }),
+  ).toBeVisible();
   // Not reviewed by a lawyer yet, and says so.
   await expect(main(page).getByRole("note")).toContainText("This is a draft.");
-  await page.getByRole("contentinfo").getByRole("link", { name: "Terms and Conditions" }).click();
-  await expect(main(page).getByRole("heading", { name: "Community guidelines" })).toBeVisible();
+  await page
+    .getByRole("contentinfo")
+    .getByRole("link", { name: "Terms and Conditions" })
+    .click();
+  await expect(
+    main(page).getByRole("heading", { name: "Community guidelines" }),
+  ).toBeVisible();
 });
 
 test("the FAQ answers questions in place", async ({ page }) => {
   await page.goto("/faq");
-  const q = main(page).getByText("Will someone know if I chose them, or passed?");
+  const q = main(page).getByText(
+    "Will someone know if I chose them, or passed?",
+  );
   await expect(main(page).getByText("Choices are private.")).toBeHidden();
   await q.click();
   await expect(main(page).getByText(/Choices are private\./)).toBeVisible();
@@ -31,9 +52,13 @@ test("the FAQ answers questions in place", async ({ page }) => {
 
 test("dating tips list and open", async ({ page }) => {
   await page.goto("/tips");
-  await main(page).getByRole("link", { name: /Spotting romance scams/ }).click();
+  await main(page)
+    .getByRole("link", { name: /Spotting romance scams/ })
+    .click();
   await expect(page).toHaveURL(/\/tips\/spotting-romance-scams$/);
-  await expect(main(page).getByRole("heading", { name: "The one rule" })).toBeVisible();
+  await expect(
+    main(page).getByRole("heading", { name: "The one rule" }),
+  ).toBeVisible();
   await expect(main(page).getByText(/reportfraud\.ftc\.gov/)).toBeVisible();
   await main(page).getByRole("link", { name: "All dating tips" }).click();
   await expect(page).toHaveURL(/\/tips$/);
@@ -41,7 +66,9 @@ test("dating tips list and open", async ({ page }) => {
   expect(missing?.status()).toBe(404);
 });
 
-test("search engines get a sitemap and stay out of private pages", async ({ request }) => {
+test("search engines get a sitemap and stay out of private pages", async ({
+  request,
+}) => {
   const sitemap = await (await request.get("/sitemap.xml")).text();
   expect(sitemap).toContain("/tips/first-date-safety");
   expect(sitemap).not.toContain("/admin");
@@ -49,7 +76,10 @@ test("search engines get a sitemap and stay out of private pages", async ({ requ
   expect(robots).toContain("Disallow: /admin");
 });
 
-test("a member's story is published only after staff approve it", async ({ page, browser }) => {
+test("a member's story is published only after staff approve it", async ({
+  page,
+  browser,
+}) => {
   const author = await createProfile({ city: uniqueCity(), name: "Grace" });
   const mod = await createProfile({ city: uniqueCity(), name: "Mod" });
   created.push(author.id, mod.id);
@@ -58,13 +88,21 @@ test("a member's story is published only after staff approve it", async ({ page,
 
   await logIn(page, author.email);
   await page.goto("/settings");
-  await main(page).getByRole("link", { name: /Share your story/ }).click();
+  await main(page)
+    .getByRole("link", { name: /Share your story/ })
+    .click();
   await main(page).getByLabel("Your story").fill(story);
-  await main(page).getByLabel("Your partner's first name (optional)").fill("Daniel");
+  await main(page)
+    .getByLabel("Your partner's first name (optional)")
+    .fill("Daniel");
   await main(page).getByRole("button", { name: "Send for review" }).click();
-  await expect(main(page).getByText("We need your permission to publish your story.")).toBeVisible();
+  await expect(
+    main(page).getByText("We need your permission to publish your story."),
+  ).toBeVisible();
   await expect(main(page).getByLabel("Your story")).toHaveValue(story);
-  await main(page).getByLabel(/I agree that Sacred Pair may publish this story/).check();
+  await main(page)
+    .getByLabel(/I agree that Sacred Pair may publish this story/)
+    .check();
   await main(page).getByRole("button", { name: "Send for review" }).click();
   await expect(main(page).getByText(/Your story has been sent/)).toBeVisible();
 

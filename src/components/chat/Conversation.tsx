@@ -305,7 +305,7 @@ export function Conversation({
                   >
                     <AlertCircle aria-hidden size={15} />
                     {t(`sendError.${p.error}`)}
-                    {p.error !== "closed" && (
+                    {p.error !== "closed" && p.error !== "premium" && (
                       <button
                         type="button"
                         onClick={() => retry(p)}

@@ -4,6 +4,7 @@ import {
   connect,
   createProfile,
   deleteMembers,
+  makePremium,
   uniqueCity,
 } from "./support/profiles";
 import { logIn } from "./support/users";
@@ -11,12 +12,14 @@ import { logIn } from "./support/users";
 const created: string[] = [];
 test.afterAll(() => deleteMembers(created));
 
-async function profile(name: string) {
+/** A member, with Premium unless `premium` is false (Chat and Together need it). */
+async function profile(name: string, { premium = true } = {}) {
   const p = await createProfile({
     city: uniqueCity(),
     name: `${name} ${Math.random().toString(36).slice(2, 6)}`,
   });
   created.push(p.id);
+  if (premium) await makePremium(p.id);
   return p;
 }
 

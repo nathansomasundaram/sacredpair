@@ -74,7 +74,7 @@ test("free members see how much there is, not what, and can upgrade", async ({
   await expect(page).toHaveURL(/\/upgrade\?next=/);
   await expect(
     main.getByRole("heading", {
-      name: "See the whole person before you choose",
+      name: "Talk, grow together, and see the whole person",
     }),
   ).toBeVisible();
   await main.getByRole("button", { name: /Start test Premium/ }).click();

@@ -6,6 +6,7 @@ import { requireVerifiedMember } from "@/lib/auth/session";
 import { LEVEL_COUNT, loadLevel } from "@/lib/journey/content";
 import { getCouple } from "@/lib/journey/data";
 import { canPlay, levelStates } from "@/lib/journey/progress";
+import { accessFor } from "@/lib/premium/access";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -29,8 +30,12 @@ export default async function LevelPage({
   )
     notFound();
 
-  const couple = await getCouple(user.id, connectionId);
+  const [couple, access] = await Promise.all([
+    getCouple(user.id, connectionId),
+    accessFor(connectionId),
+  ]);
   if (!couple) notFound();
+  if (access !== "open") redirect(`/together/${connectionId}`);
   const j = couple.journey;
   if (!j?.accepted) redirect(`/together/${connectionId}`);
   const state = levelStates(couple.mine, couple.theirs)[level - 1];

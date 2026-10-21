@@ -146,6 +146,16 @@ Premium status is one record per member (`entitlements`); expiry takes effect au
 
 **Connect.** At the bottom of every profile a member can **Choose** or **Pass**. Choices are private: the other person learns of one only if they choose back, and then the database opens a connection (`handle_choice` in `supabase/migrations/20261017000000_init.sql`). Until then either choice can be changed. Connections show in the Details tab under "Your connections".
 
+**Premium for both.** Connecting is free, but Chat and Together need Premium for **both** people in the connection (`supabase/migrations/20261028000000_premium_chat_together.sql`). The database enforces it: messages can't be read or sent, and paths can't be suggested, accepted or played, unless both have active Premium (`premium_pair()`). The app shows each connection as:
+
+| State     | Who                                   | What they see                                                    |
+| --------- | ------------------------------------- | ---------------------------------------------------------------- |
+| `upgrade` | The member doesn't have Premium       | Their connections, with "See Premium" in Chat and Together       |
+| `waiting` | They do, the other person doesn't yet | "Chat opens when … has Premium too" (no upgrade button for them) |
+| `open`    | Both have Premium                     | Chat and Together as normal                                      |
+
+If either person's Premium ends, the conversation and journey are kept, not deleted, and reopen when both have Premium again.
+
 **Chat.** Only the two members of a live connection can read or send its messages; nobody can message a stranger. These rules are in the database (Row Level Security), and Supabase Realtime applies the same rules to live updates, so nobody else can listen in.
 
 - **Live:** new messages and read receipts arrive instantly through Supabase Realtime. If a network blocks Realtime, the conversation checks every few seconds instead, so it still works.
@@ -156,11 +166,11 @@ Premium status is one record per member (`entitlements`); expiry takes effect au
 - **Not end-to-end encrypted**, as recommended in the requirements: messages are encrypted in transit and at rest, and moderators can read a reported conversation.
 - **Not yet:** push, email and SMS notifications for new messages arrive with notification settings in the Settings step.
 
-The demo data (`npm run seed:demo`) connects Morgan with Grace (2 unread messages) and Naomi, and Taylor with Daniel (1 unread) and Jordan (no messages yet).
+The demo data (`npm run seed:demo`) connects Morgan with Grace (2 unread messages) and Naomi, and Taylor with Daniel (1 unread) and Jordan (no messages yet). Demo members have test Premium except Naomi, and Taylor is free, so all three states show: Morgan & Grace can talk, Morgan & Naomi wait for Naomi, and Taylor sees "See Premium" until she starts test Premium.
 
 ## Together
 
-Two connected people take one journey together: **Grow a tree**, **Build a house** or **Write a book**.
+Two connected people, both with Premium (see [Connect and Chat](#connect-and-chat)), take one journey together: **Grow a tree**, **Build a house** or **Write a book**.
 
 - **Choosing a path:** one person suggests a path and the other accepts it, or suggests a different one. A couple has one path at a time. Either person can leave it, and then they can choose again from level 1. Ending the connection ends the journey too.
 - **Levels:** each path has the nine levels from the requirements workbook. A level is four questions, mixing the craft itself (botany, construction, writing) with what it teaches about relationships:
@@ -176,7 +186,7 @@ Two connected people take one journey together: **Grow a tree**, **Build a house
   - Question types: `choice` (options, `answer` = the right option's index), `truefalse`, `order` (`items` in the right order) and `match` (`pairs`). Answers are shuffled on screen.
   - `npm test` checks that every lesson file is complete and answerable.
 
-The demo data puts Morgan and Grace on Grow a tree (Morgan is a level ahead). Naomi has suggested Write a book to Morgan, and Taylor and Daniel are on Build a house, where it's Taylor's turn.
+The demo data puts Morgan and Grace on Grow a tree (Morgan is a level ahead). Naomi has suggested Write a book to Morgan (it opens once Naomi has Premium), and Taylor and Daniel are on Build a house, where it's Taylor's turn once she has Premium.
 
 ## Settings
 

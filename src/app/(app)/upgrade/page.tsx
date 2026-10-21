@@ -5,8 +5,10 @@ import {
   Crown,
   Images,
   ListChecks,
+  MessageCircle,
   MessageSquareQuote,
   SlidersHorizontal,
+  Sprout,
 } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { PairMark } from "@/components/brand/PairMark";
@@ -26,13 +28,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const BENEFITS = [
+  { key: "chat", icon: MessageCircle },
+  { key: "together", icon: Sprout },
   { key: "photos", icon: Images },
   { key: "prompts", icon: MessageSquareQuote },
   { key: "details", icon: ListChecks },
   { key: "filters", icon: SlidersHorizontal, soon: true },
 ] as const;
 
-/** The upgrade screen free members reach from "Know more". */
+/** The upgrade screen free members reach from "Know more", Chat or Together. */
 export default async function UpgradePage({
   searchParams,
 }: PageProps<"/upgrade">) {
