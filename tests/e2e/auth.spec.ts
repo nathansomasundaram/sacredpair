@@ -1,3 +1,4 @@
+import { SUPABASE_URL } from "./support/env";
 import { expect, test } from "@playwright/test";
 import { countEmails, latestEmailLink } from "./support/mail";
 import {
@@ -91,8 +92,21 @@ test("an unconfirmed account can't log in and can get a new link", async ({
     }),
   });
   await resend.getByRole("button").click();
-  // Checks the form's status line, so a failure shows what it said instead.
-  await expect(resend.getByRole("status")).toContainText(/We sent a new link/);
+  const status = resend.getByRole("status");
+  await expect(status).not.toBeEmpty();
+  if ((await status.textContent())?.includes("Too many attempts")) {
+    // Temporary diagnostic: ask Supabase directly, to see which limit.
+    const r = await fetch(`${SUPABASE_URL}/auth/v1/resend`, {
+      method: "POST",
+      headers: {
+        apikey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ type: "signup", email }),
+    });
+    throw new Error(`Supabase said ${r.status}: ${await r.text()}`);
+  }
+  await expect(status).toContainText(/We sent a new link/);
   await latestEmailLink(email, CONFIRM, { after: sent });
 });
 
