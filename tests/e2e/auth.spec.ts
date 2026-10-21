@@ -74,6 +74,7 @@ test("an unconfirmed account can't log in and can get a new link", async ({
   await page.getByRole("checkbox", { name: /I agree/ }).check();
   await page.getByRole("button", { name: "Create account" }).click();
   await expect(page).toHaveURL(/check-email/);
+  const signedUpAt = Date.now();
   await latestEmailLink(email, CONFIRM);
   const sent = await countEmails(email);
 
@@ -85,6 +86,11 @@ test("an unconfirmed account can't log in and can get a new link", async ({
     "Confirm your email before logging in",
   );
 
+  // Supabase sends at most one confirmation email per address per
+  // max_frequency (1s locally, longer when hosted) and refuses sooner
+  // requests. This test can get here in under a second, faster than any
+  // person, so it waits out that gap first.
+  await page.waitForTimeout(Math.max(0, signedUpAt + 1500 - Date.now()));
   const resend = page.locator("form").filter({
     has: page.getByRole("button", {
       name: "Send the confirmation link again",
