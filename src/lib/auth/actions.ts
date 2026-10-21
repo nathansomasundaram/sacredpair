@@ -97,8 +97,12 @@ export async function resendConfirmation(
     type: "signup",
     email: parsed.data.email,
   });
-  if (error && authErrorKey(error) === "rateLimited") {
-    return { status: "error", formError: "rateLimited" };
+  if (error) {
+    // Kept quiet for the visitor (it mustn't reveal whether an account
+    // exists), but logged so problems with email sending are visible.
+    console.error("resendConfirmation failed", error.code, error.message);
+    if (authErrorKey(error) === "rateLimited")
+      return { status: "error", formError: "rateLimited" };
   }
   return { status: "success", notice: "linkResent" };
 }

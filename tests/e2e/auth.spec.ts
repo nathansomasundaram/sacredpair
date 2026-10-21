@@ -85,10 +85,14 @@ test("an unconfirmed account can't log in and can get a new link", async ({
     "Confirm your email before logging in",
   );
 
-  await page
-    .getByRole("button", { name: "Send the confirmation link again" })
-    .click();
-  await expect(page.getByText(/We sent a new link/)).toBeVisible();
+  const resend = page.locator("form").filter({
+    has: page.getByRole("button", {
+      name: "Send the confirmation link again",
+    }),
+  });
+  await resend.getByRole("button").click();
+  // Checks the form's status line, so a failure shows what it said instead.
+  await expect(resend.getByRole("status")).toContainText(/We sent a new link/);
   await latestEmailLink(email, CONFIRM, { after: sent });
 });
 
