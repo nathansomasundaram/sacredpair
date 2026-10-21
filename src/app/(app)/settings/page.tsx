@@ -4,6 +4,7 @@ import {
   Bell,
   ChevronRight,
   Crown,
+  Heart,
   LogOut,
   SlidersHorizontal,
   UserCog,
@@ -24,6 +25,7 @@ const SECTIONS = [
   { key: "notifications", icon: Bell },
   { key: "account", icon: UserCog },
   { key: "membership", icon: Crown },
+  { key: "story", icon: Heart },
 ] as const;
 
 /** Settings: reached from the Profile tab. */

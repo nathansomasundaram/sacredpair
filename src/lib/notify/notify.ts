@@ -177,7 +177,7 @@ const esc = (s: string) =>
     (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!,
   );
 
-function emailHtml(
+export function emailHtml(
   title: string,
   body: string,
   action: string,
@@ -193,4 +193,26 @@ function emailHtml(
 <p style="margin:0 0 28px;"><a href="${esc(url)}" style="display:inline-block;background:#4a3d8f;color:#fff;text-decoration:none;font-weight:bold;font-size:17px;padding:14px 28px;border-radius:999px;">${esc(action)}</a></p>
 <p style="margin:0;font-size:14px;line-height:1.6;color:#4f5575;">${esc(footer)}</p>
 </td></tr></table></td></tr></table></body></html>`;
+}
+
+/**
+ * A one-off email about the member's account (for example from the
+ * moderation team). Always sent, whatever their notification settings.
+ */
+export async function sendAccountNotice(userId: string, kind: "suspended" | "contentRemoved" | "reinstated") {
+  try {
+    const admin = createAdminClient();
+    const { data } = await admin.auth.admin.getUserById(userId);
+    const email = data?.user?.email;
+    if (!email) return;
+    const messages = (await import(`../../../messages/${defaultLocale}.json`)).default;
+    const t = createTranslator({ locale: defaultLocale, messages, namespace: "notify.account" });
+    const title = t(`${kind}.title`);
+    const body = t(`${kind}.body`);
+    const action = t("open");
+    const url = `${publicEnv.NEXT_PUBLIC_SITE_URL}/`;
+    await sendEmail(email, title, `${body}\n\n${url}`, emailHtml(title, body, action, url, t("footer")));
+  } catch (e) {
+    console.error("sendAccountNotice failed", e);
+  }
 }

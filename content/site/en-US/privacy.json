@@ -1,0 +1,107 @@
+{
+  "title": "Privacy Policy",
+  "status": "draft",
+  "updated": "2026-10-21",
+  "intro": "Sacred Pair helps serious adults find a life partner. To do that we need some personal information, and some of it is sensitive. This policy explains what we collect, why, who can see it, and the choices you have. Placeholders in [square brackets] are filled in before launch.",
+  "sections": [
+    {
+      "heading": "Who we are",
+      "paragraphs": [
+        "Sacred Pair (sacredpair.com) is operated by [company legal name], [mailing address]. Questions about this policy: privacy@sacredpair.com."
+      ]
+    },
+    {
+      "heading": "What we collect",
+      "paragraphs": [
+        "We collect only what we need to run Sacred Pair safely:"
+      ],
+      "items": [
+        "Account details: your email address, mobile number, password (stored only as a secure hash by our sign-in provider), date of birth, and whether you agreed to our terms and to marketing emails.",
+        "Identity verification: to confirm you are a real adult, you photograph a government ID and take a selfie. Stripe Identity processes these images and tells us the result and the date of birth on the ID. We don't keep copies of your ID or selfie ourselves.",
+        "Your profile: your name, age, city and state, about me, photos, traits and anything you add to the Premium part of your profile (more photos, a video, prompts and details such as height, education, children, religion and ethnicity). Religion and ethnicity are optional and offer “Prefer not to say”.",
+        "Location: if you add a ZIP code, we turn it into the approximate center of that ZIP area to measure distance. We never use GPS and never show your ZIP code or location to anyone.",
+        "Activity: who was introduced to you, your choices, connections, messages, Together journey progress, reports and blocks.",
+        "Device and technical information: cookies needed to keep you signed in, push notification details for devices where you turned push on, and the logs our hosting providers keep (such as IP address and browser type).",
+        "Payments, once Premium opens: payments are handled by Stripe, Apple or Google. We receive your plan and its status, never your full card number."
+      ]
+    },
+    {
+      "heading": "How we use it",
+      "paragraphs": [
+        "We use your information to run Sacred Pair: to verify you are an adult, show your profile to the people you are introduced to, choose your weekly introductions using your preferences, deliver messages and notifications you've asked for, keep members safe (including reviewing reports), provide support, and meet legal obligations.",
+        "We don't sell your personal information, and we don't share it for cross-context behavioral advertising. We don't use your religion, ethnicity or other sensitive details for anything except showing them where you chose to and, if you are a Premium member who sets filters, choosing who you're introduced to."
+      ]
+    },
+    {
+      "heading": "What other members see",
+      "paragraphs": [
+        "Members introduced to you, or connected with you, see your profile overview: name, age, city and state, about me, photo and traits. Premium members who can see your profile also see the Premium part. Nobody else sees your profile.",
+        "Other members never see your email, phone number, date of birth, ZIP code, location, ID documents, or who you chose or passed on (unless you chose each other)."
+      ]
+    },
+    {
+      "heading": "Photos, videos and messages",
+      "paragraphs": [
+        "When you upload a photo or video we remove the location and device details that phones record in the file.",
+        "Messages are private between the two people in a conversation. They are encrypted while being sent and when stored. They are not end-to-end encrypted: if someone reports a conversation, trained Sacred Pair staff can read it to keep members safe. Staff access is limited and every moderation action is recorded."
+      ]
+    },
+    {
+      "heading": "Who we share it with",
+      "paragraphs": [
+        "We share information only with companies that help us run Sacred Pair, under contracts that limit how they use it:"
+      ],
+      "items": [
+        "Supabase (database, file storage and sign-in)",
+        "Vercel (website hosting)",
+        "Stripe (identity verification, and payments once Premium opens)",
+        "Our email provider [name], to send emails you've asked for",
+        "Twilio, to send text messages if you turn them on",
+        "Apple, Google and Mozilla push services, to deliver push notifications to your devices"
+      ]
+    },
+    {
+      "heading": "When the law requires it",
+      "paragraphs": [
+        "We may disclose information when required by law, to respond to valid legal process, or to protect someone from serious harm. If Sacred Pair is ever sold or merged, your information may transfer to the new owner, who must keep this policy's promises or tell you first."
+      ]
+    },
+    {
+      "heading": "How long we keep it",
+      "paragraphs": [
+        "We keep your information while your account is open. When you delete your account, your profile, photos, video, messages, connections and journeys are deleted. We keep a small amount for longer where safety or the law requires it: records of reports and moderation actions (to stop banned people returning), the result of your identity check, and records needed for tax or legal reasons. Backups are overwritten within [30] days."
+      ]
+    },
+    {
+      "heading": "Your choices and rights",
+      "paragraphs": [
+        "You can see and change your profile and settings at any time, choose which notifications you get, stop marketing emails, pause your profile, and delete your account in Settings.",
+        "Depending on where you live (for example California, Colorado, Connecticut, Virginia or another US state with a privacy law), you may also have the right to know what we hold about you, get a copy, correct it, delete it, and limit how sensitive information is used. To make a request, email privacy@sacredpair.com. We'll verify it's you, answer within the time the law allows, and never treat you differently for asking. If we turn down your request, you can appeal by replying to our answer."
+      ]
+    },
+    {
+      "heading": "Security",
+      "paragraphs": [
+        "We protect your information with encryption, strict access rules enforced by our database, and limited, logged staff access. No system is perfectly secure; if a breach affects you, we'll tell you as the law requires."
+      ]
+    },
+    {
+      "heading": "Adults only",
+      "paragraphs": [
+        "Sacred Pair is only for people 18 and older, and every member's age is checked against a government ID. If we learn that someone under 18 has an account, we delete it."
+      ]
+    },
+    {
+      "heading": "Changes to this policy",
+      "paragraphs": [
+        "If we make important changes, we'll tell you by email or in the app before they take effect. The date at the top shows when this policy last changed."
+      ]
+    },
+    {
+      "heading": "Contact us",
+      "paragraphs": [
+        "Email privacy@sacredpair.com or write to [company legal name], [mailing address]."
+      ]
+    }
+  ]
+}

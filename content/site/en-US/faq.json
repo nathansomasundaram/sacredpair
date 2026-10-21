@@ -1,0 +1,156 @@
+{
+  "title": "Frequently asked questions",
+  "intro": "Answers to the questions people ask most. Can't find yours? Email support@sacredpair.com.",
+  "groups": [
+    {
+      "heading": "About Sacred Pair",
+      "items": [
+        {
+          "q": "What is Sacred Pair?",
+          "a": [
+            "A place for adults who are serious about finding a life partner. Instead of endless swiping, you meet a few thoughtfully chosen people each week. When two people choose each other, they can talk and take a Together journey side by side."
+          ]
+        },
+        {
+          "q": "Who is it for?",
+          "a": [
+            "Adults 18 and over in the United States who want a lasting relationship, from young adults to people looking for companionship later in life."
+          ]
+        },
+        {
+          "q": "Is it free?",
+          "a": [
+            "Yes. Creating a profile, your weekly introductions, connecting, chatting and Together journeys are all free. Premium adds more: other members' full profiles (more photos, video, prompts and details) and filters for who you meet."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Getting started",
+      "items": [
+        {
+          "q": "Why do I have to verify my ID?",
+          "a": [
+            "So everyone you meet is a real adult who is who they say they are. You take a photo of your driver's license, passport or state ID and a quick selfie."
+          ]
+        },
+        {
+          "q": "Do you keep a copy of my ID?",
+          "a": [
+            "No. Our verification partner, Stripe Identity, checks it and tells us the result and your date of birth. We don't store your ID or selfie."
+          ]
+        },
+        {
+          "q": "Why only four introductions a week?",
+          "a": [
+            "Because we'd rather you get to know a few people properly than skim past hundreds. Your four stay with you all week, and four new people arrive every Monday."
+          ]
+        },
+        {
+          "q": "What if I get fewer than four?",
+          "a": [
+            "That means fewer people currently suit both your preferences and theirs. As new members join during the week, you can tap the magic wand again to fill the empty places."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Connecting",
+      "items": [
+        {
+          "q": "How do I connect with someone?",
+          "a": [
+            "Open their profile and choose them. If they choose you too, you're connected and can chat."
+          ]
+        },
+        {
+          "q": "Will someone know if I chose them, or passed?",
+          "a": [
+            "No. Choices are private. The other person only finds out you chose them if they choose you too."
+          ]
+        },
+        {
+          "q": "Can I message anyone?",
+          "a": [
+            "No. You can only message people you're connected with, which means you both chose each other. Nobody can message you out of the blue."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Together journeys",
+      "items": [
+        {
+          "q": "What is a Together journey?",
+          "a": [
+            "Once you're connected, you can pick a path together: grow a tree, build a house, or write a book. Each has nine short levels with questions and a conversation to have, and your shared picture grows as you both finish them."
+          ]
+        },
+        {
+          "q": "Do we both have to do every level?",
+          "a": [
+            "Yes, that's the point. You can each be at most one level ahead of the other, so you move forward together."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Privacy and safety",
+      "items": [
+        {
+          "q": "Who can see my profile?",
+          "a": [
+            "Only the people you're introduced to and the people you're connected with. The Premium part of your profile is shown only to Premium members among them."
+          ]
+        },
+        {
+          "q": "Do you share my location?",
+          "a": [
+            "No. If you add your ZIP code, we use it only to measure distance. Other members see just your city and state."
+          ]
+        },
+        {
+          "q": "How do I report or block someone?",
+          "a": [
+            "Open the conversation's menu, or scroll to the bottom of their profile, and choose “Report or block”. They're never told who reported or blocked them."
+          ]
+        },
+        {
+          "q": "What happens after I report someone?",
+          "a": [
+            "Our team reviews every report, including the conversation if there is one. We may remove content or suspend the account. If you're in danger, call 911 first."
+          ]
+        },
+        {
+          "q": "Are my messages private?",
+          "a": [
+            "Yes, between you and the other person. They're encrypted in transit and in storage. If a conversation is reported, our moderators can read it to keep members safe."
+          ]
+        }
+      ]
+    },
+    {
+      "heading": "Your account",
+      "items": [
+        {
+          "q": "How do I take a break?",
+          "a": [
+            "In Settings, open Dating preferences and turn off “Show me in Discover”. Nobody new will be introduced to you, and your connections and chats stay."
+          ]
+        },
+        {
+          "q": "How do I change my notifications?",
+          "a": [
+            "In Settings, open Notifications. You choose how we reach you (email, push or text) and about what."
+          ]
+        },
+        {
+          "q": "How do I delete my account?",
+          "a": [
+            "In Settings, open Account and choose “Delete my account”. Your profile, photos, messages and journeys are deleted for good."
+          ]
+        }
+      ]
+    }
+  ]
+}

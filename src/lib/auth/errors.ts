@@ -20,6 +20,8 @@ export function authErrorKey(error: AuthError): string {
     case "over_email_send_rate_limit":
     case "over_request_rate_limit":
       return "rateLimited";
+    case "user_banned":
+      return "suspended";
     case "reauthentication_needed":
     case "session_not_found":
       return "sessionMissing";

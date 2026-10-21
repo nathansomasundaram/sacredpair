@@ -259,3 +259,30 @@ export async function userExists(id: string) {
   const { data } = await admin.auth.admin.getUserById(id);
   return !!data?.user;
 }
+
+/** Gives someone access to the moderation area. */
+export async function makeStaff(id: string, role: "admin" | "moderator" = "admin") {
+  const { error } = await admin.from("staff").upsert({ user_id: id, role }, { onConflict: "user_id" });
+  if (error) throw error;
+}
+
+/** Files a report as a member would. */
+export async function fileReport(reporter: string, reported: string, connectionId: string | null, details = "") {
+  const { data, error } = await admin
+    .from("reports")
+    .insert({ reporter_id: reporter, reported_id: reported, reason: "harassment", details, connection_id: connectionId })
+    .select("id")
+    .single();
+  if (error) throw error;
+  return data.id as string;
+}
+
+export async function sendAs(connectionId: string, sender: string, body: string) {
+  const { error } = await admin.from("messages").insert({ connection_id: connectionId, sender_id: sender, body });
+  if (error) throw error;
+}
+
+export async function profileRow(id: string) {
+  const { data } = await admin.from("profiles").select("primary_photo_path, banned_at, about_me").eq("id", id).single();
+  return data!;
+}

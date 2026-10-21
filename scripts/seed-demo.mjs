@@ -16,6 +16,9 @@
  *     mode), both @demo.sacredpair.test, so you can compare what each sees.
  *     Each is already connected with two members, with conversations
  *     (some messages unread) to try Chat.
+ *   - avery@ is an admin, for /admin: one open report (Ruth about Caleb),
+ *     one story waiting for review (Hannah) and one published (Grace), all
+ *     clearly fictional and local only.
  *
  * Safe to run again: it updates existing demo members instead of duplicating
  * them. Only runs against a local Supabase (localhost / 127.0.0.1).
@@ -472,12 +475,76 @@ for (const convo of CONVERSATIONS) {
   }
 }
 
+// Moderation demo: Avery is an admin, with a report and stories to review.
+// Recreated each run. Everything here is fictional and stays local.
+const averyId = idByName.get("Avery");
+check(
+  await admin
+    .from("staff")
+    .upsert({ user_id: averyId, role: "admin" }, { onConflict: "user_id" }),
+  "make Avery an admin",
+);
+const [ruthId, calebId, graceId, hannahId] = [
+  "Ruth",
+  "Caleb",
+  "Grace",
+  "Hannah",
+].map((n) => idByName.get(n));
+check(
+  await admin
+    .from("reports")
+    .delete()
+    .in("reporter_id", [ruthId])
+    .eq("reported_id", calebId),
+  "clear the demo report",
+);
+check(
+  await admin.from("reports").insert({
+    reporter_id: ruthId,
+    reported_id: calebId,
+    reason: "scam",
+    details:
+      "Demo report: asked me to move to another app and mentioned an investment opportunity.",
+  }),
+  "add a demo report",
+);
+check(
+  await admin.from("stories").delete().in("author_id", [graceId, hannahId]),
+  "clear demo stories",
+);
+const now = new Date().toISOString();
+check(
+  await admin.from("stories").insert([
+    {
+      author_id: graceId,
+      display_name: "Grace",
+      partner_name: "Daniel",
+      place: "Raleigh, NC",
+      body: "Demo story: we met through an introduction on a Tuesday and talked for three hours on our first walk. Grow a tree gave us questions we'd never have asked so early.",
+      status: "approved",
+      reviewed_by: averyId,
+      reviewed_at: now,
+      published_at: now,
+    },
+    {
+      author_id: hannahId,
+      display_name: "Hannah",
+      partner_name: "Samuel",
+      place: "Durham, NC",
+      body: "Demo story: we were both nervous about online dating. Knowing everyone was ID-verified made it easier to say yes to coffee.",
+      status: "pending",
+    },
+  ]),
+  "add demo stories",
+);
+
 const total = MEMBERS.length + VIEWERS.length;
 console.log(`Demo members ready: ${added} added, ${total - added} refreshed.
 
 Log in with password ${DEMO_PASSWORD} as:
   ${emailFor("Taylor")}   free member: sees the Premium teaser and upgrade screen
   ${emailFor("Morgan")}   Premium member: sees full Premium profiles
+  ${emailFor("Avery")}    admin: opens /admin (a report and a story to review)
   <first name>@${DEMO_DOMAIN} for any other demo member (for example ${emailFor("Grace")})
 
 Premium content: ${MEMBERS.filter((m) => m.premium === "full")

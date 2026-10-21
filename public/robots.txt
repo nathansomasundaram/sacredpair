@@ -1,8 +1,19 @@
 User-agent: *
 Allow: /$
+Allow: /tips
+Allow: /stories
+Allow: /faq
+Allow: /privacy
+Allow: /terms
 Disallow: /api/
+Disallow: /admin
 Disallow: /discover
 Disallow: /details
 Disallow: /together
 Disallow: /chat
 Disallow: /profile
+Disallow: /settings
+Disallow: /upgrade
+Disallow: /safety
+
+Sitemap: https://sacredpair.com/sitemap.xml

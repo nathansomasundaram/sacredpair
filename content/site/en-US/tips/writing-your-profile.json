@@ -1,0 +1,31 @@
+{
+  "slug": "writing-your-profile",
+  "title": "A profile that sounds like you",
+  "summary": "Help the right person recognize you.",
+  "minutes": 2,
+  "sections": [
+    {
+      "paragraphs": [
+        "You're introduced to only four people a week, so your profile matters. The goal isn't to impress everyone; it's to help the right person recognize you."
+      ]
+    },
+    {
+      "paragraphs": [
+        "Use a recent photo where your face is clear and you look like yourself on a good day. Smile if you like. Leave out sunglasses and group shots for your main picture."
+      ],
+      "heading": "Photos"
+    },
+    {
+      "paragraphs": [
+        "Specific beats general. “I love to travel” could be anyone. “I'm trying to see every national park, and I'm on number eleven” is you. Mention what you value and what kind of life you'd like to build."
+      ],
+      "heading": "About me"
+    },
+    {
+      "paragraphs": [
+        "Kind, honest and hopeful reads better than a list of what you don't want. Save dealbreakers for your filters and early conversations."
+      ],
+      "heading": "Tone"
+    }
+  ]
+}

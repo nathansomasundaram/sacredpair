@@ -20,7 +20,8 @@
     "format": "prettier --write .",
     "check": "npm run lint && npm run typecheck && npm test",
     "seed:demo": "node scripts/seed-demo.mjs",
-    "push:keys": "node scripts/push-keys.mjs"
+    "push:keys": "node scripts/push-keys.mjs",
+    "staff": "node scripts/staff.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

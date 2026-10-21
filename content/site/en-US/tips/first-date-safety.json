@@ -1,0 +1,48 @@
+{
+  "slug": "first-date-safety",
+  "title": "Meeting for the first time, safely",
+  "summary": "Simple habits that keep a first meeting relaxed and safe.",
+  "minutes": 3,
+  "sections": [
+    {
+      "paragraphs": [
+        "A first date should be about getting to know someone, not worrying. A few habits take care of the worry so you can enjoy the conversation."
+      ]
+    },
+    {
+      "paragraphs": [
+        "Pick a busy public place you know, like a coffee shop or a restaurant at lunchtime. Daytime and a set length (“let's get coffee for an hour”) take the pressure off both of you."
+      ],
+      "heading": "Choose the place"
+    },
+    {
+      "paragraphs": [
+        "Get there and home on your own. Driving yourself, taking transit or using a rideshare means you can leave whenever you like, and you don't need to share your address before you're ready."
+      ],
+      "heading": "Make your own way"
+    },
+    {
+      "paragraphs": [
+        "Before you go:"
+      ],
+      "heading": "Tell someone",
+      "items": [
+        "Send a friend who you're meeting, where, and when you expect to be done.",
+        "Agree to check in with them afterward.",
+        "Keep your phone charged."
+      ]
+    },
+    {
+      "paragraphs": [
+        "Stay in control of your drink and how much you drink. If something feels off, trust that feeling: you never owe anyone more of your time, and it's fine to leave politely."
+      ],
+      "heading": "Trust yourself"
+    },
+    {
+      "paragraphs": [
+        "If someone makes you uncomfortable before or after you meet, use “Report or block” in the app. If you ever feel in danger, call 911."
+      ],
+      "heading": "If something goes wrong"
+    }
+  ]
+}

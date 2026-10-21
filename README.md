@@ -112,12 +112,13 @@ The database does the choosing (`reveal_introductions()`), so the four-a-week li
 `npm run seed:demo` fills your **local** Supabase with fictional, verified members (it refuses to run against anything else). Their data lives in `scripts/demo/members.mjs`.
 
 - **12 members to meet**, with complete overviews and abstract pictures (no real people). Daniel, Grace, Marcus, Naomi, Elijah, Samuel, Jordan and Hannah have full Premium profiles: extra photos, prompts, details and interests, and most have a short demo video. Ruth and Leah have partial ones; Isaac and Caleb have none, which shows the "hasn't added more yet" state.
-- **Two logins for testing**, kept out of everyone's introductions:
+- **Three logins for testing**, kept out of everyone's introductions:
 
 | Log in as                     | Membership          | What you see on Details                                              |
 | ----------------------------- | ------------------- | -------------------------------------------------------------------- |
 | `taylor@demo.sacredpair.test` | Free                | Counts of what each person shared, **Know more**, the upgrade screen |
 | `morgan@demo.sacredpair.test` | Premium (test mode) | Full Premium profiles                                                |
+| `avery@demo.sacredpair.test`  | Free, admin         | Moderation tools at `/admin` (see [Moderation](#moderation))         |
 
 The password for every demo member is `DemoMember2026`; you can log in as any of them (`grace@demo.sacredpair.test` and so on).
 
@@ -207,6 +208,41 @@ Settings opens from the Profile tab and has four pages.
 
 **Membership & payment** (`/settings/membership`): shows the plan and test-mode Premium. Payment management (Stripe customer portal, or the App Store and Google Play for in-app subscriptions) is added in the payments step.
 
+## Public pages
+
+The public site (`src/app/(public)/`) is everything a visitor sees before joining: the home page, **FAQ** (`/faq`), **Dating tips** (`/tips`, six articles), **Stories** (`/stories`), **Privacy Policy** (`/privacy`) and **Terms and Conditions** (`/terms`). Signed-in members see the same pages with an "Open Sacred Pair" button. `/sitemap.xml` lists them; `robots.txt` keeps search engines out of the app and `/admin`.
+
+- **Wording** lives in `content/site/en-US/` as JSON (policies, FAQ, tips), so it can be edited without touching code and translated later.
+- **Privacy Policy and Terms are drafts.** They show a "This is a draft" notice and contain `[placeholders]` (company legal name, mailing address, governing state, and so on). Have a lawyer review them, fill in the placeholders, then set `"status": "final"` and update `"updated"` in `privacy.json` and `terms.json`; the notice disappears.
+- **Stories (testimonials) are real members' words only.** Members submit one in Settings → Share your story, agreeing that it may be shown publicly. Nothing appears until staff publish it, and authors can take it down at any time. Until the first is published, `/stories` says "Stories are on their way" and the home page leaves the section out.
+
+## Moderation
+
+`/admin` is for staff only; everyone else gets a 404. Moderators can do everything except manage staff, which needs an admin.
+
+| Page         | For                                                                                                                                             |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Overview     | Open reports, stories waiting, suspended members, recent activity                                                                               |
+| Reports      | Each report with the conversation between the two people; mark reviewing, resolve, dismiss, or suspend the reported member                      |
+| Members      | Search by email, name or ID; see their profile, photos, video and reports; remove a photo, the video, About me or prompts; suspend or reinstate |
+| Stories      | Publish or decline members' stories, or take a published one down                                                                               |
+| Activity log | Every moderation action: who, what, when and the note                                                                                           |
+| Staff        | Add or remove moderators and admins (admins only)                                                                                               |
+
+- **Suspending** signs the member out, blocks signing in, ends their connections and hides them from Discover. They see a "Your account is suspended" page and get an email. Reinstating lets them sign in again; ended connections stay ended.
+- **Removing content** deletes the file or text and emails the member that something was removed.
+- Every action is recorded in `moderation_actions` with an optional note.
+
+Add the first admin from the command line (needs `SUPABASE_SECRET_KEY` in `.env.local`, so it works against your own project only):
+
+```bash
+npm run staff -- add you@example.com admin      # or moderator
+npm run staff -- remove you@example.com
+npm run staff -- list
+```
+
+Locally, `npm run seed:demo` also adds **avery@demo.sacredpair.test**, an admin, with one demo report (Ruth about Caleb), one story waiting for review and one published. All of it is fictional and local only.
+
 ## Checks
 
 ```bash
@@ -253,7 +289,9 @@ Never type words straight into a component. Add a key to `messages/en-US.json` a
 
 ```
 messages/                 translations, one file per language
-src/app/                  pages (the five tabs are in src/app/(app)/)
+src/app/                  pages (the five tabs are in src/app/(app)/, the public site
+                          in src/app/(public)/, moderation in src/app/admin/)
+content/                  Together levels and public-site wording (JSON)
 src/components/           shell, brand mark, shared UI
 src/i18n/                 locale settings
 src/lib/supabase/         database clients for browser, server and proxy

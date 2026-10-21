@@ -37,6 +37,18 @@ export const VIEWERS = [
     traits: ["honest", "patient"],
     premiumMember: true,
   },
+  {
+    key: "admin",
+    name: "Avery",
+    gender: "woman",
+    age: 45,
+    city: "Raleigh",
+    state: "NC",
+    about: "Demo account for trying the moderation tools.",
+    traits: ["calm", "organized"],
+    premiumMember: false,
+    staff: "admin",
+  },
 ];
 
 export const MEMBERS = [

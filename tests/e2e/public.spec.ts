@@ -13,13 +13,12 @@ test("front door offers sign up and log in", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   // Styled as a button (guards against styles failing to reach server pages).
-  await expect(
-    page.getByRole("link", { name: "Create an account" }),
-  ).toHaveClass(/bg-covenant/);
-  await page.getByRole("link", { name: "Create an account" }).click();
+  const hero = page.getByRole("main").getByRole("link", { name: "Create an account" }).first();
+  await expect(hero).toHaveClass(/bg-covenant/);
+  await hero.click();
   await expect(page).toHaveURL(/\/signup$/);
   await page.goto("/");
-  await page.getByRole("link", { name: "Log in" }).click();
+  await page.getByRole("main").getByRole("link", { name: "Log in" }).first().click();
   await expect(page).toHaveURL(/\/login$/);
 });
 

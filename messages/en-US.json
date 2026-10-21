@@ -620,7 +620,8 @@
       "rateLimited": "Too many attempts. Wait a few minutes, then try again.",
       "linkInvalid": "This link has expired or has already been used.",
       "sessionMissing": "Your reset link has expired. Request a new one to set your password.",
-      "generic": "Something went wrong on our side. Try again in a moment."
+      "generic": "Something went wrong on our side. Try again in a moment.",
+      "suspended": "This account has been suspended. If you think this is a mistake, email support@sacredpair.com."
     },
     "notices": {
       "linkResent": "We sent a new link. It can take a minute to arrive."
@@ -678,12 +679,6 @@
       "goToLogin": "Go to log in",
       "requestReset": "Send me a new reset link"
     }
-  },
-  "legal": {
-    "privacyTitle": "Privacy Policy",
-    "termsTitle": "Terms and Conditions",
-    "placeholder": "This page will hold the full policy once it has been reviewed. It is published before Sacred Pair opens to the public.",
-    "backHome": "Back to Sacred Pair"
   },
   "steps": {
     "label": "Sign-up progress",
@@ -997,6 +992,22 @@
         "title": "{name} finished a level",
         "body": "{name} finished a level on your Together journey."
       }
+    },
+    "account": {
+      "open": "Open Sacred Pair",
+      "footer": "This is a message about your Sacred Pair account. Questions? Reply to support@sacredpair.com.",
+      "suspended": {
+        "title": "Your Sacred Pair account is suspended",
+        "body": "Our team suspended your account because it broke our community guidelines. If you think this is a mistake, email support@sacredpair.com and tell us why."
+      },
+      "reinstated": {
+        "title": "Your Sacred Pair account is active again",
+        "body": "We've looked again and reinstated your account. You can log in as usual. Your earlier connections stay ended."
+      },
+      "contentRemoved": {
+        "title": "We removed part of your profile",
+        "body": "Our team removed part of your Sacred Pair profile because it broke our community guidelines. You can update your profile at any time."
+      }
     }
   },
   "settings": {
@@ -1019,6 +1030,10 @@
       "membership": {
         "title": "Membership & payment",
         "body": "Your plan and billing"
+      },
+      "story": {
+        "title": "Share your story",
+        "body": "Met someone here? Tell others how it went"
       }
     },
     "preferences": {
@@ -1191,6 +1206,339 @@
       "paymentHeading": "Payment",
       "paymentBody": "Payments aren't open yet. When Premium launches, you'll manage your payment method, receipts and cancellation here.",
       "paymentApps": "If you subscribe in the Sacred Pair app for iPhone or Android, you'll manage that subscription in the App Store or Google Play."
+    },
+    "story": {
+      "title": "Share your story",
+      "intro": "Did Sacred Pair bring you together with someone? Your story could encourage others. Our team reads every story before it's published, and only what you write below is shown.",
+      "body": "Your story",
+      "bodyHint": "How you met, what made it work, what you'd tell someone starting out. At least {min} characters.",
+      "count": "{count} of {max} characters",
+      "displayName": "Name to show",
+      "displayNameHint": "Your first name is usually best.",
+      "partnerName": "Your partner's first name (optional)",
+      "partnerNameHint": "Only add it if they're happy to be named.",
+      "place": "Where you're from (optional)",
+      "placeHint": "For example: Raleigh, NC. Leave it empty to leave it out.",
+      "consent": "I agree that Sacred Pair may publish this story, with the name and place above, on its website and in its marketing. I can take it down at any time.",
+      "submit": "Send for review",
+      "sent": "Thank you! Your story has been sent. We'll publish it once our team has read it.",
+      "mineHeading": "Your stories",
+      "status": {
+        "pending": "Waiting for review",
+        "approved": "Published",
+        "rejected": "Not published"
+      },
+      "withdraw": "Withdraw",
+      "takeDown": "Take it down",
+      "errors": {
+        "body": "Tell us a little more: at least {min} characters.",
+        "name": "Add the name you'd like shown.",
+        "consent": "We need your permission to publish your story.",
+        "tooMany": "You already have stories waiting for review. Please wait until we've read them.",
+        "failed": "Your story wasn't sent. Please try again."
+      }
+    }
+  },
+  "site": {
+    "nav": {
+      "label": "Sacred Pair",
+      "tips": "Dating tips",
+      "stories": "Stories",
+      "faq": "FAQ",
+      "privacy": "Privacy Policy",
+      "terms": "Terms and Conditions",
+      "logIn": "Log in",
+      "join": "Join free",
+      "openApp": "Open the app",
+      "menu": "Menu"
+    },
+    "footer": {
+      "label": "More about Sacred Pair",
+      "tagline": "For serious adults looking for a life partner, and the journey after.",
+      "contact": "Contact us",
+      "copyright": "© {year} Sacred Pair. All rights reserved."
+    },
+    "policy": {
+      "updated": "Last updated {date}",
+      "draft": "This is a draft. It hasn't been reviewed by a lawyer yet and will be finalized before Sacred Pair opens to the public."
+    },
+    "tips": {
+      "read": "Read · {minutes} min",
+      "minutes": "{minutes} min read",
+      "all": "All dating tips",
+      "ctaTitle": "Ready to meet someone who's serious too?",
+      "ctaButton": "Join Sacred Pair"
+    },
+    "stories": {
+      "title": "Member stories",
+      "intro": "Real stories from Sacred Pair members, shared in their own words and with their permission.",
+      "emptyTitle": "Stories are on their way",
+      "emptyBody": "Sacred Pair is new. When members choose to share how they met, their stories will appear here.",
+      "couple": "{a} & {b}",
+      "shareTitle": "Met someone on Sacred Pair?",
+      "shareButton": "Share your story"
+    },
+    "home": {
+      "heroNote": "Every member verifies their ID. Free to join.",
+      "howTitle": "How it works",
+      "step": "Step {n}",
+      "steps": {
+        "verify": {
+          "title": "Show you're you",
+          "body": "Verify with your driver's license, passport or state ID and a quick selfie. Everyone you meet has done the same."
+        },
+        "four": {
+          "title": "Four people a week",
+          "body": "Tap the magic wand to meet four people chosen for you. Fewer, better introductions, every Monday."
+        },
+        "choose": {
+          "title": "Choose each other",
+          "body": "Choices are private. When you both choose each other, you can talk. Nobody can message you out of the blue."
+        },
+        "together": {
+          "title": "Grow together",
+          "body": "Take a Together journey side by side: nine short levels that turn first conversations into a shared story."
+        }
+      },
+      "togetherTitle": "A journey, not just a match",
+      "togetherBody": "Once you're connected, choose a path together. Each level teaches something and ends with a question to talk about. Your picture grows only when you both finish.",
+      "safetyTitle": "Safety and privacy, built in",
+      "safety": {
+        "verified": {
+          "title": "Verified adults only",
+          "body": "Every member confirms their identity and age with a government ID."
+        },
+        "private": {
+          "title": "Private by default",
+          "body": "Only the people you're introduced to can see your profile. Your location, email and phone are never shown."
+        },
+        "noStrangers": {
+          "title": "No messages from strangers",
+          "body": "Conversations open only when two people have chosen each other."
+        },
+        "report": {
+          "title": "Report and block, anytime",
+          "body": "From any conversation or profile. Our team reviews every report."
+        }
+      },
+      "safetyLink": "Read our dating safety tips",
+      "storiesTitle": "From our members",
+      "storiesLink": "Read more stories",
+      "priceTitle": "Free to start",
+      "free": {
+        "title": "Free",
+        "a": "Your profile and four introductions every week",
+        "b": "Choose and connect",
+        "c": "Private chat with your connections",
+        "d": "Together journeys"
+      },
+      "premium": {
+        "title": "Premium",
+        "a": "See full profiles: more photos, video, prompts and details",
+        "b": "Filters for faith, family plans, lifestyle and more",
+        "c": "Coming soon"
+      },
+      "finalTitle": "Ready when you are",
+      "finalBody": "Questions first?",
+      "faqLink": "Read the FAQ"
+    }
+  },
+  "suspended": {
+    "title": "Your account is suspended",
+    "body": "Our team suspended this account because it broke Sacred Pair's community guidelines. Your profile is hidden and your conversations have ended.",
+    "appeal": "If you think this is a mistake, tell us why at",
+    "logOut": "Log out"
+  },
+  "admin": {
+    "title": "Moderation",
+    "badge": "Moderation",
+    "signedInAs": "{email} ({role})",
+    "backToApp": "Back to the app",
+    "roles": {
+      "admin": "Admin",
+      "moderator": "Moderator"
+    },
+    "nav": {
+      "label": "Moderation",
+      "overview": "Overview",
+      "reports": "Reports",
+      "members": "Members",
+      "stories": "Stories",
+      "log": "Activity log",
+      "staff": "Staff"
+    },
+    "overview": {
+      "title": "Overview",
+      "openReports": "Open reports",
+      "reviewing": "Reports being reviewed",
+      "pendingStories": "Stories to review",
+      "members": "Members",
+      "verified": "ID verified",
+      "premium": "Premium",
+      "suspended": "Suspended",
+      "note": "Everything you do here is recorded in the activity log with your name. Members are emailed when their account is suspended or reinstated, or when part of their profile is removed. They are never told who reported them."
+    },
+    "reports": {
+      "title": "Reports",
+      "filter": "Show reports",
+      "none": "No reports here.",
+      "about": "About {name} ({email})",
+      "status": {
+        "open": "Open",
+        "reviewing": "Reviewing",
+        "resolved": "Resolved",
+        "dismissed": "Dismissed"
+      }
+    },
+    "report": {
+      "back": "All reports",
+      "reported": "Reported member",
+      "reporter": "Reported by",
+      "details": "What they said",
+      "noDetails": "No details given.",
+      "otherReports": "Other reports about them",
+      "reviewedBy": "Reviewed by",
+      "suspended": "Suspended",
+      "conversation": "Conversation",
+      "conversationNote": "Messages from the reported member are tinted. A specific reported message is outlined.",
+      "noConversation": "They weren't connected, so there's no conversation.",
+      "actions": "Actions",
+      "markReviewing": "Mark as reviewing",
+      "resolve": "Resolve",
+      "dismiss": "Dismiss",
+      "note": "Note for the log (optional)",
+      "suspend": "Suspend {name}",
+      "suspendButton": "Suspend and resolve",
+      "suspendNote": "Reason (kept in the log)",
+      "removeContent": "Remove photos or text instead",
+      "closed": "This report is closed.",
+      "done": {
+        "reviewing": "Marked as reviewing.",
+        "resolved": "Report resolved.",
+        "dismissed": "Report dismissed.",
+        "suspended": "Member suspended and report resolved."
+      }
+    },
+    "members": {
+      "title": "Members",
+      "search": "Search",
+      "placeholder": "Email, name or member ID",
+      "results": "{count, plural, one {# result} other {# results}}",
+      "newest": "Newest members",
+      "cols": {
+        "name": "Name",
+        "email": "Email",
+        "place": "Place",
+        "joined": "Joined",
+        "status": "Status"
+      },
+      "suspended": "Suspended",
+      "unverified": "ID not verified",
+      "reports": "{count, plural, one {# open report} other {# open reports}}"
+    },
+    "member": {
+      "back": "All members",
+      "suspendedOn": "Suspended {date}",
+      "place": "Place",
+      "joined": "Joined",
+      "id": "ID verified",
+      "phone": "Phone",
+      "verified": "verified",
+      "notVerified": "not verified",
+      "plan": "Plan",
+      "premium": "Premium",
+      "free": "Free",
+      "visible": "Shown in Discover",
+      "reportsFiled": "Reports they filed",
+      "yes": "Yes",
+      "no": "No",
+      "content": "Profile content",
+      "mainPhoto": "Main photo",
+      "extraPhoto": "Photo {n}",
+      "noPhoto": "No main photo.",
+      "about": "About me",
+      "video": "Introduction video",
+      "reportsAbout": "Reports about them",
+      "history": "Moderation history",
+      "none": "None.",
+      "actions": "Actions",
+      "yourself": "You can't take actions on your own account.",
+      "note": "Note for the log (optional)",
+      "suspend": "Suspend account",
+      "reinstate": "Reinstate account",
+      "removePhoto": "Remove main photo",
+      "removeExtra": "Remove photo {n}",
+      "removeVideo": "Remove video",
+      "clearAbout": "Clear about me",
+      "clearPrompts": "Clear prompts",
+      "noticeSent": "The member is emailed when content is removed or their account is suspended or reinstated.",
+      "done": {
+        "suspended": "Account suspended. They can't sign in and their connections have ended.",
+        "reinstated": "Account reinstated.",
+        "removed": "Content removed and the member was told."
+      }
+    },
+    "stories": {
+      "title": "Stories",
+      "intro": "Members' stories wait here until someone approves them. Check they're appropriate, don't include anyone's private details, and that a named partner looks like they'd agree.",
+      "filter": "Show stories",
+      "none": "No stories here.",
+      "shownAs": "Shown as {name}, {place}",
+      "status": {
+        "pending": "Waiting",
+        "approved": "Published",
+        "rejected": "Not published"
+      },
+      "approve": "Publish",
+      "reject": "Don't publish",
+      "unpublish": "Take down",
+      "done": {
+        "approve": "Story published.",
+        "reject": "Story won't be published.",
+        "unpublish": "Story taken down."
+      }
+    },
+    "staff": {
+      "title": "Staff",
+      "intro": "Admins can do everything, including managing staff. Moderators can review reports, members and stories.",
+      "since": "since {date}",
+      "remove": "Remove",
+      "addTitle": "Add staff",
+      "addHint": "They need a Sacred Pair account first.",
+      "email": "Their email address",
+      "role": "Role",
+      "add": "Add",
+      "done": {
+        "added": "Staff member added.",
+        "removed": "Staff member removed."
+      },
+      "errors": {
+        "notFound": "There's no account with that email address.",
+        "lastAdmin": "You're the only admin, so you can't remove yourself."
+      }
+    },
+    "log": {
+      "title": "Activity log",
+      "intro": "Every action taken by staff, newest first.",
+      "none": "Nothing yet.",
+      "by": "by {name}"
+    },
+    "actions": {
+      "report_reviewing": "Started reviewing a report",
+      "report_resolved": "Resolved a report",
+      "report_dismissed": "Dismissed a report",
+      "suspend": "Suspended account",
+      "reinstate": "Reinstated account",
+      "remove_photo": "Removed main photo",
+      "remove_extra_photo": "Removed a photo",
+      "remove_video": "Removed video",
+      "clear_about": "Cleared about me",
+      "clear_prompts": "Cleared prompts",
+      "story_approved": "Published a story",
+      "story_rejected": "Declined a story",
+      "story_unpublished": "Took down a story",
+      "staff_added": "Added to staff",
+      "staff_removed": "Removed from staff"
     }
   }
 }
