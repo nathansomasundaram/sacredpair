@@ -1,4 +1,4 @@
-import { SUPABASE_URL } from "./support/env";
+import { SUPABASE_SECRET_KEY, SUPABASE_URL } from "./support/env";
 import { expect, test } from "@playwright/test";
 import { countEmails, latestEmailLink } from "./support/mail";
 import {
@@ -95,16 +95,37 @@ test("an unconfirmed account can't log in and can get a new link", async ({
   const status = resend.getByRole("status");
   await expect(status).not.toBeEmpty();
   if ((await status.textContent())?.includes("Too many attempts")) {
-    // Temporary diagnostic: ask Supabase directly, to see which limit.
-    const r = await fetch(`${SUPABASE_URL}/auth/v1/resend`, {
-      method: "POST",
-      headers: {
-        apikey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
-        "content-type": "application/json",
+    // Temporary diagnostic: what Supabase knows, and whether a retry works.
+    const resendNow = async () => {
+      const r = await fetch(`${SUPABASE_URL}/auth/v1/resend`, {
+        method: "POST",
+        headers: {
+          apikey: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ type: "signup", email }),
+      });
+      return `${r.status} at ${r.headers.get("date")}: ${await r.text()}`;
+    };
+    const users = await fetch(
+      `${SUPABASE_URL}/auth/v1/admin/users?per_page=200`,
+      {
+        headers: {
+          apikey: SUPABASE_SECRET_KEY,
+          authorization: `Bearer ${SUPABASE_SECRET_KEY}`,
+        },
       },
-      body: JSON.stringify({ type: "signup", email }),
-    });
-    throw new Error(`Supabase said ${r.status}: ${await r.text()}`);
+    ).then((r) => r.json());
+    const u = (users.users ?? []).find(
+      (x: { email: string }) => x.email === email,
+    );
+    const first = await resendNow();
+    const emails = await countEmails(email);
+    await new Promise((r) => setTimeout(r, 2500));
+    const second = await resendNow();
+    throw new Error(
+      `created=${u?.created_at} confirmation_sent_at=${u?.confirmation_sent_at} emails=${emails} sentBefore=${sent} | first: ${first} | after 2.5s: ${second}`,
+    );
   }
   await expect(status).toContainText(/We sent a new link/);
   await latestEmailLink(email, CONFIRM, { after: sent });
