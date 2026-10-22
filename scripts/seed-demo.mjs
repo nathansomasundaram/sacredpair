@@ -7,6 +7,8 @@
  *   npm run seed:demo -- --fresh      also clear the two viewers' introductions,
  *                                     so the magic wand can be used again
  *   npm run seed:demo -- --remove     remove every demo member
+ *   npm run seed:demo -- --extra=20   only 20 of the generated members
+ *                                     (default 80, the most; 0 for none)
  *
  * What you get (see scripts/demo/members.mjs):
  *   - 12 members with complete overviews. Most have full Premium profiles
@@ -18,12 +20,18 @@
  *     (some messages unread) to try Chat.
  *   - Chat and Together need Premium for both people: demo members have it
  *     (test mode) except Naomi, and Taylor is free, so every state shows.
+ *   - 80 more members across the United States (one per city, 48 states
+ *     and DC), generated from a fixed seed in scripts/demo/generated-members.mjs:
+ *     the same people every run, with a mix of full, partial and no Premium
+ *     profiles, and about two in three with Premium membership.
  *   - avery@ is an admin, for /admin: one open report (Ruth about Caleb),
  *     one story waiting for review (Hannah) and one published (Grace), all
  *     clearly fictional and local only.
  *
  * Safe to run again: it updates existing demo members instead of duplicating
- * them. Only runs against a local Supabase (localhost / 127.0.0.1).
+ * them, so it seeds and refreshes alike. Demo members no longer in the list
+ * (for example after a smaller --extra) are removed. Only runs against a
+ * local Supabase (localhost / 127.0.0.1).
  */
 import fs from "node:fs";
 import { createClient } from "@supabase/supabase-js";
@@ -36,6 +44,15 @@ import {
   MEMBERS,
   VIEWERS,
 } from "./demo/members.mjs";
+import { generateMembers } from "./demo/generated-members.mjs";
+
+const extraArg = process.argv.find((a) => a.startsWith("--extra="));
+const EXTRA = extraArg ? Number(extraArg.slice("--extra=".length)) : 80;
+if (!Number.isInteger(EXTRA) || EXTRA < 0 || EXTRA > 80) {
+  console.error("--extra must be a whole number from 0 to 80.");
+  process.exit(1);
+}
+const GENERATED = generateMembers(EXTRA);
 
 try {
   process.loadEnvFile(".env.local");
@@ -164,15 +181,18 @@ async function listDemoUsers() {
   return users;
 }
 
+/** Deletes a demo member, their demo files and (through the account) their data. */
+async function removeDemoUser(u) {
+  await admin.storage
+    .from("photos")
+    .remove([`${u.id}/demo-main.webp`, ...extraPhotoPaths(u.id)]);
+  await admin.storage.from("videos").remove([`${u.id}/demo-intro.mp4`]);
+  check(await admin.auth.admin.deleteUser(u.id), `remove ${u.email}`);
+}
+
 if (process.argv.includes("--remove")) {
   const users = await listDemoUsers();
-  for (const u of users) {
-    await admin.storage
-      .from("photos")
-      .remove([`${u.id}/demo-main.webp`, ...extraPhotoPaths(u.id)]);
-    await admin.storage.from("videos").remove([`${u.id}/demo-intro.mp4`]);
-    check(await admin.auth.admin.deleteUser(u.id), `remove ${u.email}`);
-  }
+  for (const u of users) await removeDemoUser(u);
   console.log(`Removed ${users.length} demo members.`);
   process.exit(0);
 }
@@ -210,7 +230,7 @@ async function upsertMember(m, index) {
   );
 
   // A ZIP code in their city, so distance works in Discover.
-  const zip = CITY_ZIPS[m.city];
+  const zip = m.zip ?? CITY_ZIPS[m.city];
   const point = zip ? usZips[zip] : null;
   check(
     await admin
@@ -325,6 +345,21 @@ async function setPremium(id, m, index) {
   );
 }
 
+/** Premium membership in test mode, or free. */
+async function setMembership(id, name, premium) {
+  check(
+    await admin
+      .from("entitlements")
+      .update(
+        premium
+          ? { tier: "premium", source: "simulated", expires_at: null }
+          : { tier: "free", source: null, expires_at: null },
+      )
+      .eq("user_id", id),
+    `set ${name}'s membership`,
+  );
+}
+
 let added = 0;
 // Chat and Together need Premium for both people, so the demo members have
 // it (test mode), except Naomi: Morgan's conversation with her shows Chat
@@ -335,17 +370,30 @@ for (const [i, m] of MEMBERS.entries()) {
   if (!existing.has(emailFor(m.name))) added++;
   const id = await upsertMember(m, i);
   await setPremium(id, m, i);
-  check(
-    await admin
-      .from("entitlements")
-      .update(
-        FREE_MEMBERS.has(m.name)
-          ? { tier: "free", source: null, expires_at: null }
-          : { tier: "premium", source: "simulated", expires_at: null },
-      )
-      .eq("user_id", id),
-    `set ${m.name}'s membership`,
-  );
+  await setMembership(id, m.name, !FREE_MEMBERS.has(m.name));
+}
+
+// The generated crowd across the country (see generated-members.mjs).
+const pictureOffset = MEMBERS.length + VIEWERS.length + 5;
+for (const [i, m] of GENERATED.entries()) {
+  if (!existing.has(emailFor(m.name))) added++;
+  const id = await upsertMember(m, pictureOffset + i);
+  await setPremium(id, m, pictureOffset + i);
+  await setMembership(id, m.name, m.premiumMember);
+  if ((i + 1) % 20 === 0)
+    console.log(`  ${i + 1} of ${GENERATED.length} generated members ready`);
+}
+
+// Demo members no longer defined (for example after a smaller --extra).
+const wanted = new Set(
+  [...MEMBERS, ...VIEWERS, ...GENERATED].map((m) => emailFor(m.name)),
+);
+let removed = 0;
+for (const u of await listDemoUsers()) {
+  if (!wanted.has(u.email)) {
+    await removeDemoUser(u);
+    removed++;
+  }
 }
 
 const viewerIds = [];
@@ -556,8 +604,11 @@ check(
   "add demo stories",
 );
 
-const total = MEMBERS.length + VIEWERS.length;
-console.log(`Demo members ready: ${added} added, ${total - added} refreshed.
+const total = MEMBERS.length + VIEWERS.length + GENERATED.length;
+const codes = new Set(GENERATED.map((m) => m.state));
+const states = `${codes.size - (codes.has("DC") ? 1 : 0)} states${codes.has("DC") ? " and DC" : ""}`;
+console.log(`Demo members ready: ${added} added, ${total - added} refreshed${removed ? `, ${removed} removed` : ""}.
+${GENERATED.length} of them are generated, across ${GENERATED.length} cities in ${states} (scripts/demo/generated-members.mjs).
 
 Log in with password ${DEMO_PASSWORD} as:
   ${emailFor("Taylor")}   free member: sees the Premium teaser and upgrade screen

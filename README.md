@@ -109,9 +109,10 @@ The database does the choosing (`reveal_introductions()`), so the four-a-week li
 
 ### Sample data
 
-`npm run seed:demo` fills your **local** Supabase with fictional, verified members (it refuses to run against anything else). Their data lives in `scripts/demo/members.mjs`.
+`npm run seed:demo` fills your **local** Supabase with fictional, verified members (it refuses to run against anything else), and refreshes them when run again: existing demo members are updated, not duplicated. The hand-written members live in `scripts/demo/members.mjs`, the generated ones in `scripts/demo/generated-members.mjs`.
 
 - **12 members to meet**, with complete overviews and abstract pictures (no real people). Daniel, Grace, Marcus, Naomi, Elijah, Samuel, Jordan and Hannah have full Premium profiles: extra photos, prompts, details and interests, and most have a short demo video. Ruth and Leah have partial ones; Isaac and Caleb have none, which shows the "hasn't added more yet" state.
+- **80 more members across the United States**, one per city in 48 states and DC (New York to Honolulu), each with a real ZIP code so distance works. They're generated from a fixed seed in `scripts/demo/generated-members.mjs`, so every run gives the same people: about half have full Premium profiles, a quarter partial and a quarter none, and about two in three have Premium membership (test mode). The password is the same as below.
 - **Three logins for testing**, kept out of everyone's introductions:
 
 | Log in as                     | Membership          | What you see on Details                                              |
@@ -122,11 +123,12 @@ The database does the choosing (`reveal_introductions()`), so the four-a-week li
 
 The password for every demo member is `DemoMember2026`; you can log in as any of them (`grace@demo.sacredpair.test` and so on).
 
-| Command                         | Does                                                                                                                                             |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `npm run seed:demo`             | Adds the demo members, or resets their profiles to the sample data                                                                               |
-| `npm run seed:demo -- --fresh`  | Also clears Taylor's and Morgan's introductions, so the magic wand works again (introductions never repeat, so 12 members last 3 taps otherwise) |
-| `npm run seed:demo -- --remove` | Removes every demo member                                                                                                                        |
+| Command                           | Does                                                                                                                                             |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm run seed:demo`               | Adds the demo members, or resets their profiles to the sample data                                                                               |
+| `npm run seed:demo -- --fresh`    | Also clears Taylor's and Morgan's introductions, so the magic wand works again (introductions never repeat, so 12 members last 3 taps otherwise) |
+| `npm run seed:demo -- --remove`   | Removes every demo member                                                                                                                        |
+| `npm run seed:demo -- --extra=20` | Seeds only 20 of the 80 generated members (0 for none). Demo members no longer in the list are removed, so this also shrinks an earlier seed     |
 
 ## Details and Premium
 
