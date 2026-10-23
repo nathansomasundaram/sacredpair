@@ -18,6 +18,8 @@ import { quietButtonClass } from "@/components/ui/buttonStyles";
 import { safeNext } from "@/lib/auth/redirect";
 import { requireVerifiedMember } from "@/lib/auth/session";
 import { serverEnv } from "@/lib/env.server";
+import { startCheckout } from "@/lib/payments/actions";
+import { getPlans, type Plan } from "@/lib/payments/stripe";
 import { endTestPremium, startTestPremium } from "@/lib/premium/actions";
 import { getMembership } from "@/lib/premium/data";
 import { TEST_PREMIUM_DAYS } from "@/lib/premium/plan";
@@ -33,7 +35,7 @@ const BENEFITS = [
   { key: "photos", icon: Images },
   { key: "prompts", icon: MessageSquareQuote },
   { key: "details", icon: ListChecks },
-  { key: "filters", icon: SlidersHorizontal, soon: true },
+  { key: "filters", icon: SlidersHorizontal },
 ] as const;
 
 /** The upgrade screen free members reach from "Know more", Chat or Together. */
@@ -48,7 +50,27 @@ export default async function UpgradePage({
     searchParams,
   ]);
   const next = safeNext(params.next, "/details");
-  const testMode = serverEnv().PAYMENTS_PROVIDER === "simulated";
+  const provider = serverEnv().PAYMENTS_PROVIDER;
+  const testMode = provider === "simulated";
+  let plans: Plan[] | null = null;
+  if (provider === "stripe" && !membership.premium) {
+    plans = await getPlans().catch((e) => {
+      console.error("Couldn't load Premium prices from Stripe", e);
+      return [];
+    });
+  }
+  const money = (p: Plan, amount = p.amount) =>
+    format.number(amount / 100, {
+      style: "currency",
+      currency: p.currency.toUpperCase(),
+      minimumFractionDigits: amount % 100 === 0 ? 0 : 2,
+    });
+  const monthly = plans?.find((p) => p.key === "monthly");
+  const yearly = plans?.find((p) => p.key === "yearly");
+  const yearlySaving =
+    monthly && yearly && monthly.currency === yearly.currency
+      ? Math.round((1 - yearly.amount / (monthly.amount * 12)) * 100)
+      : 0;
 
   const until = membership.expiresAt
     ? format.dateTime(new Date(membership.expiresAt), {
@@ -85,6 +107,11 @@ export default async function UpgradePage({
       {params.ended === "1" && (
         <div className="mt-6">
           <FormAlert tone="success">{t("ended")}</FormAlert>
+        </div>
+      )}
+      {params.canceled === "1" && !membership.premium && (
+        <div className="mt-6">
+          <FormAlert tone="success">{t("checkoutCanceled")}</FormAlert>
         </div>
       )}
 
@@ -132,12 +159,76 @@ export default async function UpgradePage({
             <Link href={next} className={quietButtonClass}>
               {t("continue")}
             </Link>
+            {membership.source === "stripe" && (
+              <Link
+                href="/settings/membership"
+                className="font-semibold text-covenant underline underline-offset-4"
+              >
+                {t("manage")}
+              </Link>
+            )}
             {testMode && membership.source === "simulated" && (
               <form action={endTestPremium}>
                 <SubmitButton variant="quiet">{t("endTest")}</SubmitButton>
               </form>
             )}
           </>
+        ) : plans ? (
+          plans.length > 0 ? (
+            <>
+              <h2 className="text-xl">{t("choosePlan")}</h2>
+              <ul className="grid w-full gap-3 sm:grid-cols-2">
+                {[monthly, yearly].map(
+                  (plan) =>
+                    plan && (
+                      <li key={plan.key}>
+                        <form
+                          action={startCheckout}
+                          className="flex h-full flex-col gap-3 rounded-2xl border border-line p-5"
+                        >
+                          <input type="hidden" name="plan" value={plan.key} />
+                          <input type="hidden" name="next" value={next} />
+                          <p className="flex flex-wrap items-center gap-2 font-semibold">
+                            {t(`plans.${plan.key}.title`)}
+                            {plan.key === "yearly" && yearlySaving > 0 && (
+                              <span className="rounded-full bg-ring/20 px-2 py-0.5 text-[0.8125rem]">
+                                {t("plans.save", { percent: yearlySaving })}
+                              </span>
+                            )}
+                          </p>
+                          <p className="font-display text-3xl">
+                            {t(`plans.${plan.key}.price`, {
+                              price: money(plan),
+                            })}
+                          </p>
+                          {plan.key === "yearly" && (
+                            <p className="text-[0.9375rem] text-ink-soft">
+                              {t("plans.yearly.perMonth", {
+                                price: money(
+                                  plan,
+                                  Math.round(plan.amount / 12),
+                                ),
+                              })}
+                            </p>
+                          )}
+                          <div className="mt-auto">
+                            <SubmitButton>
+                              <Crown aria-hidden size={18} />
+                              {t(`plans.${plan.key}.choose`)}
+                            </SubmitButton>
+                          </div>
+                        </form>
+                      </li>
+                    ),
+                )}
+              </ul>
+              <p className="max-w-prose text-[0.9375rem] text-ink-soft">
+                {t("stripeNote")}
+              </p>
+            </>
+          ) : (
+            <FormAlert tone="error">{t("pricesUnavailable")}</FormAlert>
+          )
         ) : testMode ? (
           <>
             <form action={startTestPremium}>

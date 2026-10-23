@@ -218,7 +218,30 @@ Settings opens from the Profile tab and has four pages.
 - **Change password:** needs the current password.
 - **Delete account:** needs the password and typing DELETE. It removes everything: photos, video, messages, journeys and settings.
 
-**Membership & payment** (`/settings/membership`): shows the plan and test-mode Premium. Payment management (Stripe customer portal, or the App Store and Google Play for in-app subscriptions) is added in the payments step.
+**Membership & payment** (`/settings/membership`): shows the plan and when it renews or ends. Stripe subscribers get **Manage payment**, which opens Stripe's customer portal (change card, switch plan, receipts, cancel). In-app subscriptions (App Store, Google Play) come with the mobile apps.
+
+## Premium payments (Stripe)
+
+`PAYMENTS_PROVIDER` decides how members get Premium: `simulated` (free 30-day test Premium, the local default), `stripe` (real payments), or `none` ("Premium opens soon", the production default until you switch on Stripe).
+
+How it works with `stripe`:
+
+- **Upgrade** (`/upgrade`) shows a monthly plan, and a yearly one if set, with prices read from Stripe, so the amount is changed in one place (the Stripe dashboard).
+- **Choosing a plan** opens Stripe Checkout. On return (`/upgrade/success`) Premium turns on straight away, and the member goes back to where they were.
+- **The webhook** (`/api/webhooks/stripe`) keeps Premium in step with Stripe: renewals push the end date forward; a cancelled plan stays Premium until the end of the paid period; a failed card keeps Premium while Stripe retries, then ends it. It always fetches the subscription from Stripe rather than trusting the event body.
+- **Deleting an account** cancels its subscription immediately.
+- Logic: `src/lib/payments/`; the rules for when a subscription means Premium are in `subscription.ts`, with unit tests in `tests/unit/payments.test.ts`.
+
+To switch it on:
+
+1. In Stripe (start in **test mode**), create a product "Sacred Pair Premium" with a recurring monthly price, and a yearly price if you want one. Copy the price IDs (`price_...`).
+2. Under Developers → Webhooks, add an endpoint `https://<your site>/api/webhooks/stripe` with these events: `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `customer.subscription.paused`, `customer.subscription.resumed`, `invoice.paid`, `invoice.payment_failed`. Copy its signing secret.
+3. Under Settings → Billing → Customer portal, turn on cancelling and switching between your Premium prices.
+4. Set in Vercel (or `.env.local`): `PAYMENTS_PROVIDER=stripe`, `STRIPE_SECRET_KEY`, `STRIPE_PRICE_MONTHLY`, optionally `STRIPE_PRICE_YEARLY`, and `STRIPE_WEBHOOK_SECRET`. The app refuses to start in Stripe mode if one is missing.
+
+To try it locally, run `stripe listen --forward-to localhost:3000/api/webhooks/stripe` (Stripe CLI) and use the signing secret it prints; pay with the test card 4242 4242 4242 4242. For automated checks without Stripe, `STRIPE_API_BASE` can point the app at [stripe-mock](https://github.com/stripe/stripe-mock) (ignored on production).
+
+ID verification uses Stripe too (Stripe Identity, `IDENTITY_PROVIDER=stripe`), with its own webhook at `/api/webhooks/stripe-identity`.
 
 ## Public pages
 

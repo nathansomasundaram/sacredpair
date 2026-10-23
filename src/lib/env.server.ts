@@ -10,10 +10,6 @@ const serverSchema = z
     IDENTITY_PROVIDER: z.enum(["stripe", "simulated"]).default("simulated"),
     STRIPE_SECRET_KEY: z.string().optional(),
     STRIPE_IDENTITY_WEBHOOK_SECRET: z.string().optional(),
-    // How members upgrade to Premium. "simulated" gives a free 30-day test
-    // Premium (local and previews only); "none" shows that Premium opens
-    // soon. Real payments (Stripe on the web, RevenueCat in the mobile apps)
-    // arrive with the payments step.
     // Text messages: "twilio" sends real texts; "simulated" only logs them
     // (local and previews); "none" turns texting off. Defaults to simulated,
     // or none on the production site.
@@ -35,9 +31,19 @@ const serverSchema = z
     // Web push: generate a pair with `npm run push:keys`.
     VAPID_PRIVATE_KEY: z.string().optional(),
     VAPID_SUBJECT: z.string().default("mailto:hello@sacredpair.com"),
+    // How members upgrade to Premium. "stripe" takes real payments (Stripe
+    // Checkout, with test-mode keys on previews); "simulated" gives a free
+    // 30-day test Premium (local and previews only); "none" shows that
+    // Premium opens soon. Defaults to simulated, or none on production.
     PAYMENTS_PROVIDER: z
-      .enum(["simulated", "none"])
+      .enum(["stripe", "simulated", "none"])
       .default(process.env.VERCEL_ENV === "production" ? "none" : "simulated"),
+    // Stripe Price IDs (price_...) for the Premium plans. Monthly is
+    // required for Stripe payments; yearly is offered when set.
+    STRIPE_PRICE_MONTHLY: z.string().startsWith("price_").optional(),
+    STRIPE_PRICE_YEARLY: z.string().startsWith("price_").optional(),
+    // Signing secret of the payments webhook endpoint (/api/webhooks/stripe).
+    STRIPE_WEBHOOK_SECRET: z.string().optional(),
   })
   .superRefine((env, ctx) => {
     if (env.IDENTITY_PROVIDER === "stripe" && !env.STRIPE_SECRET_KEY) {
@@ -83,6 +89,21 @@ const serverSchema = z
       });
     }
     if (
+      env.PAYMENTS_PROVIDER === "stripe" &&
+      !(
+        env.STRIPE_SECRET_KEY &&
+        env.STRIPE_PRICE_MONTHLY &&
+        env.STRIPE_WEBHOOK_SECRET
+      )
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["PAYMENTS_PROVIDER"],
+        message:
+          "STRIPE_SECRET_KEY, STRIPE_PRICE_MONTHLY and STRIPE_WEBHOOK_SECRET are required for PAYMENTS_PROVIDER=stripe",
+      });
+    }
+    if (
       env.PAYMENTS_PROVIDER === "simulated" &&
       process.env.VERCEL_ENV === "production"
     ) {
@@ -104,6 +125,9 @@ export function serverEnv() {
     STRIPE_IDENTITY_WEBHOOK_SECRET:
       process.env.STRIPE_IDENTITY_WEBHOOK_SECRET || undefined,
     PAYMENTS_PROVIDER: process.env.PAYMENTS_PROVIDER || undefined,
+    STRIPE_PRICE_MONTHLY: process.env.STRIPE_PRICE_MONTHLY || undefined,
+    STRIPE_PRICE_YEARLY: process.env.STRIPE_PRICE_YEARLY || undefined,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || undefined,
     SMS_PROVIDER: process.env.SMS_PROVIDER || undefined,
     TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID || undefined,
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN || undefined,

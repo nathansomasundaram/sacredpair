@@ -10,6 +10,7 @@ import {
 } from "@/lib/auth/schemas";
 import { requireVerifiedMember } from "@/lib/auth/session";
 import { publicEnv } from "@/lib/env";
+import { cancelSubscriptionNow } from "@/lib/payments/stripe";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { sendPhoneCode, verifyPhoneCode } from "./phone";
 
@@ -124,6 +125,15 @@ export async function deleteAccount(
     password: String(formData.get("password") ?? ""),
   });
   if (signInError) return { error: "currentWrong" };
+
+  // Stop any Premium subscription first, so nobody is charged for an
+  // account that no longer exists.
+  try {
+    await cancelSubscriptionNow(user.id);
+  } catch (e) {
+    console.error("deleteAccount: couldn't cancel the subscription", e);
+    return { error: "generic" };
+  }
 
   const admin = createAdminClient();
   // Remove their files first; the database rows go with the account.

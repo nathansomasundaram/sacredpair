@@ -5,8 +5,12 @@ export type Membership = {
   premium: boolean;
   /** Where Premium came from; "simulated" is test mode. */
   source: string | null;
-  /** When Premium ends, if it does. */
+  /** When Premium ends, if it does (or renews, when `renews`). */
   expiresAt: string | null;
+  /** A paid subscription that renews at expiresAt (false once cancelled). */
+  renews: boolean;
+  /** Has a Stripe customer, so payment can be managed in the portal. */
+  hasBilling: boolean;
 };
 
 /** The signed-in member's own Premium status. */
@@ -14,7 +18,7 @@ export async function getMembership(userId: string): Promise<Membership> {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("entitlements")
-    .select("tier, source, expires_at")
+    .select("tier, source, expires_at, renews, external_customer_id")
     .eq("user_id", userId)
     .maybeSingle();
   if (error) throw error;
@@ -25,6 +29,8 @@ export async function getMembership(userId: string): Promise<Membership> {
     premium: active,
     source: active ? (data?.source ?? null) : null,
     expiresAt: active ? (data?.expires_at ?? null) : null,
+    renews: active && !!data?.renews,
+    hasBilling: !!data?.external_customer_id,
   };
 }
 

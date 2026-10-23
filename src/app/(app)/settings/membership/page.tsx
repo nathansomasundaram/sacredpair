@@ -7,6 +7,7 @@ import { SettingsHeader } from "@/components/settings/SettingsHeader";
 import { primaryButtonClass } from "@/components/ui/buttonStyles";
 import { requireVerifiedMember } from "@/lib/auth/session";
 import { serverEnv } from "@/lib/env.server";
+import { openBillingPortal } from "@/lib/payments/actions";
 import { endTestPremium } from "@/lib/premium/actions";
 import { getMembership } from "@/lib/premium/data";
 
@@ -21,7 +22,8 @@ export default async function MembershipPage() {
   const format = await getFormatter();
   const user = await requireVerifiedMember("/settings/membership");
   const m = await getMembership(user.id);
-  const testMode = serverEnv().PAYMENTS_PROVIDER === "simulated";
+  const provider = serverEnv().PAYMENTS_PROVIDER;
+  const testMode = provider === "simulated";
   const until = m.expiresAt
     ? format.dateTime(new Date(m.expiresAt), {
         month: "long",
@@ -55,7 +57,7 @@ export default async function MembershipPage() {
                 ? t("testUntil", { date: until })
                 : t("test")
               : until
-                ? t("renews", { date: until })
+                ? t(m.renews ? "renews" : "ends", { date: until })
                 : t("premiumActive")
             : t("freeBody")}
         </p>
@@ -86,7 +88,27 @@ export default async function MembershipPage() {
           <CreditCard aria-hidden size={18} />
           {t("paymentHeading")}
         </h2>
-        <p>{t("paymentBody")}</p>
+        {provider === "stripe" && m.premium && m.source === "stripe" ? (
+          <form
+            action={openBillingPortal}
+            className="flex flex-col items-start gap-3"
+          >
+            <p>{t("paymentStripe")}</p>
+            <SubmitButton variant="quiet">{t("managePayment")}</SubmitButton>
+          </form>
+        ) : provider === "stripe" && m.hasBilling ? (
+          <form
+            action={openBillingPortal}
+            className="flex flex-col items-start gap-3"
+          >
+            <p>{t("paymentPast")}</p>
+            <SubmitButton variant="quiet">{t("seeReceipts")}</SubmitButton>
+          </form>
+        ) : provider === "stripe" ? (
+          <p>{t("paymentNotYet")}</p>
+        ) : (
+          <p>{t("paymentBody")}</p>
+        )}
         <p className="mt-3 text-[0.9375rem] text-ink-soft">
           {t("paymentApps")}
         </p>

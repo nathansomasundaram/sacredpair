@@ -22,7 +22,7 @@
         "Location: if you add a ZIP code, we turn it into the approximate center of that ZIP area to measure distance. We never use GPS and never show your ZIP code or location to anyone.",
         "Activity: who was introduced to you, your choices, connections, messages, Together journey progress, reports and blocks.",
         "Device and technical information: cookies needed to keep you signed in, push notification details for devices where you turned push on, and the logs our hosting providers keep (such as IP address and browser type).",
-        "Payments, once Premium opens: payments are handled by Stripe, Apple or Google. We receive your plan and its status, never your full card number."
+        "Payments: Premium payments are handled by Stripe on the web, or Apple or Google in the apps. We receive your plan and its status, never your full card number."
       ]
     },
     {
@@ -54,7 +54,7 @@
       "items": [
         "Supabase (database, file storage and sign-in)",
         "Vercel (website hosting)",
-        "Stripe (identity verification, and payments once Premium opens)",
+        "Stripe (identity verification and payments)",
         "Our email provider [name], to send emails you've asked for",
         "Twilio, to send text messages if you turn them on",
         "Apple, Google and Mozilla push services, to deliver push notifications to your devices"

@@ -903,7 +903,29 @@
     "endTest": "End test Premium",
     "ended": "Test Premium has ended. You're back to a free membership.",
     "soonTitle": "Premium opens soon",
-    "soonBody": "Payments aren't open yet. Everything in your free membership keeps working in the meantime."
+    "soonBody": "Payments aren't open yet. Everything in your free membership keeps working in the meantime.",
+    "manage": "Manage your membership",
+    "checkoutCanceled": "No payment was taken. You can choose a plan whenever you're ready.",
+    "choosePlan": "Choose your plan",
+    "plans": {
+      "monthly": {
+        "title": "Monthly",
+        "price": "{price} a month",
+        "choose": "Choose monthly"
+      },
+      "yearly": {
+        "title": "Yearly",
+        "price": "{price} a year",
+        "perMonth": "That's {price} a month.",
+        "choose": "Choose yearly"
+      },
+      "save": "Save {percent}%"
+    },
+    "stripeNote": "Payment is handled securely by Stripe. Cancel anytime in Settings; Premium continues until the end of the period you've paid for.",
+    "pricesUnavailable": "We couldn't load the plans just now. Please try again in a moment.",
+    "processingTitle": "Your payment is being confirmed",
+    "processingBody": "This can take a few minutes for some payment methods. Premium turns on as soon as it's confirmed, and we'll keep your place.",
+    "seeMembership": "See your membership"
   },
   "connect": {
     "askTitle": "Would you like to meet {name}?",
@@ -1205,16 +1227,22 @@
       "planHeading": "Your plan",
       "free": "Free",
       "premium": "Premium",
-      "freeBody": "Upgrade to see full profiles and use filters.",
+      "freeBody": "Upgrade to chat, take Together journeys, see full profiles and use filters.",
       "premiumActive": "Premium is active.",
-      "renews": "Premium until {date}.",
+      "renews": "Renews on {date}.",
       "test": "Test Premium (no payment taken).",
       "testUntil": "Test Premium until {date}. No payment is taken.",
       "seePremium": "See Premium",
       "endTest": "End test Premium",
       "paymentHeading": "Payment",
       "paymentBody": "Payments aren't open yet. When Premium launches, you'll manage your payment method, receipts and cancellation here.",
-      "paymentApps": "If you subscribe in the Sacred Pair app for iPhone or Android, you'll manage that subscription in the App Store or Google Play."
+      "paymentApps": "If you subscribe in the Sacred Pair app for iPhone or Android, you'll manage that subscription in the App Store or Google Play.",
+      "ends": "Ends on {date}. It won't renew.",
+      "paymentStripe": "Change your card, switch between monthly and yearly, see receipts or cancel, securely with Stripe.",
+      "managePayment": "Manage payment",
+      "paymentPast": "See your payment details and any past receipts, securely with Stripe.",
+      "seeReceipts": "Payment details and receipts",
+      "paymentNotYet": "When you subscribe, you'll manage your card, receipts and cancellation here."
     },
     "story": {
       "title": "Share your story",

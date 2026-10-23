@@ -139,3 +139,12 @@ test("the Stripe webhook refuses unsigned requests", async ({ request }) => {
   });
   expect(res.status()).toBeGreaterThanOrEqual(400);
 });
+
+test("the Stripe payments webhook refuses unsigned requests", async ({
+  request,
+}) => {
+  const res = await request.post("/api/webhooks/stripe", {
+    data: { type: "customer.subscription.updated" },
+  });
+  expect(res.status()).toBeGreaterThanOrEqual(400);
+});

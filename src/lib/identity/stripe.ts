@@ -10,8 +10,27 @@ import {
 
 let client: Stripe | undefined;
 export function stripeClient(secretKey: string) {
-  client ??= new Stripe(secretKey, { appInfo: { name: "Sacred Pair" } });
+  client ??= new Stripe(secretKey, {
+    appInfo: { name: "Sacred Pair" },
+    ...testServer(),
+  });
   return client;
+}
+
+/**
+ * For testing only: STRIPE_API_BASE points the app at a local stand-in for
+ * Stripe's API, such as stripe-mock (http://localhost:12111). Ignored on the
+ * production site.
+ */
+function testServer() {
+  const base = process.env.STRIPE_API_BASE;
+  if (!base || process.env.VERCEL_ENV === "production") return {};
+  const url = new URL(base);
+  return {
+    host: url.hostname,
+    port: Number(url.port) || (url.protocol === "http:" ? 80 : 443),
+    protocol: url.protocol.replace(":", "") as "http" | "https",
+  };
 }
 
 /** Stripe's error codes, grouped into the reasons we explain to members. */
