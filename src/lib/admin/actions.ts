@@ -6,6 +6,7 @@ import { sendAccountNotice } from "@/lib/notify/notify";
 import { PHOTO_BUCKET } from "@/lib/profile/data";
 import { VIDEO_BUCKET } from "@/lib/profile/premium-data";
 import { createAdminClient } from "@/lib/supabase/server";
+import { log } from "./audit";
 import { requireAdmin, requireStaff } from "./staff";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -14,25 +15,6 @@ const id = (f: FormData, k: string) => {
   const v = text(f, k);
   return UUID.test(v) ? v : null;
 };
-
-async function log(entry: {
-  staff: string;
-  action: string;
-  target?: string | null;
-  report?: string | null;
-  story?: string | null;
-  note?: string;
-}) {
-  const { error } = await createAdminClient().from("moderation_actions").insert({
-    staff_id: entry.staff,
-    action: entry.action,
-    target_user: entry.target ?? null,
-    report_id: entry.report ?? null,
-    story_id: entry.story ?? null,
-    note: entry.note ?? "",
-  });
-  if (error) throw error;
-}
 
 /* ---------------------------------------------------------------- reports */
 

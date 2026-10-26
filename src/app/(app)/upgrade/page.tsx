@@ -17,6 +17,16 @@ import { SubmitButton } from "@/components/forms/SubmitButton";
 import { quietButtonClass } from "@/components/ui/buttonStyles";
 import { safeNext } from "@/lib/auth/redirect";
 import { requireVerifiedMember } from "@/lib/auth/session";
+import {
+  discountedAmount,
+  normalizeCode,
+  type CouponTerms,
+} from "@/lib/coupons/pricing";
+import {
+  assignedCouponCode,
+  previewCoupon,
+  type CouponResult,
+} from "@/lib/coupons/service";
 import { serverEnv } from "@/lib/env.server";
 import { startCheckout } from "@/lib/payments/actions";
 import { getPlans, type Plan } from "@/lib/payments/stripe";
@@ -59,6 +69,31 @@ export default async function UpgradePage({
       return [];
     });
   }
+
+  // A coupon code, typed here or arriving in a link (/upgrade?coupon=CODE),
+  // is checked for each plan so the cards can show the discounted price.
+  const couponCode = plans?.length ? normalizeCode(params.coupon) : "";
+  const offers = new Map<Plan["key"], CouponResult>();
+  if (plans && couponCode) {
+    for (const p of plans) {
+      offers.set(
+        p.key,
+        await previewCoupon(couponCode, user.id, p.key, p.currency),
+      );
+    }
+  }
+  // A code staff plugged into this member is offered until they use it.
+  const suggested =
+    plans?.length && !couponCode ? await assignedCouponCode(user.id) : null;
+  const offerList = [...offers.values()];
+  const couponApplied = offerList.some((o) => o.ok);
+  const couponError =
+    couponCode && !couponApplied
+      ? (offerList
+          .map((o) => (o.ok ? null : o.error))
+          .find((e) => e && e !== "wrong_plan") ?? "wrong_plan")
+      : null;
+
   const money = (p: Plan, amount = p.amount) =>
     format.number(amount / 100, {
       style: "currency",
@@ -177,50 +212,130 @@ export default async function UpgradePage({
           plans.length > 0 ? (
             <>
               <h2 className="text-xl">{t("choosePlan")}</h2>
+              <form
+                method="get"
+                action="/upgrade"
+                className="flex w-full flex-wrap items-end gap-3"
+              >
+                <input type="hidden" name="next" value={next} />
+                <label className="flex w-full max-w-xs flex-col gap-1.5">
+                  <span className="font-semibold">{t("coupon.label")}</span>
+                  <input
+                    name="coupon"
+                    defaultValue={couponCode}
+                    autoComplete="off"
+                    autoCapitalize="characters"
+                    spellCheck={false}
+                    maxLength={40}
+                    className="min-h-12 rounded-xl border border-line bg-paper px-3 uppercase"
+                  />
+                </label>
+                <SubmitButton variant="quiet">{t("coupon.apply")}</SubmitButton>
+              </form>
+              {suggested && (
+                <FormAlert tone="success">
+                  <p>{t("coupon.suggested", { code: suggested })}</p>
+                  <Link
+                    href={`/upgrade?next=${encodeURIComponent(next)}&coupon=${encodeURIComponent(suggested)}`}
+                    className="font-semibold underline underline-offset-4"
+                  >
+                    {t("coupon.useIt")}
+                  </Link>
+                </FormAlert>
+              )}
+              {couponApplied && (
+                <FormAlert tone="success">
+                  {t("coupon.applied", { code: couponCode })}
+                </FormAlert>
+              )}
+              {couponError && (
+                <FormAlert tone="error">
+                  {t(`coupon.errors.${couponError}`)}
+                </FormAlert>
+              )}
               <ul className="grid w-full gap-3 sm:grid-cols-2">
-                {[monthly, yearly].map(
-                  (plan) =>
-                    plan && (
-                      <li key={plan.key}>
-                        <form
-                          action={startCheckout}
-                          className="flex h-full flex-col gap-3 rounded-2xl border border-line p-5"
-                        >
-                          <input type="hidden" name="plan" value={plan.key} />
-                          <input type="hidden" name="next" value={next} />
-                          <p className="flex flex-wrap items-center gap-2 font-semibold">
-                            {t(`plans.${plan.key}.title`)}
-                            {plan.key === "yearly" && yearlySaving > 0 && (
-                              <span className="rounded-full bg-ring/20 px-2 py-0.5 text-[0.8125rem]">
-                                {t("plans.save", { percent: yearlySaving })}
+                {[monthly, yearly].map((plan) => {
+                  if (!plan) return null;
+                  const offer = offers.get(plan.key);
+                  const terms: CouponTerms | null = offer?.ok
+                    ? offer.terms
+                    : null;
+                  const price = terms
+                    ? discountedAmount(plan.amount, plan.currency, terms)
+                    : plan.amount;
+                  return (
+                    <li key={plan.key}>
+                      <form
+                        action={startCheckout}
+                        className="flex h-full flex-col gap-3 rounded-2xl border border-line p-5"
+                      >
+                        <input type="hidden" name="plan" value={plan.key} />
+                        <input type="hidden" name="next" value={next} />
+                        {terms && (
+                          <input
+                            type="hidden"
+                            name="coupon"
+                            value={couponCode}
+                          />
+                        )}
+                        <p className="flex flex-wrap items-center gap-2 font-semibold">
+                          {t(`plans.${plan.key}.title`)}
+                          {plan.key === "yearly" && yearlySaving > 0 && (
+                            <span className="rounded-full bg-ring/20 px-2 py-0.5 text-[0.8125rem]">
+                              {t("plans.save", { percent: yearlySaving })}
+                            </span>
+                          )}
+                        </p>
+                        <p className="font-display text-3xl">
+                          {t(`plans.${plan.key}.price`, {
+                            price: money(plan, price),
+                          })}
+                        </p>
+                        {terms && (
+                          <p className="text-[0.9375rem] text-ink-soft">
+                            <s>
+                              <span className="sr-only">
+                                {t("coupon.regularPrice")}
                               </span>
-                            )}
-                          </p>
-                          <p className="font-display text-3xl">
-                            {t(`plans.${plan.key}.price`, {
-                              price: money(plan),
+                              {money(plan)}
+                            </s>{" "}
+                            {terms.percentOff !== null
+                              ? t("coupon.percentOff", {
+                                  percent: terms.percentOff,
+                                })
+                              : t("coupon.amountOff", {
+                                  amount: money(
+                                    plan,
+                                    terms.amountOffCents ?? 0,
+                                  ),
+                                })}{" "}
+                            {t(`coupon.duration.${terms.duration}`, {
+                              months: terms.durationMonths ?? 0,
                             })}
                           </p>
-                          {plan.key === "yearly" && (
-                            <p className="text-[0.9375rem] text-ink-soft">
-                              {t("plans.yearly.perMonth", {
-                                price: money(
-                                  plan,
-                                  Math.round(plan.amount / 12),
-                                ),
-                              })}
-                            </p>
-                          )}
-                          <div className="mt-auto">
-                            <SubmitButton>
-                              <Crown aria-hidden size={18} />
-                              {t(`plans.${plan.key}.choose`)}
-                            </SubmitButton>
-                          </div>
-                        </form>
-                      </li>
-                    ),
-                )}
+                        )}
+                        {couponApplied && !terms && (
+                          <p className="text-[0.9375rem] text-ink-soft">
+                            {t("coupon.notForPlan")}
+                          </p>
+                        )}
+                        {plan.key === "yearly" && (
+                          <p className="text-[0.9375rem] text-ink-soft">
+                            {t("plans.yearly.perMonth", {
+                              price: money(plan, Math.round(plan.amount / 12)),
+                            })}
+                          </p>
+                        )}
+                        <div className="mt-auto">
+                          <SubmitButton>
+                            <Crown aria-hidden size={18} />
+                            {t(`plans.${plan.key}.choose`)}
+                          </SubmitButton>
+                        </div>
+                      </form>
+                    </li>
+                  );
+                })}
               </ul>
               <p className="max-w-prose text-[0.9375rem] text-ink-soft">
                 {t("stripeNote")}

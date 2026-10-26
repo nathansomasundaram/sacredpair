@@ -11,8 +11,12 @@ const LINKS = [
   { href: "/admin/members", key: "members" },
   { href: "/admin/stories", key: "stories" },
   { href: "/admin/log", key: "log" },
+  { href: "/admin/coupons", key: "coupons" },
   { href: "/admin/staff", key: "staff" },
 ] as const;
+
+// Only admins manage staff and pricing.
+const ADMIN_ONLY: readonly string[] = ["staff", "coupons"];
 
 export function AdminNav({ isAdmin, openReports, pendingStories }: { isAdmin: boolean; openReports: number; pendingStories: number }) {
   const t = useTranslations("admin.nav");
@@ -31,7 +35,7 @@ export function AdminNav({ isAdmin, openReports, pendingStories }: { isAdmin: bo
   return (
     <nav ref={navRef} aria-label={t("label")} className="overflow-x-auto">
       <ul className="flex gap-1">
-        {LINKS.filter((l) => l.key !== "staff" || isAdmin).map(({ href, key }) => {
+        {LINKS.filter((l) => isAdmin || !ADMIN_ONLY.includes(l.key)).map(({ href, key }) => {
           const active = href === "/admin" ? path === href : path.startsWith(href);
           return (
             <li key={key}>

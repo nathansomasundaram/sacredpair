@@ -6,6 +6,7 @@ import { getTranslations } from "next-intl/server";
 import { quietButtonClass } from "@/components/ui/buttonStyles";
 import { safeNext } from "@/lib/auth/redirect";
 import { requireVerifiedMember } from "@/lib/auth/session";
+import { completeCouponSession } from "@/lib/coupons/service";
 import { serverEnv } from "@/lib/env.server";
 import { paymentsStripe, syncSubscription } from "@/lib/payments/stripe";
 import { customerId } from "@/lib/payments/subscription";
@@ -46,6 +47,7 @@ export default async function UpgradeSuccessPage({
   const subscription = customerId(session.subscription);
   if (session.status === "complete" && subscription) {
     await syncSubscription(subscription);
+    if (session.metadata?.coupon_id) await completeCouponSession(session.id);
     redirect(`${next}${next.includes("?") ? "&" : "?"}upgraded=1`);
   }
 

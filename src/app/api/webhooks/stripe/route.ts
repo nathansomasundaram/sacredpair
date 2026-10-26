@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+import { completeCouponSession } from "@/lib/coupons/service";
 import { serverEnv } from "@/lib/env.server";
 import { stripeClient } from "@/lib/identity/stripe";
 import { syncSubscription } from "@/lib/payments/stripe";
@@ -44,6 +45,15 @@ export async function POST(request: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
     if (session.mode === "subscription") {
       subscriptionId = customerId(session.subscription);
+      // A paid checkout turns the held coupon code into a redemption.
+      if (session.metadata?.coupon_id && session.payment_status !== "unpaid") {
+        try {
+          await completeCouponSession(session.id);
+        } catch (error) {
+          console.error("Couldn't record a coupon redemption", error);
+          return Response.json({ error: "processing failed" }, { status: 500 });
+        }
+      }
     }
   } else if (
     event.type === "invoice.paid" ||

@@ -925,7 +925,33 @@
     "pricesUnavailable": "We couldn't load the plans just now. Please try again in a moment.",
     "processingTitle": "Your payment is being confirmed",
     "processingBody": "This can take a few minutes for some payment methods. Premium turns on as soon as it's confirmed, and we'll keep your place.",
-    "seeMembership": "See your membership"
+    "seeMembership": "See your membership",
+    "coupon": {
+      "label": "Coupon code",
+      "apply": "Apply",
+      "applied": "Coupon {code} applied. Your prices are below.",
+      "suggested": "You have a coupon: {code}.",
+      "useIt": "Use it",
+      "regularPrice": "Regular price:",
+      "percentOff": "{percent}% off",
+      "amountOff": "{amount} off",
+      "duration": {
+        "once": "on your first payment",
+        "repeating": "for {months, plural, one {# month} other {# months}}",
+        "forever": "for as long as you stay subscribed"
+      },
+      "notForPlan": "This coupon doesn't apply to this plan.",
+      "errors": {
+        "not_found": "We don't recognize that code. Check it and try again.",
+        "inactive": "That code isn't active any more.",
+        "not_started": "That code can't be used yet.",
+        "expired": "That code has expired.",
+        "wrong_plan": "That code doesn't apply to these plans.",
+        "already_used": "You've already used that code.",
+        "exhausted": "That code has been used the most times it allows.",
+        "currency": "That code doesn't apply to these prices."
+      }
+    }
   },
   "connect": {
     "askTitle": "Would you like to meet {name}?",
@@ -1404,6 +1430,7 @@
       "members": "Members",
       "stories": "Stories",
       "log": "Activity log",
+      "coupons": "Coupons",
       "staff": "Staff"
     },
     "overview": {
@@ -1556,6 +1583,134 @@
         "lastAdmin": "You're the only admin, so you can't remove yourself."
       }
     },
+    "coupons": {
+      "title": "Coupons",
+      "intro": "Discounts on Premium plans. A member enters a code on the upgrade screen, or follows a link ending in /upgrade?coupon=CODE. Codes can be open to anyone who has them, plugged into specific members, or made by a partner site through the partner API.",
+      "partnersLink": "Partner sites",
+      "back": "All coupons",
+      "none": "No coupons yet.",
+      "cols": {
+        "code": "Code",
+        "discount": "Discount",
+        "uses": "Used",
+        "source": "From",
+        "ends": "Ends",
+        "status": "Status"
+      },
+      "uses": "{count} of {max}",
+      "usesUnlimited": "{count, plural, one {# use} other {# uses}}",
+      "fromPartner": "Partner: {name}",
+      "forMembers": "{count, plural, =0 {Specific members} one {1 member} other {# members}}",
+      "fromStaff": "Made by staff",
+      "never": "No end date",
+      "state": {
+        "off": "Switched off",
+        "scheduled": "Not started",
+        "expired": "Expired",
+        "used_up": "Used up",
+        "live": "Live"
+      },
+      "percentOff": "{percent}% off",
+      "amountOff": "{amount} off",
+      "duration": {
+        "once": "first payment",
+        "repeating": "{months, plural, one {# month} other {# months}}",
+        "forever": "for as long as they subscribe"
+      },
+      "plan": {
+        "monthly": "Monthly",
+        "yearly": "Yearly"
+      },
+      "new": {
+        "title": "Make a coupon",
+        "code": "Code",
+        "codeHint": "4 to 32 letters, numbers, dashes or underscores. Members can type it in any case.",
+        "description": "Note (only staff see it)",
+        "kind": "Type of discount",
+        "kindPercent": "Percentage off",
+        "kindAmount": "Dollars off",
+        "value": "Amount",
+        "duration": "How long it lasts",
+        "durationOnce": "First payment only",
+        "durationRepeating": "A number of months",
+        "durationForever": "As long as they subscribe",
+        "months": "Months (for a number of months)",
+        "plans": "Applies to",
+        "max": "Most uses (blank for no limit)",
+        "starts": "Starts",
+        "expires": "Ends",
+        "membersOnly": "Only specific members can use it",
+        "membersOnlyHint": "Plug it into members after you make it. Anyone else who types the code is told it isn't recognized.",
+        "create": "Make coupon"
+      },
+      "edit": {
+        "title": "Settings",
+        "active": "Switched on",
+        "save": "Save"
+      },
+      "members": {
+        "title": "Members",
+        "onlyThem": "Only these members can use this code, and it's offered to them on the upgrade screen.",
+        "anyone": "Anyone with the code can use it. Plugging it into a member limits it to the members listed.",
+        "remove": "Remove",
+        "email": "Member's email address",
+        "hint": "They need a Sacred Pair account. Adding a member makes this coupon only for the members listed.",
+        "add": "Add member"
+      },
+      "used": {
+        "title": "Who used it",
+        "none": "Nobody yet.",
+        "completed": "Used {date}",
+        "pending": "Checkout started {date}"
+      },
+      "done": {
+        "created": "Coupon made.",
+        "updated": "Coupon saved.",
+        "assigned": "Member added.",
+        "unassigned": "Member removed."
+      },
+      "errors": {
+        "code": "The code needs 4 to 32 letters, numbers, dashes or underscores.",
+        "percent_or_amount": "Give a whole percentage from 1 to 100, or a dollar amount such as 5 or 5.50.",
+        "percent_off": "The percentage must be a whole number from 1 to 100.",
+        "amount_off_cents": "That dollar amount isn't valid.",
+        "months_when_repeating": "A discount lasting a number of months needs the months (1 to 36), and nothing else should have them.",
+        "duration_months": "The months must be a whole number from 1 to 36.",
+        "duration": "Choose how long the discount lasts.",
+        "ends_before_start": "The end date must be after the start date.",
+        "starts_at": "That start date isn't valid.",
+        "expires_at": "That end date isn't valid.",
+        "plans": "Choose at least one plan.",
+        "max_redemptions": "The most uses must be a whole number of 1 or more.",
+        "duplicate": "That code is already taken.",
+        "invalid": "Something in the form isn't valid.",
+        "notFound": "There's no account with that email address."
+      },
+      "partners": {
+        "title": "Partner sites",
+        "intro": "A partner site can make its own coupon codes through the partner API, using a key made here. Partners can only make percentage discounts up to their limit, and each code works once unless the partner asks for more. See the README for the requests.",
+        "none": "No partners yet.",
+        "summary": "Up to {percent}% off · {count, plural, one {# coupon} other {# coupons}} · added {date}",
+        "on": "Key on",
+        "off": "Key off",
+        "turnOn": "Turn key on",
+        "turnOff": "Turn key off",
+        "endCoupons": "Switch off its coupons",
+        "newTitle": "Add a partner",
+        "name": "Partner name",
+        "maxPercent": "Biggest percentage off it can give",
+        "maxPercentHint": "Whole number from 1 to 100.",
+        "create": "Add partner",
+        "created": "{name} was added.",
+        "keyOnce": "Copy its API key now and send it to the partner securely. It isn't stored and can't be shown again.",
+        "keyLabel": "API key",
+        "errors": {
+          "name": "Give the partner a name of at least 2 letters.",
+          "percent": "The limit must be a whole number from 1 to 100.",
+          "duplicate": "A partner with that name already exists."
+        }
+      }
+    },
     "log": {
       "title": "Activity log",
       "intro": "Every action taken by staff, newest first.",
@@ -1577,7 +1732,13 @@
       "story_rejected": "Declined a story",
       "story_unpublished": "Took down a story",
       "staff_added": "Added to staff",
-      "staff_removed": "Removed from staff"
+      "staff_removed": "Removed from staff",
+      "coupon_created": "Made a coupon",
+      "coupon_updated": "Changed a coupon",
+      "coupon_assigned": "Gave a member a coupon",
+      "coupon_unassigned": "Took a coupon from a member",
+      "partner_created": "Added a coupon partner",
+      "partner_updated": "Changed a coupon partner"
     }
   },
   "premiumGate": {

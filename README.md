@@ -243,6 +243,43 @@ To try it locally, run `stripe listen --forward-to localhost:3000/api/webhooks/s
 
 ID verification uses Stripe too (Stripe Identity, `IDENTITY_PROVIDER=stripe`), with its own webhook at `/api/webhooks/stripe-identity`.
 
+## Coupon codes
+
+Coupons take money off the Premium plans. They work with `PAYMENTS_PROVIDER=stripe` (there's no price to discount otherwise). Prices still come from Stripe; a coupon only changes what a member pays.
+
+**For members.** On `/upgrade` a member types a code (any case) and presses **Apply**, and each plan card shows the price after the discount. A link can carry the code, for example `https://<your site>/upgrade?coupon=FRIENDS20`; that's how a partner site sends people. A code staff plugged into a member is offered to them on the upgrade screen ("You have a coupon"). Each member can use a code once.
+
+**Where codes come from** (`supabase/migrations/20261030000000_coupons.sql`):
+
+| Source                | How                                                                                                                                                                                                              |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Staff                 | **Admin > Coupons** (admins only). A percentage or a dollar amount off, for the first payment, a number of months, or as long as they subscribe; monthly, yearly or both; an optional limit, start and end date. |
+| Plugged into members  | On a coupon's page, add members by email. The coupon then works for those members only; anyone else who types the code is told it isn't recognized (the same as a code that doesn't exist).                      |
+| A partner (3rd party) | **Admin > Coupons > Partner sites** makes a partner and its API key, shown once. The partner's site makes its own codes through the API below.                                                                   |
+
+**Partner API.** Send `Authorization: Bearer <key>` and JSON. A partner sees and changes only the codes it made.
+
+```bash
+# Make a code (percentage discounts only, up to the partner's limit; one use unless max_redemptions says more)
+curl -X POST https://<your site>/api/partners/coupons \
+  -H "Authorization: Bearer spk_..." -H "Content-Type: application/json" \
+  -d '{"code":"FRIENDS20","percent_off":20,"duration":"once","max_redemptions":1,"expires_at":"2026-12-31T23:59:59Z","member_email":"optional@example.com"}'
+
+curl https://<your site>/api/partners/coupons/FRIENDS20 -H "Authorization: Bearer spk_..."            # terms and "redeemed" count
+curl -X DELETE https://<your site>/api/partners/coupons/FRIENDS20 -H "Authorization: Bearer spk_..."  # switch it off
+```
+
+Other fields: `duration` (`once`, `repeating` with `duration_months`, or `forever`), `plans` (`["monthly"]`, `["yearly"]`), `starts_at`, `description`. With `member_email` the code works for that member only (they need an account). Errors: `401` for a missing, wrong or switched-off key, `400` for a bad field (the body names it), `409` `code_taken`, `422` `percent_too_high`, `percent_only` or `member_not_found`. Only a hash of each key is stored; to rotate one, add a new partner and turn the old key off (**Switch off its coupons** also ends everything it made).
+
+**How the discount is applied** (`src/lib/coupons/`, `startCheckout` in `src/lib/payments/actions.ts`):
+
+- Choosing a plan checks the code again on the server (a form field can't forge a discount) and holds it for 35 minutes in `claim_coupon()`. The check and hold happen under a row lock, so a code limited to 10 uses can't be used by an 11th checkout at the same moment.
+- The server makes a one-off Stripe coupon with the same terms and puts it on the Checkout session, which lasts 31 minutes. Without a code, Checkout still lets people type a Stripe promotion code, as before; with one it doesn't (Stripe allows only one of the two).
+- When Stripe confirms the payment (the webhook, or the success page, whichever comes first) the hold becomes a redemption. An abandoned checkout frees the code again after 35 minutes.
+- Everything is server-only: the coupon tables have Row Level Security on and no policies, and the functions can't be called by members or visitors.
+
+Logic and rules: percentages round to the nearest cent as Stripe does; an amount off never goes below zero and applies only to prices in its currency; unit tests are in `tests/unit/coupons.test.ts`, database rules in `tests/db/coupons.test.ts`, and the admin screens and partner API in `tests/e2e/coupons.spec.ts`.
+
 ## Public pages
 
 The public site (`src/app/(public)/`) is everything a visitor sees before joining: the home page, **FAQ** (`/faq`), **Dating tips** (`/tips`, six articles), **Stories** (`/stories`), **Privacy Policy** (`/privacy`) and **Terms and Conditions** (`/terms`). Signed-in members see the same pages with an "Open Sacred Pair" button. `/sitemap.xml` lists them; `robots.txt` keeps search engines out of the app and `/admin`.
@@ -262,6 +299,7 @@ The public site (`src/app/(public)/`) is everything a visitor sees before joinin
 | Members      | Search by email, name or ID; see their profile, photos, video and reports; remove a photo, the video, About me or prompts; suspend or reinstate |
 | Stories      | Publish or decline members' stories, or take a published one down                                                                               |
 | Activity log | Every moderation action: who, what, when and the note                                                                                           |
+| Coupons      | Discount codes and the partner sites that make them (admins only; see [Coupon codes](#coupon-codes))                                            |
 | Staff        | Add or remove moderators and admins (admins only)                                                                                               |
 
 - **Suspending** signs the member out, blocks signing in, ends their connections and hides them from Discover. They see a "Your account is suspended" page and get an email. Reinstating lets them sign in again; ended connections stay ended.
