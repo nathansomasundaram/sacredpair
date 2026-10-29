@@ -7,8 +7,9 @@
  *   npm run seed:demo -- --fresh      also clear the two viewers' introductions,
  *                                     so the magic wand can be used again
  *   npm run seed:demo -- --remove     remove every demo member
- *   npm run seed:demo -- --extra=20   only 20 of the generated members
- *                                     (default 80, the most; 0 for none)
+ *   npm run seed:demo -- --extra=50   only the first 50 generated members,
+ *                                     one per state (default 200, the most;
+ *                                     100 is two per state; 0 for none)
  *
  * What you get (see scripts/demo/members.mjs):
  *   - 12 members with complete overviews. Most have full Premium profiles
@@ -20,10 +21,12 @@
  *     (some messages unread) to try Chat.
  *   - Chat and Together need Premium for both people: demo members have it
  *     (test mode) except Naomi, and Taylor is free, so every state shows.
- *   - 80 more members across the United States (one per city, 48 states
- *     and DC), generated from a fixed seed in scripts/demo/generated-members.mjs:
- *     the same people every run, with a mix of full, partial and no Premium
- *     profiles, and about two in three with Premium membership.
+ *   - 200 more members across the United States, 4 in each of the 50 states
+ *     (two cities, two people each), generated from a fixed seed in
+ *     scripts/demo/generated-members.mjs: the same people every run, aged 21
+ *     to 71, women, men and non-binary, from many backgrounds, faiths and
+ *     family situations, with a mix of full, partial and no Premium profiles,
+ *     and about two in three with Premium membership.
  *   - avery@ is an admin, for /admin: one open report (Ruth about Caleb),
  *     one story waiting for review (Hannah) and one published (Grace), all
  *     clearly fictional and local only.
@@ -47,9 +50,9 @@ import {
 import { generateMembers } from "./demo/generated-members.mjs";
 
 const extraArg = process.argv.find((a) => a.startsWith("--extra="));
-const EXTRA = extraArg ? Number(extraArg.slice("--extra=".length)) : 80;
-if (!Number.isInteger(EXTRA) || EXTRA < 0 || EXTRA > 80) {
-  console.error("--extra must be a whole number from 0 to 80.");
+const EXTRA = extraArg ? Number(extraArg.slice("--extra=".length)) : 200;
+if (!Number.isInteger(EXTRA) || EXTRA < 0 || EXTRA > 200) {
+  console.error("--extra must be a whole number from 0 to 200.");
   process.exit(1);
 }
 const GENERATED = generateMembers(EXTRA);
@@ -606,9 +609,9 @@ check(
 
 const total = MEMBERS.length + VIEWERS.length + GENERATED.length;
 const codes = new Set(GENERATED.map((m) => m.state));
-const states = `${codes.size - (codes.has("DC") ? 1 : 0)} states${codes.has("DC") ? " and DC" : ""}`;
+const cities = new Set(GENERATED.map((m) => `${m.city}, ${m.state}`));
 console.log(`Demo members ready: ${added} added, ${total - added} refreshed${removed ? `, ${removed} removed` : ""}.
-${GENERATED.length} of them are generated, across ${GENERATED.length} cities in ${states} (scripts/demo/generated-members.mjs).
+${GENERATED.length} of them are generated, across ${cities.size} cities in ${codes.size} states (scripts/demo/generated-members.mjs).
 
 Log in with password ${DEMO_PASSWORD} as:
   ${emailFor("Taylor")}   free member: sees the Premium teaser and upgrade screen
